@@ -5,4 +5,4 @@ nb-configuration.xml
 nbactions-release-profile.xml
 nbactions.xml
 /target
-/config/botsettings.properties
+/config/
