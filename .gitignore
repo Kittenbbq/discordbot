@@ -6,3 +6,7 @@ nbactions-release-profile.xml
 nbactions.xml
 /target
 /config/botsettings.properties
+
+# IntelliJ IDEA
+/.idea
+*.iml
