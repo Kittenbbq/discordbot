@@ -1,4 +1,4 @@
-package test.kittenbbq.discordbot;
+package kittenbbq.discordbot;
 import java.io.File;
 import java.io.FileReader;
 import java.util.Properties;

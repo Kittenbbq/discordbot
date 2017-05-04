@@ -1,4 +1,4 @@
-package test.kittenbbq.discordbot;
+package kittenbbq.discordbot;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.api.events.EventDispatcher;
 
