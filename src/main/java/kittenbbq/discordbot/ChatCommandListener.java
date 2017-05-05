@@ -1,4 +1,4 @@
-package test.kittenbbq.discordbot;
+package kittenbbq.discordbot;
 import java.util.Arrays;
 import java.util.List;
 import sx.blah.discord.api.IDiscordClient;
