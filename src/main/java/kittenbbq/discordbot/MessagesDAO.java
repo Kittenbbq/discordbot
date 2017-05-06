@@ -41,7 +41,6 @@ public class MessagesDAO {
             System.out.println("Message insert failed: " + ex.getMessage());
         }
         finally {
-            System.out.println(":D");
             try {
                 if (statement != null)
                     statement.close();

@@ -22,7 +22,6 @@ public class ChatCommandListener implements IListener<MessageReceivedEvent>{
     
     @Override
     public void handle(MessageReceivedEvent event) {
-        System.out.println("goot message: " + event.getMessage().getContent());
         Db db = new Db(this.config);
         MessagesDAO.addMessage(event, db);
         IMessage message = event.getMessage();

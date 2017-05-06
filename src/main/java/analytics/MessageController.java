@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class MessageController {
                 msg.setMessageID(results.getString("ID"));
                 msg.setAuthorID(results.getString("authorID"));
                 msg.setAuthorName(results.getString("authorName"));
-                msg.setSent(results.getDate("sent"));
+                msg.setSent(results.getTimestamp("sent").toLocalDateTime());
                 msg.setGuildID(results.getString("guildID"));
                 msg.setGuildName(results.getString("guildName"));
                 msg.setChannelID(results.getString("channelID"));
@@ -47,5 +48,26 @@ public class MessageController {
         }
 
         return messages;
+    }
+
+    @RequestMapping("/api/messages/info")
+    public MessageInfo info() {
+        MessageInfo msgInfo = null;
+        ResultSet results;
+        PreparedStatement statement;
+
+        try {
+            statement = db.getConn().prepareStatement("SELECT COUNT(*) as messageCount from messages");
+            results = statement.executeQuery();
+            msgInfo = new MessageInfo();
+            if (results.first()) {
+                msgInfo.setMessageCount(results.getInt("messageCount"));
+            }
+        } catch(Exception e) {
+            System.out.println(e);
+            System.out.println("Message retrieval failed: " + e.getMessage());
+        }
+
+        return msgInfo;
     }
 }

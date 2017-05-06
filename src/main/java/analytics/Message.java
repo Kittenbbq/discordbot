@@ -1,12 +1,12 @@
 package analytics;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class Message {
     private String messageID;
     private String authorID;
     private String authorName;
-    private Date sent;
+    private LocalDateTime sent;
     private String guildID;
     private String guildName;
     private String channelID;
@@ -37,11 +37,11 @@ public class Message {
         this.authorName = authorName;
     }
 
-    public Date getSent() {
+    public LocalDateTime getSent() {
         return sent;
     }
 
-    public void setSent(Date sent) {
+    public void setSent(LocalDateTime sent) {
         this.sent = sent;
     }
 
