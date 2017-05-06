@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 
 public class CommandsDAO {
     private Connection mycon;
+
     public CommandsDAO(BotConfig config){
         try{
             Class.forName("com.mysql.jdbc.Driver");

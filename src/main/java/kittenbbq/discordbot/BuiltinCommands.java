@@ -1,37 +1,26 @@
 package kittenbbq.discordbot;
 
+import sx.blah.discord.api.IDiscordClient;
+
 import java.util.HashMap;
 
 public class BuiltinCommands {
-    private static HashMap commands;
+    private HashMap commands;
 
-    static {
-        commands = new HashMap<String, Class>();
-        commands.put("topic", TopicCommand.class);
+    public BuiltinCommands(IDiscordClient client, CommandsDAO dao) {
+        PollCommandHandler pollCommandHandler  = new PollCommandHandler(client);
+        commands = new HashMap<String, AbstractBuiltinCommandHandler>();
+
+        commands.put("topic", new TopicCommandHandler(client));
+        commands.put("poll", pollCommandHandler);
+        commands.put("vote", pollCommandHandler);
     }
 
-    public static boolean commandExists(String commandName) {
+    public  boolean commandExists(String commandName) {
         return commands.containsKey(commandName);
     }
 
-    /*
-    public static Class getCommandClass(String commandName) {
-        return (Class) commands.get(commandName);
-    }
-    */
-
-    public static IBuiltinCommand getCommand(String commandName) {
-        IBuiltinCommand builtinCommand = null;
-
-        try {
-            Class commandClass = (Class) commands.get(commandName);
-            builtinCommand = (IBuiltinCommand) commandClass.newInstance();
-        }
-        catch(Exception e) {
-            e.printStackTrace();
-        }
-
-        return builtinCommand;
-
+    public AbstractBuiltinCommandHandler getCommand(String commandName) {
+        return (AbstractBuiltinCommandHandler) commands.get(commandName);
     }
 }

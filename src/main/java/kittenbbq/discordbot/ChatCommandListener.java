@@ -14,10 +14,13 @@ public class ChatCommandListener implements IListener<MessageReceivedEvent>{
     private final IDiscordClient client;
     private final String prefix;
     private final CommandsDAO dao;
+    private final BuiltinCommands builtinCommands;
+
     public ChatCommandListener(IDiscordClient client, BotConfig config){
         this.client = client;
         this.prefix = config.getPrefix();
-        dao = new CommandsDAO(config);
+        this.dao = new CommandsDAO(config);
+        this.builtinCommands = new BuiltinCommands(this.client, this.dao);
     }
     
     @Override
@@ -26,19 +29,17 @@ public class ChatCommandListener implements IListener<MessageReceivedEvent>{
         IUser user = message.getAuthor();
         if (user.isBot()) return;
 
-        String[] split = message.getContent().split(" ");
+        String[] split = message.getContent().trim().split(" ");
         if (split.length >= 1 && split[0].startsWith(prefix)) {
             String command = split[0].replaceFirst(prefix, "").toLowerCase();
             String[] args = split.length >= 2 ? Arrays.copyOfRange(split, 1, split.length) : new String[0];
 
-            if (BuiltinCommands.commandExists(command)) {
-                BuiltinCommands.getCommand(command).handle(event, command, args);
+            if (builtinCommands.commandExists(command)) {
+                builtinCommands.getCommand(command).handle(event, command);
             }
         }
     }
-    private boolean inRoles(List<IRole> roles, String roleToCheck){
-        return roles.stream().anyMatch((role) -> (role.toString().equals(roleToCheck)));
-    }
+
     private String getContentCommand(IMessage message, String[] args, String command){
         return message.getContent().substring(command.length()+args[0].length()+3);
     }
