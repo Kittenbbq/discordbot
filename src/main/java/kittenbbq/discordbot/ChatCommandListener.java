@@ -12,16 +12,19 @@ import sx.blah.discord.util.MessageBuilder;
 
 public class ChatCommandListener implements IListener<MessageReceivedEvent>{
     private final IDiscordClient client;
-    private final String prefix;
     private final CommandsDAO dao;
+    private final BotConfig config;
     public ChatCommandListener(IDiscordClient client, BotConfig config){
+        this.config = config;
         this.client = client;
-        this.prefix = config.getPrefix();
         dao = new CommandsDAO(config);
     }
     
     @Override
     public void handle(MessageReceivedEvent event) {
+        System.out.println("goot message: " + event.getMessage().getContent());
+        Db db = new Db(this.config);
+        MessagesDAO.addMessage(event, db);
         IMessage message = event.getMessage();
         IUser user = message.getAuthor();
         if (user.isBot()) return;
@@ -29,8 +32,8 @@ public class ChatCommandListener implements IListener<MessageReceivedEvent>{
         
         IChannel channel = message.getChannel();
         String[] split = message.getContent().split(" ");
-        if (split.length >= 1 && split[0].startsWith(prefix)) {
-            String command = split[0].replaceFirst(prefix, "");
+        if (split.length >= 1 && split[0].startsWith(this.config.getPrefix())) {
+            String command = split[0].replaceFirst(this.config.getPrefix(), "");
             String[] args = split.length >= 2 ? Arrays.copyOfRange(split, 1, split.length) : new String[0];
             
             switch(command){

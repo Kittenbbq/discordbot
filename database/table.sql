@@ -4,3 +4,16 @@ create table commands(
  	user VARCHAR(50) DEFAULT "USER MISSING",
 	added TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )ENGINE=InnoDB;
+
+
+create table messages(
+    ID VARCHAR(30) PRIMARY KEY,
+	authorID VARCHAR(30) NOT NULL,
+	authorName VARCHAR(30) NOT NULL,
+ 	sent DATETIME NOT NULL,
+ 	guildID VARCHAR(30) NOT NULL,
+	guildName VARCHAR(50) NOT NULL,
+	channelID VARCHAR(30) NOT NULL,
+	channelName VARCHAR(50)NOT NULL,
+	content VARCHAR(2000)
+)ENGINE=InnoDB;
