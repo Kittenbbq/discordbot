@@ -3,7 +3,7 @@ import java.util.Arrays;
 import java.util.List;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.api.events.IListener;
-import sx.blah.discord.handle.impl.events.MessageReceivedEvent;
+import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.handle.obj.IRole;
@@ -25,11 +25,11 @@ public class ChatCommandListener implements IListener<MessageReceivedEvent>{
         IMessage message = event.getMessage();
         IUser user = message.getAuthor();
         if (user.isBot()) return;
-        List<IRole> userroles = user.getRolesForGuild(message.getGuild());
-        
-        IChannel channel = message.getChannel();
+
         String[] split = message.getContent().split(" ");
         if (split.length >= 1 && split[0].startsWith(prefix)) {
+            List<IRole> userroles = user.getRolesForGuild(message.getGuild());
+            IChannel channel = message.getChannel();
             String command = split[0].replaceFirst(prefix, "");
             String[] args = split.length >= 2 ? Arrays.copyOfRange(split, 1, split.length) : new String[0];
             
