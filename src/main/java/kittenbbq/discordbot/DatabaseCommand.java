@@ -11,9 +11,9 @@ import sx.blah.discord.handle.obj.IUser;
 public class DatabaseCommand extends CommandHandler{
     private final CommandsDAO dao;
 
-    public DatabaseCommand(IDiscordClient client, BotConfig config) {
+    public DatabaseCommand(IDiscordClient client, CommandsDAO dao) {
         super(client);
-        dao = new CommandsDAO(config);
+        this.dao = dao;
     }
 
     @Override
@@ -31,7 +31,7 @@ public class DatabaseCommand extends CommandHandler{
                     if(inRoles(userroles, "ObeseDude")){
                         CommandDTO command_add = new CommandDTO();
                         command_add.setCommand(args[0]);
-                        command_add.setResponse(getContentCommand(message, args, command));
+                        command_add.setResponse(getCommandContent(message).split(" ", 2)[1]);
                         command_add.setUsername(user.getName());
                         dao.addCommand(command_add);
                     }

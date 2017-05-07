@@ -13,18 +13,22 @@ abstract class CommandHandler {
     public CommandHandler(IDiscordClient client){
         this.client = client;
     }
+    
     abstract void handleCommand(String command, MessageReceivedEvent event);
     
     
     protected boolean inRoles(List<IRole> roles, String roleToCheck){
         return roles.stream().anyMatch((role) -> (role.toString().equals(roleToCheck)));
     }
-    protected String getContentCommand(IMessage message, String[] args, String command){
-        return message.getContent().substring(command.length()+args[0].length()+3);
+    
+    protected String getCommandContent(IMessage message){
+        return message.getContent().split(" ", 2)[1];
     }
-    protected String getContent(IMessage message, String command){
-        return message.getContent().substring(command.length()+1);
+    
+    protected String[] getCommandArgs(IMessage message){
+        return getCommandContent(message).split(" ");
     }
+    
     protected void sendMessage(String message, IChannel channel){
         try {
             new MessageBuilder(this.client).withChannel(channel).withContent(message).build();

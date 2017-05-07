@@ -20,7 +20,7 @@ public class ChangeTopicCommand extends CommandHandler{
         List<IRole> userroles = user.getRolesForGuild(message.getGuild());
         IChannel channel = message.getChannel();
         if(inRoles(userroles, "Admin")){
-            channel.changeTopic(getContent(message, command));
+            channel.changeTopic(getCommandContent(message));
         }
     }
 }

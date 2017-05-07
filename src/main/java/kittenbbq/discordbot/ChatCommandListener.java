@@ -9,11 +9,13 @@ import sx.blah.discord.handle.obj.IUser;
 public class ChatCommandListener implements IListener<MessageReceivedEvent>{
     private final String prefix;
     private final CommandHandler defaultHandler;
+    private final CommandsDAO dao;
     private HashMap<String, CommandHandler> commands;
     
     public ChatCommandListener(IDiscordClient client, BotConfig config){
         commands = new HashMap<>();
-        CommandHandler tmp = new DatabaseCommand(client, config);
+        dao = new CommandsDAO(config);
+        CommandHandler tmp = new DatabaseCommand(client, dao);
         
         commands.put("topic", new ChangeTopicCommand(client));
         commands.put("add", tmp);
