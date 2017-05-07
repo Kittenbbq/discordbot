@@ -7,7 +7,6 @@ import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.handle.obj.IUser;
 
 public class ChatCommandListener implements IListener<MessageReceivedEvent>{
-    private final IDiscordClient client;
     private final String prefix;
     private final CommandHandler defaultHandler;
     private HashMap<String, CommandHandler> commands;
@@ -21,7 +20,6 @@ public class ChatCommandListener implements IListener<MessageReceivedEvent>{
         commands.put("remove", tmp);
         defaultHandler = tmp;
         
-        this.client = client;
         this.prefix = config.getPrefix();
     }
     
