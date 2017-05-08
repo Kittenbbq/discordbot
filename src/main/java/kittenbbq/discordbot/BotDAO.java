@@ -4,9 +4,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-public class CommandsDAO {
+public class BotDAO {
     private Connection mycon;
-    public CommandsDAO(BotConfig config){
+    public BotDAO(BotConfig config){
         try{
             Class.forName("com.mysql.jdbc.Driver");
             mycon = DriverManager.getConnection("jdbc:mysql://"+config.getDBhost()+":"+config.getDBport()+"/"+config.getDatabase(), config.getDBuser(), config.getDBpass());

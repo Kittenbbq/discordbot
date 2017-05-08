@@ -8,14 +8,14 @@ import sx.blah.discord.handle.obj.IUser;
 
 public class ChatCommandListener implements IListener<MessageReceivedEvent>{
     private final String prefix;
-    private final CommandHandler defaultHandler;
-    private final CommandsDAO dao;
-    private HashMap<String, CommandHandler> commands;
+    private final AbstractCommandHandler defaultHandler;
+    private final BotDAO dao;
+    private HashMap<String, AbstractCommandHandler> commands;
     
     public ChatCommandListener(IDiscordClient client, BotConfig config){
         commands = new HashMap<>();
-        dao = new CommandsDAO(config);
-        CommandHandler tmp = new DatabaseCommand(client, dao);
+        dao = new BotDAO(config);
+        AbstractCommandHandler tmp = new DatabaseCommand(client, dao);
         
         commands.put("topic", new ChangeTopicCommand(client));
         commands.put("add", tmp);
@@ -36,7 +36,7 @@ public class ChatCommandListener implements IListener<MessageReceivedEvent>{
             
             String command = split[0].replaceFirst(prefix, "");
             
-            CommandHandler commandHandler = commands.get(command);
+            AbstractCommandHandler commandHandler = commands.get(command);
             if(commandHandler != null){
                 commandHandler.handleCommand(command, event);
             }else{

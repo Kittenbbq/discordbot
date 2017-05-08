@@ -7,10 +7,10 @@ import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.handle.obj.IRole;
 import sx.blah.discord.util.MessageBuilder;
 
-abstract class CommandHandler {
+abstract class AbstractCommandHandler {
     protected final IDiscordClient client;
     
-    public CommandHandler(IDiscordClient client){
+    public AbstractCommandHandler(IDiscordClient client){
         this.client = client;
     }
     

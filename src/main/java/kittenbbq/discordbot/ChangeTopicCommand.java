@@ -7,7 +7,7 @@ import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.handle.obj.IRole;
 import sx.blah.discord.handle.obj.IUser;
 
-public class ChangeTopicCommand extends CommandHandler{
+public class ChangeTopicCommand extends AbstractCommandHandler{
 
     public ChangeTopicCommand(IDiscordClient client) {
         super(client);
