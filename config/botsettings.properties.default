@@ -1,8 +1,7 @@
-bot_token=botToken
+bot_token=MzExMTcxNjI1MjM0MjAyNjI2.C_Io1Q.hjmnBUz_dJee_A-tNRaFHGaAWAM
 db_user=user
 db_pass=pass
 db_host=localhost
 db_port=3306
 database_name=discordbot
 command_prefix=!
-thisisnotaline=0
