@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <!-- You should edit these to your case -->
-    <groupId>test.kittenbbq</groupId>
+    <groupId>kittenbbq</groupId>
     <artifactId>discordbot</artifactId>
     <version>1.0.0</version>
     

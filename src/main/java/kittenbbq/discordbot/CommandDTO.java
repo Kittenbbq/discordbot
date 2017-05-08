@@ -1,4 +1,4 @@
-package test.kittenbbq.discordbot;
+package kittenbbq.discordbot;
 
 public class CommandDTO {
     private String command;

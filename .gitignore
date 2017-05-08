@@ -1,8 +1,13 @@
+/config/botsettings.properties
+/modules
+/target
+
 dependency-reduced-pom.xml
 licenseheader.txt
-/modules
+
 nb-configuration.xml
 nbactions-release-profile.xml
 nbactions.xml
-/target
-/config/botsettings.properties
+
+/.idea
+*.iml
