@@ -21,6 +21,7 @@ public class ChatCommandListener implements IListener<MessageReceivedEvent>{
         commands.put("topic", new ChangeTopicCommand(client));
         commands.put("add", tmp);
         commands.put("remove", tmp);
+        commands.put("invite", new InviteMemberCommand(client));
         defaultHandler = tmp;
         
         this.prefix = config.getPrefix();
