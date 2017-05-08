@@ -7,32 +7,37 @@ import java.util.concurrent.TimeUnit;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 import sx.blah.discord.handle.obj.IMessage;
-import sx.blah.discord.handle.obj.IUser;
- 
+
+
+
 public class TimerCommand extends CommandHandler{
 
     public TimerCommand(IDiscordClient client) {
         super(client);
     }
-
     // Create a scheduled thread pool with 5 core threads
     ScheduledThreadPoolExecutor sch = (ScheduledThreadPoolExecutor)
             Executors.newScheduledThreadPool(5);
 
     class MyRunnable implements Runnable {
 
-        private String message;
-        private IUser user;
+        private IMessage message;
 
-        public MyRunnable(String _message, IUser _user) {
+        public MyRunnable(IMessage _message) {
             this.message = _message;
-            this.user = _user;
         }
 
         public void run() {
             try{
+                String messageBody[] = message.getContent().split(" ");
 
-                System.out.println("@"+user+": "+message);
+                String splitMessage = "";
+
+                for(int i=2; i < messageBody.length; i++) {
+                    splitMessage += messageBody[i]+" ";
+                }
+                message.reply(splitMessage);
+
 
             }catch(Exception e){
 
@@ -42,12 +47,10 @@ public class TimerCommand extends CommandHandler{
 
     @Override
     public void handleCommand(String command, MessageReceivedEvent event) {
-        IMessage message = event.getMessage();
-        String time = getCommandContent((message));
-        String messageContent = message.getContent();
-        IUser user = message.getAuthor();
-        MyRunnable runner = new MyRunnable(messageContent, user);
-        ScheduledFuture<?> delayFuture = sch.schedule(runner, Integer.parseInt(time), TimeUnit.SECONDS);
+
+        Integer time =  Integer.parseInt(event.getMessage().getContent().split(" ")[1]);
+        MyRunnable runner = new MyRunnable(event.getMessage());
+        ScheduledFuture<?> delayFuture = sch.schedule(runner, time, TimeUnit.SECONDS);
 
         }
 
