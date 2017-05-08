@@ -6,8 +6,9 @@ public class Main {
     
     public static void main(String[] args) {
         BotConfig config = new BotConfig();
-        IDiscordClient client = BotBase.createClient(config.getBotToken(), true);
+        IDiscordClient client = BotBase.createClient(config.getBotToken(), false);
         EventDispatcher dispatcher = client.getDispatcher();
         dispatcher.registerListener(new ChatCommandListener(client, config));
+        client.login();
     }
 }
