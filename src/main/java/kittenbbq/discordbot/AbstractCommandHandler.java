@@ -6,6 +6,7 @@ import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.handle.obj.IRole;
 import sx.blah.discord.util.MessageBuilder;
+import sx.blah.discord.util.RequestBuffer;
 
 abstract class AbstractCommandHandler {
     
@@ -31,10 +32,12 @@ abstract class AbstractCommandHandler {
     }
     
     protected void sendMessage(String message, IChannel channel){
-        try {
-            new MessageBuilder(this.client).withChannel(channel).withContent(message).build();
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
+        RequestBuffer.request(() ->{
+            try {
+                new MessageBuilder(this.client).withChannel(channel).withContent(message).build();
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 }
