@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class BotDAO {
+    
     private Connection mycon;
+    
     public BotDAO(BotConfig config){
         try{
             Class.forName("com.mysql.jdbc.Driver");
@@ -15,12 +17,14 @@ public class BotDAO {
             e.printStackTrace();
         }
     }
+    
     protected void finalize(){
         try{
             if(mycon != null)
                 mycon.close();
         }catch(Exception e){}
     }
+    
     public CommandDTO getCommandResponse(CommandDTO command){
         CommandDTO vali = null;
         ResultSet results = null;
@@ -50,7 +54,6 @@ public class BotDAO {
         }
         return vali;
     }
-    
     
     public void addCommand(CommandDTO newCommand){
         PreparedStatement statement = null;

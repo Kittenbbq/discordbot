@@ -4,6 +4,7 @@ import java.io.FileReader;
 import java.util.Properties;
 
 public class BotConfig {
+    
     private String token;
     private String db_user;
     private String db_pass;

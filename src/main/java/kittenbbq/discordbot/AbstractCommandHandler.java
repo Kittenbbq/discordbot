@@ -8,6 +8,7 @@ import sx.blah.discord.handle.obj.IRole;
 import sx.blah.discord.util.MessageBuilder;
 
 abstract class AbstractCommandHandler {
+    
     protected final IDiscordClient client;
     
     public AbstractCommandHandler(IDiscordClient client){

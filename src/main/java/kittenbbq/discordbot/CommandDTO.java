@@ -1,6 +1,7 @@
 package kittenbbq.discordbot;
 
 public class CommandDTO {
+    
     private String command;
     private String response;
     private String username;

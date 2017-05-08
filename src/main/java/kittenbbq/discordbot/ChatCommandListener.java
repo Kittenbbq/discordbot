@@ -7,6 +7,7 @@ import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.handle.obj.IUser;
 
 public class ChatCommandListener implements IListener<MessageReceivedEvent>{
+    
     private final String prefix;
     private final AbstractCommandHandler defaultHandler;
     private final BotDAO dao;

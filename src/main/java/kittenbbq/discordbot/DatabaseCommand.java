@@ -9,6 +9,7 @@ import sx.blah.discord.handle.obj.IRole;
 import sx.blah.discord.handle.obj.IUser;
 
 public class DatabaseCommand extends AbstractCommandHandler{
+    
     private final BotDAO dao;
 
     public DatabaseCommand(IDiscordClient client, BotDAO dao) {
