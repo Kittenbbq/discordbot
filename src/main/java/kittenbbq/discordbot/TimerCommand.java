@@ -17,7 +17,7 @@ public class TimerCommand extends AbstractCommandHandler{
     }
     // Create a scheduled thread pool with 5 core threads
     ScheduledThreadPoolExecutor sch = (ScheduledThreadPoolExecutor)
-            Executors.newScheduledThreadPool(5);
+            Executors.newScheduledThreadPool(5, Executors.defaultThreadFactory());
 
     class MyRunnable implements Runnable {
 
@@ -56,6 +56,7 @@ public class TimerCommand extends AbstractCommandHandler{
                 Integer time = Integer.parseInt(message.getContent().split(" ")[1]);
                 MyRunnable runner = new MyRunnable(event.getMessage());
                 ScheduledFuture<?> delayFuture = sch.schedule(runner, time, TimeUnit.MINUTES);
+                sendMessage("Timer is running",event.getChannel());
             }
             catch(Exception e) {
                 message.reply("time not valid, error: "+e);
