@@ -1,10 +1,9 @@
 package kittenbbq.discordbot;
 
 import sx.blah.discord.api.IDiscordClient;
-import sx.blah.discord.api.internal.json.objects.ExtendedInviteObject;
-import sx.blah.discord.api.internal.json.requests.InviteCreateRequest;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
-import sx.blah.discord.handle.impl.obj.ExtendedInvite;
+import sx.blah.discord.handle.obj.IChannel;
+import sx.blah.discord.handle.obj.IInvite;
 
 public class InviteMemberCommand extends AbstractCommandHandler{
     
@@ -14,9 +13,8 @@ public class InviteMemberCommand extends AbstractCommandHandler{
 
     @Override
     void handleCommand(String command, MessageReceivedEvent event) {
-        InviteCreateRequest invRequest = new InviteCreateRequest(300, 1, false, true);
-        ExtendedInviteObject invObj = new ExtendedInviteObject();
-        ExtendedInvite invite = new ExtendedInvite(client, invObj);
-        System.out.println("https://discord.gg/"+invObj.code);
+        IChannel channel = event.getMessage().getChannel();
+        IInvite invite = channel.createInvite(300, 1, false, false);
+        sendMessage("https://discord.gg/"+invite.getCode(), channel);
     }
 }
