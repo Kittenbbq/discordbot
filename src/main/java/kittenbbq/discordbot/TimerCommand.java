@@ -10,7 +10,7 @@ import sx.blah.discord.handle.obj.IMessage;
 
 
 
-public class TimerCommand extends CommandHandler{
+public class TimerCommand extends AbstractCommandHandler{
 
     public TimerCommand(IDiscordClient client) {
         super(client);
@@ -55,7 +55,7 @@ public class TimerCommand extends CommandHandler{
             try {
                 Integer time = Integer.parseInt(message.getContent().split(" ")[1]);
                 MyRunnable runner = new MyRunnable(event.getMessage());
-                ScheduledFuture<?> delayFuture = sch.schedule(runner, time, TimeUnit.SECONDS);
+                ScheduledFuture<?> delayFuture = sch.schedule(runner, time, TimeUnit.MINUTES);
             }
             catch(Exception e) {
                 message.reply("time not valid, error: "+e);
