@@ -5,4 +5,3 @@ db_host=localhost
 db_port=3306
 database_name=discordbot
 command_prefix=!
-thisisnotaline=0
