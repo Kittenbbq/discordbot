@@ -36,7 +36,10 @@ public class TimerCommand extends CommandHandler{
                 for(int i=2; i < messageBody.length; i++) {
                     splitMessage += messageBody[i]+" ";
                 }
-                message.reply(splitMessage);
+
+                //use generic message if no specific timermessage was given
+                if (splitMessage == "") { message.reply("time is up"); }
+                else { message.reply(splitMessage); }
 
 
             }catch(Exception e){
@@ -47,11 +50,20 @@ public class TimerCommand extends CommandHandler{
 
     @Override
     public void handleCommand(String command, MessageReceivedEvent event) {
-
-        Integer time =  Integer.parseInt(event.getMessage().getContent().split(" ")[1]);
-        MyRunnable runner = new MyRunnable(event.getMessage());
-        ScheduledFuture<?> delayFuture = sch.schedule(runner, time, TimeUnit.SECONDS);
+        IMessage message = event.getMessage();
+        if (message.getContent().split(" ").length > 1) {
+            try {
+                Integer time = Integer.parseInt(message.getContent().split(" ")[1]);
+                MyRunnable runner = new MyRunnable(event.getMessage());
+                ScheduledFuture<?> delayFuture = sch.schedule(runner, time, TimeUnit.SECONDS);
+            }
+            catch(Exception e) {
+                message.reply("time not valid, error: "+e);
+            }
 
         }
+        else { message.reply("!timer usage: !timer time (timermessage)");}
+    }
+
 
     }
