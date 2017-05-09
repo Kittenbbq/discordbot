@@ -68,9 +68,9 @@ public abstract class AbstractBuiltinCommandHandler {
 
     abstract void handle(MessageReceivedEvent event, String command);
 
-    protected void sendMessage(String message, IChannel channel) {
+    protected void sendMessage(String message) {
         try {
-            new MessageBuilder(this.client).withChannel(channel).withContent(message).build();
+            new MessageBuilder(this.client).withChannel(getMessage().getChannel()).withContent(message).build();
         } catch (Exception e) {
             e.printStackTrace();
         }

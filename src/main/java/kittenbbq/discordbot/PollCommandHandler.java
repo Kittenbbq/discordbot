@@ -4,85 +4,31 @@ import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 
 import javax.print.DocFlavor;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 
 public class PollCommandHandler extends AbstractBuiltinCommandHandler{
 
 
-    private String name;
-
-    private String question;
-
-    private int yesVotes;
-
-    private int noVotes;
-
-    private Map<String, Integer> options;
-
-
-    public String getName() {
-        return name;
-    }
-
-    public String getQuestion() {
-        return question;
-    }
-
-
-    public int getYesVotes() {
-        return yesVotes;
-    }
-
-    public int getNoVotes() {
-        return noVotes;
-    }
-
-    public Map<String, Integer> getOptions() {
-        return options;
-    }
-
-
-
+    private TreeMap<String, Poll> polls;
 
     public PollCommandHandler(IDiscordClient client) {
         super(client);
-        this.yesVotes = 0;
-        this.noVotes = 0;
-        this.name = "";
-        this.question = "";
-        this.options = new TreeMap<>();
+        polls = new TreeMap<String, Poll>(String.CASE_INSENSITIVE_ORDER);
     }
 
     @Override
     String getHelpMessage() {
         switch(getCommand()) {
             case "vote":
-                return "!vote [optionName] e.g. !vote yes or !vote taneli";
+                return "!vote [pollName] [optionName] e.g. !vote yes or !vote taneli";
             case "poll":
                 return "!poll [pollName] [question] | [optionsDividedWithSpaces] e.g. !poll whobest Who is the best? | tane taneli tantteli viitanen";
             default:
                 return "";
         }
-
     }
 
-    private String getResults() {
-        if (name.isEmpty() || question.isEmpty() || options.isEmpty()) {
-            return "No poll results :/";
-        }
-        StringBuilder strBuilder = new StringBuilder();
-        strBuilder.append(String.format(Locale.ENGLISH, ":bar_chart: %s: %s\n", this.name, this.question));
-
-        for( Map.Entry<String, Integer> entry : options.entrySet()) {
-            strBuilder.append(String.format(Locale.ENGLISH, "   %s: %s", entry.getKey(), MyTools.numberToNumberEmoticon(entry.getValue())));
-        }
-
-        return strBuilder.toString();
-    }
 
     @Override
     void handle(MessageReceivedEvent event, String command) {
@@ -94,37 +40,68 @@ public class PollCommandHandler extends AbstractBuiltinCommandHandler{
 
         switch(getCommand()) {
             case "vote":
-                if (getParams() == null) return;
-
-                if(getParams().length == 1) {
-                    Integer count = options.get(getParams()[0]);
-                    if(count != null) {
-                        options.put(getParams()[0], count + 1);
-                        sendMessage("Vote given to: " + getParams()[0], getMessage().getChannel());
-                    }
-                } else {
+                if(getParams() == null || getParams().length < 1) {
                     pass = false;
                     break;
                 }
+
+                String pollName = "";
+                String pollVoteFor = "";
+                Poll poll = null;
+
+                if(getParams().length == 1) {
+                    poll = polls.get(polls.lastKey());
+                    if (poll != null) {
+                        pollName = poll.getName();
+                        pollVoteFor = getParams()[0];
+                    } else {
+                        break;
+                    }
+
+                } else {
+                    pollName = getParams()[0];
+                    pollVoteFor = getParams()[1];
+                }
+
+                if (poll == null) {
+                    poll = polls.get(pollName);
+                }
+
+                if(poll.addVote(pollVoteFor)) {
+                    sendMessage(String.format(Locale.ENGLISH, "Vote given to %s in %s poll", pollVoteFor, pollName));
+                    break;
+                } else {
+                    sendMessage(String.format(Locale.ENGLISH, "%s option was not found for poll %s", pollVoteFor, pollName));
+                }
+
                 break;
 
             case "poll":
                 //If no params, send the information about the latest poll
                 if (getParams() == null || getParams().length == 0) {
-                    sendMessage(getResults(), getMessage().getChannel());
-                    break;
-                }
-
-                if(getParams() != null && getParams().length == 1) {
-                    if (getParams()[0].toLowerCase().equals("results")) {
-                        sendMessage(getResults(), getMessage().getChannel());
-                        break;
+                    Poll latestPoll = polls.get(polls.lastKey());
+                    if(latestPoll != null) {
+                        sendMessage(polls.get(polls.lastKey()).getResults());
                     }
-                    //get the param and find the poll with that name
-                    pass = false;
                     break;
                 }
 
+                //If one param, get the poll with that name and send results
+                if(getParams() != null && getParams().length == 1) {
+                    //get the param and find the poll with that name
+                    String resultsForPoll = getParams()[0];
+                    Poll existingPoll = polls.get(resultsForPoll);
+
+                    if(existingPoll != null) {
+                        sendMessage(existingPoll.getResults());
+                    } else {
+                        sendMessage(String.format(Locale.ENGLISH, "%s poll was not found.", resultsForPoll));
+                    }
+
+                    break;
+                }
+
+                //Create new poll
                 String[] arr = getContent().split("\\|");
                 if (arr.length == 2) {
                     String[] firstPart = arr[0].split(" ", 2);
@@ -139,18 +116,11 @@ public class PollCommandHandler extends AbstractBuiltinCommandHandler{
                         break;
                     }
 
-                    this.options = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-                    this.name = firstPart[0];
-                    this.question = firstPart[1];
+                    //firstpart[0] = name, firstpart[1] = question, secondPart = options
+                    Poll newPoll = new Poll(firstPart[0], firstPart[1], secondPart);
+                    polls.put(firstPart[0], newPoll);
 
-                    for(int i = 0; i < secondPart.length; i++) {
-                        String key = secondPart[i].trim();
-                        if(!key.isEmpty()) {
-                            options.put(secondPart[i], 0);
-                        }
-                    }
-
-                    sendMessage("Poll created", getMessage().getChannel());
+                    sendMessage("Poll created");
 
                 } else {
                     pass = false;
@@ -160,7 +130,7 @@ public class PollCommandHandler extends AbstractBuiltinCommandHandler{
         }
 
         if (!pass) {
-            sendMessage(getHelpMessage(), getMessage().getChannel());
+            sendMessage(getHelpMessage());
         }
     }
 }
