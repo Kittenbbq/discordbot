@@ -12,8 +12,8 @@ import sx.blah.discord.handle.obj.IMessage;
 
 public class TimerCommand extends AbstractCommandHandler{
 
-    public TimerCommand(IDiscordClient client) {
-        super(client);
+    public TimerCommand(BotBase bot) {
+        super(bot);
     }
     // Create a scheduled thread pool with 5 core threads
     ScheduledThreadPoolExecutor sch = (ScheduledThreadPoolExecutor)
@@ -41,7 +41,6 @@ public class TimerCommand extends AbstractCommandHandler{
                 if (splitMessage == "") { message.reply("time is up"); }
                 else { message.reply(splitMessage); }
 
-
             }catch(Exception e){
 
             }
@@ -65,6 +64,4 @@ public class TimerCommand extends AbstractCommandHandler{
         }
         else { message.reply("!timer usage: !timer time (timermessage)");}
     }
-
-
-    }
+}

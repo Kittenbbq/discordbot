@@ -9,8 +9,8 @@ import sx.blah.discord.handle.obj.IUser;
 
 public class ChangeTopicCommand extends AbstractCommandHandler{
 
-    public ChangeTopicCommand(IDiscordClient client) {
-        super(client);
+    public ChangeTopicCommand(BotBase bot) {
+        super(bot);
     }
     
     @Override

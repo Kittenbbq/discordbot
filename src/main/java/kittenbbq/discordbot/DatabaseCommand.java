@@ -12,8 +12,8 @@ public class DatabaseCommand extends AbstractCommandHandler{
     
     private final BotDAO dao;
 
-    public DatabaseCommand(IDiscordClient client, BotDAO dao) {
-        super(client);
+    public DatabaseCommand(BotBase bot, BotDAO dao) {
+        super(bot);
         this.dao = dao;
     }
 

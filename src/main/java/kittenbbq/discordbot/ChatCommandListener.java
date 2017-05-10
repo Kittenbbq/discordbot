@@ -1,6 +1,5 @@
 package kittenbbq.discordbot;
 import java.util.HashMap;
-import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.api.events.IListener;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 import sx.blah.discord.handle.obj.IMessage;
@@ -13,20 +12,20 @@ public class ChatCommandListener implements IListener<MessageReceivedEvent>{
     private final BotDAO dao;
     private HashMap<String, AbstractCommandHandler> commands;
     
-    public ChatCommandListener(IDiscordClient client, BotConfig config){
+    public ChatCommandListener(BotBase bot){
         commands = new HashMap<>();
-        dao = new BotDAO(config);
-        AbstractCommandHandler tmp = new DatabaseCommand(client, dao);
+        dao = new BotDAO(bot.getConfig());
+        AbstractCommandHandler tmp = new DatabaseCommand(bot, dao);
         
-        commands.put("topic", new ChangeTopicCommand(client));
+        commands.put("topic", new ChangeTopicCommand(bot));
         commands.put("add", tmp);
         commands.put("remove", tmp);
-        commands.put("invite", new InviteMemberCommand(client));
-        commands.put("timer", new TimerCommand(client));
+        commands.put("invite", new InviteMemberCommand(bot));
+        commands.put("timer", new TimerCommand(bot));
 
         defaultHandler = tmp;
         
-        this.prefix = config.getPrefix();
+        this.prefix = bot.getConfig().getPrefix();
     }
     
     @Override

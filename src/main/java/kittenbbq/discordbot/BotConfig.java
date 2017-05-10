@@ -12,7 +12,8 @@ public class BotConfig {
     private String db_port;
     private String db_db;
     private String prefix;
-
+    private int cmd_delete_time;
+    
     public BotConfig(){
         File configFile = new File("config/botsettings.properties");
 
@@ -28,6 +29,7 @@ public class BotConfig {
             db_port = props.getProperty("db_port", "3306");
             db_db = props.getProperty("database_name", "discordbot");
             prefix = props.getProperty("command_prefix", "!");
+            cmd_delete_time = Integer.parseInt(props.getProperty("default_command_delete_time", "5"));
             
             reader.close();
         }catch (Exception e) {
@@ -61,5 +63,9 @@ public class BotConfig {
 
     public String getPrefix() {
         return prefix;
+    }
+    
+    public int getCmdDeleteTime() {
+        return cmd_delete_time;
     }
 }
