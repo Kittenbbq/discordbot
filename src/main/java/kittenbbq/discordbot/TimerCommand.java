@@ -15,9 +15,7 @@ public class TimerCommand extends AbstractCommandHandler{
     public TimerCommand(BotBase bot) {
         super(bot);
     }
-    // Create a scheduled thread pool with 5 core threads
-    ScheduledThreadPoolExecutor sch = (ScheduledThreadPoolExecutor)
-            Executors.newScheduledThreadPool(5, Executors.defaultThreadFactory());
+
 
     class BotTimerRunnable implements Runnable {
 
@@ -54,7 +52,7 @@ public class TimerCommand extends AbstractCommandHandler{
             try {
                 Integer time = Integer.parseInt(message.getContent().split(" ")[1]);
                 BotTimerRunnable runner = new BotTimerRunnable(event.getMessage());
-                ScheduledFuture<?> delayFuture = sch.schedule(runner, time, TimeUnit.MINUTES);
+                ScheduledFuture<?> delayFuture = scheduler.schedule(runner, time, TimeUnit.MINUTES);
                 sendMessage("Timer is running",event.getChannel());
             }
             catch(Exception e) {

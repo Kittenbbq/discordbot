@@ -5,6 +5,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import sx.blah.discord.Discord4J;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 import sx.blah.discord.handle.obj.IChannel;
@@ -17,15 +18,12 @@ abstract class AbstractCommandHandler {
     
     protected final IDiscordClient client;
     protected final BotConfig config;
-
-    // Create a scheduled thread pool with 5 core threads
-    ScheduledThreadPoolExecutor deleteScheduler = (ScheduledThreadPoolExecutor)
-            Executors.newScheduledThreadPool(5, Executors.defaultThreadFactory());
+    protected final ScheduledThreadPoolExecutor scheduler;
 
     public AbstractCommandHandler(BotBase bot){
         client = bot.getClient();
         config = bot.getConfig();
-
+        scheduler = bot.getBotScheduler();
     }
 
     class DeleteMessageRunnable implements Runnable {
@@ -38,7 +36,7 @@ abstract class AbstractCommandHandler {
 
         public void run() {
             try{
-
+                Discord4J.LOGGER.debug("removing message");
                 message.delete();
 
             }catch(Exception e){
@@ -46,7 +44,7 @@ abstract class AbstractCommandHandler {
             }
         }
     };
-    
+
     abstract void handleCommand(String command, MessageReceivedEvent event);
     
     
@@ -65,13 +63,13 @@ abstract class AbstractCommandHandler {
     protected void sendMessage(String message, IChannel channel){
         sendMessage(message, channel, config.getCmdDeleteTime());
     }
-    
+
     protected void sendMessage(String message, IChannel channel, int deleteTime){
         RequestBuffer.request(() ->{
             try {
                 IMessage messageToDelete = new MessageBuilder(this.client).withChannel(channel).withContent(message).build();
                 DeleteMessageRunnable runner = new DeleteMessageRunnable(messageToDelete);
-                ScheduledFuture<?> delayFuture = deleteScheduler.schedule(runner, deleteTime, TimeUnit.MINUTES);
+                scheduler.schedule(runner, deleteTime, TimeUnit.SECONDS);
             }catch (Exception e) {
                 e.printStackTrace();
             }
