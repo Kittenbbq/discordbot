@@ -7,8 +7,8 @@ import sx.blah.discord.handle.obj.IInvite;
 
 public class InviteMemberCommand extends AbstractCommandHandler{
     
-    public InviteMemberCommand(IDiscordClient client) {
-        super(client);
+    public InviteMemberCommand(BotBase bot) {
+        super(bot);
     }
 
     @Override

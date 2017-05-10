@@ -11,9 +11,11 @@ import sx.blah.discord.util.RequestBuffer;
 abstract class AbstractCommandHandler {
     
     protected final IDiscordClient client;
+    protected final BotConfig config;
     
-    public AbstractCommandHandler(IDiscordClient client){
-        this.client = client;
+    public AbstractCommandHandler(BotBase bot){
+        client = bot.getClient();
+        config = bot.getConfig();
     }
     
     abstract void handleCommand(String command, MessageReceivedEvent event);
@@ -32,6 +34,10 @@ abstract class AbstractCommandHandler {
     }
     
     protected void sendMessage(String message, IChannel channel){
+        sendMessage(message, channel, config.getCmdDeleteTime());
+    }
+    
+    protected void sendMessage(String message, IChannel channel, int deleteTime){
         RequestBuffer.request(() ->{
             try {
                 new MessageBuilder(this.client).withChannel(channel).withContent(message).build();

@@ -12,8 +12,8 @@ import sx.blah.discord.handle.obj.IMessage;
 
 public class TimerCommand extends AbstractCommandHandler{
 
-    public TimerCommand(IDiscordClient client) {
-        super(client);
+    public TimerCommand(BotBase bot) {
+        super(bot);
     }
     // Create a scheduled thread pool with 5 core threads
     ScheduledThreadPoolExecutor sch = (ScheduledThreadPoolExecutor)

@@ -4,8 +4,15 @@ import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.util.DiscordException;
 
 public class BotBase {
+    private IDiscordClient client;
+    private BotConfig config;
     
-    public static IDiscordClient createClient(String token, boolean login) {
+    public BotBase(){
+        config = new BotConfig();
+        this.client = BotBase.createClient(config.getBotToken(), false);
+    }
+    
+    private static IDiscordClient createClient(String token, boolean login) {
         ClientBuilder clientBuilder = new ClientBuilder();
         clientBuilder.withToken(token);
         try {
@@ -18,6 +25,14 @@ public class BotBase {
             e.printStackTrace();
             return null;
         }
+    }
+    
+    public IDiscordClient getClient() {
+        return client;
+    }
+
+    public BotConfig getConfig() {
+        return config;
     }
 }
 
