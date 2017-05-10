@@ -1,10 +1,7 @@
 package kittenbbq.discordbot;
 
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 import sx.blah.discord.handle.obj.IMessage;
 
@@ -15,7 +12,6 @@ public class TimerCommand extends AbstractCommandHandler{
     public TimerCommand(BotBase bot) {
         super(bot);
     }
-
 
     class BotTimerRunnable implements Runnable {
 
@@ -28,7 +24,6 @@ public class TimerCommand extends AbstractCommandHandler{
         public void run() {
             try{
                 String messageBody[] = message.getContent().split(" ");
-
                 String splitMessage = "";
 
                 for(int i=2; i < messageBody.length; i++) {
@@ -36,9 +31,10 @@ public class TimerCommand extends AbstractCommandHandler{
                 }
 
                 //use generic message if no specific timermessage was given
-                if (splitMessage == "") { Reply(message, "time is up", message.getChannel()); }
-                else { Reply(message, splitMessage, message.getChannel());
-                }
+                if (splitMessage == "") 
+                    Reply(message, "time is up", message.getChannel());
+                else 
+                    Reply(message, splitMessage, message.getChannel());
 
             }catch(Exception e){
 
@@ -57,12 +53,12 @@ public class TimerCommand extends AbstractCommandHandler{
                 sendMessage("Timer is running",event.getChannel());
             }
             catch(Exception e) {
-             Reply(message, "time not valid, error: "+e,message.getChannel());
-
+                Reply(message, "time not valid, error: "+e,message.getChannel());
             }
 
         }
-        else { Reply(message, "!timer usage: !timer time (timermessage)",message.getChannel());
-            }
+        else {
+            Reply(message, "!timer usage: !timer time (timermessage)",message.getChannel());
+        }
     }
 }

@@ -1,4 +1,5 @@
 package kittenbbq.discordbot;
+
 import sx.blah.discord.api.events.EventDispatcher;
 
 public class Main {

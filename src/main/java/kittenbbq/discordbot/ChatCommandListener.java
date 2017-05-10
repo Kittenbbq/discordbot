@@ -1,4 +1,5 @@
 package kittenbbq.discordbot;
+
 import java.util.HashMap;
 import sx.blah.discord.api.events.IListener;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
