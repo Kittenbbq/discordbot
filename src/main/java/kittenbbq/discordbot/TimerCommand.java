@@ -36,8 +36,9 @@ public class TimerCommand extends AbstractCommandHandler{
                 }
 
                 //use generic message if no specific timermessage was given
-                if (splitMessage == "") { message.reply("time is up"); }
-                else { message.reply(splitMessage); }
+                if (splitMessage == "") { Reply(message, "time is up", message.getChannel()); }
+                else { Reply(message, splitMessage, message.getChannel());
+                }
 
             }catch(Exception e){
 
@@ -56,10 +57,12 @@ public class TimerCommand extends AbstractCommandHandler{
                 sendMessage("Timer is running",event.getChannel());
             }
             catch(Exception e) {
-                message.reply("time not valid, error: "+e);
+             Reply(message, "time not valid, error: "+e,message.getChannel());
+
             }
 
         }
-        else { message.reply("!timer usage: !timer time (timermessage)");}
+        else { Reply(message, "!timer usage: !timer time (timermessage)",message.getChannel());
+            }
     }
 }

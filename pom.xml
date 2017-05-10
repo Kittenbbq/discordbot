@@ -49,6 +49,7 @@
     </dependencies>
 
     <build>
+        <defaultGoal>install</defaultGoal>
         <plugins>
             <!-- To create an executable fat JAR when using mvn package -->
             <plugin>
