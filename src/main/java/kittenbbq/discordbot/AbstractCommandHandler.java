@@ -1,5 +1,10 @@
 package kittenbbq.discordbot;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 import sx.blah.discord.handle.obj.IChannel;
@@ -12,11 +17,35 @@ abstract class AbstractCommandHandler {
     
     protected final IDiscordClient client;
     protected final BotConfig config;
-    
+
+    // Create a scheduled thread pool with 5 core threads
+    ScheduledThreadPoolExecutor deleteScheduler = (ScheduledThreadPoolExecutor)
+            Executors.newScheduledThreadPool(5, Executors.defaultThreadFactory());
+
     public AbstractCommandHandler(BotBase bot){
         client = bot.getClient();
         config = bot.getConfig();
+
     }
+
+    class DeleteMessageRunnable implements Runnable {
+
+        private IMessage message;
+
+        public DeleteMessageRunnable(IMessage _message) {
+            this.message = _message;
+        }
+
+        public void run() {
+            try{
+
+                message.delete();
+
+            }catch(Exception e){
+
+            }
+        }
+    };
     
     abstract void handleCommand(String command, MessageReceivedEvent event);
     
@@ -40,7 +69,9 @@ abstract class AbstractCommandHandler {
     protected void sendMessage(String message, IChannel channel, int deleteTime){
         RequestBuffer.request(() ->{
             try {
-                new MessageBuilder(this.client).withChannel(channel).withContent(message).build();
+                IMessage messageToDelete = new MessageBuilder(this.client).withChannel(channel).withContent(message).build();
+                DeleteMessageRunnable runner = new DeleteMessageRunnable(messageToDelete);
+                ScheduledFuture<?> delayFuture = deleteScheduler.schedule(runner, deleteTime, TimeUnit.MINUTES);
             }catch (Exception e) {
                 e.printStackTrace();
             }

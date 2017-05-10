@@ -4,7 +4,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import sx.blah.discord.api.IDiscordClient;
+
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 import sx.blah.discord.handle.obj.IMessage;
 
@@ -19,11 +19,11 @@ public class TimerCommand extends AbstractCommandHandler{
     ScheduledThreadPoolExecutor sch = (ScheduledThreadPoolExecutor)
             Executors.newScheduledThreadPool(5, Executors.defaultThreadFactory());
 
-    class MyRunnable implements Runnable {
+    class BotTimerRunnable implements Runnable {
 
         private IMessage message;
 
-        public MyRunnable(IMessage _message) {
+        public BotTimerRunnable(IMessage _message) {
             this.message = _message;
         }
 
@@ -53,7 +53,7 @@ public class TimerCommand extends AbstractCommandHandler{
         if (message.getContent().split(" ").length > 1) {
             try {
                 Integer time = Integer.parseInt(message.getContent().split(" ")[1]);
-                MyRunnable runner = new MyRunnable(event.getMessage());
+                BotTimerRunnable runner = new BotTimerRunnable(event.getMessage());
                 ScheduledFuture<?> delayFuture = sch.schedule(runner, time, TimeUnit.MINUTES);
                 sendMessage("Timer is running",event.getChannel());
             }
