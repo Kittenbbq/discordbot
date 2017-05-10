@@ -1,7 +1,10 @@
-package kittenbbq.discordbot;
+package kittenbbq.discordbot.commands;
 
 import java.util.Arrays;
 import java.util.List;
+import kittenbbq.discordbot.BotBase;
+import kittenbbq.discordbot.BotDAO;
+import kittenbbq.discordbot.CommandDTO;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IMessage;
@@ -18,7 +21,7 @@ public class DatabaseCommand extends AbstractCommandHandler{
     }
 
     @Override
-    void handleCommand(String command, MessageReceivedEvent event) {
+    public void handleCommand(String command, MessageReceivedEvent event) {
         IMessage message = event.getMessage();
         IUser user = message.getAuthor();
         List<IRole> userroles = user.getRolesForGuild(message.getGuild());

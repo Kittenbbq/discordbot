@@ -1,5 +1,10 @@
 package kittenbbq.discordbot;
 
+import kittenbbq.discordbot.commands.AbstractCommandHandler;
+import kittenbbq.discordbot.commands.DatabaseCommand;
+import kittenbbq.discordbot.commands.TimerCommand;
+import kittenbbq.discordbot.commands.ChangeTopicCommand;
+import kittenbbq.discordbot.commands.InviteMemberCommand;
 import java.util.HashMap;
 import sx.blah.discord.api.events.IListener;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
