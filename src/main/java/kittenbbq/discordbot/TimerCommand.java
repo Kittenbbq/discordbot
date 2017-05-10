@@ -41,7 +41,6 @@ public class TimerCommand extends AbstractCommandHandler{
                 if (splitMessage == "") { message.reply("time is up"); }
                 else { message.reply(splitMessage); }
 
-
             }catch(Exception e){
 
             }
@@ -64,6 +63,4 @@ public class TimerCommand extends AbstractCommandHandler{
         }
         else { message.reply("!timer usage: !timer time (timermessage)");}
     }
-
-
-    }
+}
