@@ -62,8 +62,16 @@ public abstract class AbstractCommandHandler {
         return message.getContent().split(" ", 2)[1];
     }
     
+    protected String getCommandContent(){
+        return event.getMessage().getContent().split(" ", 2)[1];
+    }
+    
     protected String[] getCommandArgs(IMessage message){
         return getCommandContent(message).split(" ");
+    }
+    
+    protected String[] getCommandArgs(){
+        return getCommandContent().split(" ");
     }
     
     protected void sendMessage(String message, IChannel channel){
