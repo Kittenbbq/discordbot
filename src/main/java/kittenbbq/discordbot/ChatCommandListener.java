@@ -29,6 +29,9 @@ public class ChatCommandListener implements IListener<MessageReceivedEvent>{
         commands.put("addchannelplayers", tmcommand);
         commands.put("removeplayers", tmcommand);
         commands.put("reset", tmcommand);
+        commands.put("start", tmcommand);
+        commands.put("stop", tmcommand);
+        commands.put("shuffleteams", tmcommand);
         commands.put("listplayers", tmcommand);
 
         defaultHandler = dbcommand;

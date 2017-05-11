@@ -1,16 +1,19 @@
 package kittenbbq.discordbot.commands;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import kittenbbq.discordbot.BotBase;
 import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IUser;
+import sx.blah.discord.handle.obj.IVoiceChannel;
 import sx.blah.discord.handle.obj.IVoiceState;
 
 public class TenmanCommand extends AbstractCommandHandler{
     
     private ArrayList<IUser> players, team1, team2;
+    private IVoiceChannel originalChannel;
 
     public TenmanCommand(BotBase bot) {
         super(bot);
@@ -100,19 +103,41 @@ public class TenmanCommand extends AbstractCommandHandler{
     }
     
     private void shuffleTeams(){
-        
+        if(players.size() == 10){
+            Collections.shuffle(players);
+            team1.addAll(players.subList(0, 4));
+            team2.addAll(players.subList(5, 9));
+        }else{
+            sendMessage("10 players needs to be added to shuffle. Current playercount: "+players.size());
+        }
     }
     
     private void startMatch(){
+        IVoiceState voiceState = event.getAuthor().getVoiceStatesLong().get(event.getGuild().getLongID());
+        if(voiceState != null){
+            originalChannel = voiceState.getChannel();
+        }
+        IVoiceChannel team1channel = event.getGuild().getVoiceChannelsByName("team1").get(0);
+        IVoiceChannel team2channel = event.getGuild().getVoiceChannelsByName("team2").get(0);
         
+        for(IUser user : team1){
+            user.moveToVoiceChannel(team1channel);
+        }
+        for(IUser user : team2){
+            user.moveToVoiceChannel(team2channel);
+        }
     }
     
     private void endMatch(){
-        
+        for(IUser user : players){
+            user.moveToVoiceChannel(originalChannel);
+        }
     }
     
     private void resetPlayers(){
         players.clear();
+        team1.clear();
+        team2.clear();
     }
     
     private void listPlayers(){
