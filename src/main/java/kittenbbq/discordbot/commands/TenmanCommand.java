@@ -107,6 +107,8 @@ public class TenmanCommand extends AbstractCommandHandler{
             Collections.shuffle(players);
             team1.addAll(players.subList(0, 4));
             team2.addAll(players.subList(5, 9));
+            sendMessage("team1: "+team1.toString());
+            sendMessage("team2: "+team2.toString());
         }else{
             sendMessage("10 players needs to be added to shuffle. Current playercount: "+players.size());
         }

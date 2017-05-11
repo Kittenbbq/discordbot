@@ -81,7 +81,7 @@ public abstract class AbstractCommandHandler {
                 String replyContent = replyTarget+", "+content;
                 IMessage messageToDelete = new MessageBuilder(this.client).withChannel(channel).withContent(replyContent).build();
                 DeleteMessageRunnable runner = new DeleteMessageRunnable(messageToDelete);
-                scheduler.schedule(runner, config.getCmdDeleteTime(), TimeUnit.SECONDS);
+                scheduler.schedule(runner, config.getCmdDeleteTime(), TimeUnit.MINUTES);
             }catch (Exception e) {
                 e.printStackTrace();
             }
@@ -102,7 +102,7 @@ public abstract class AbstractCommandHandler {
             try {
                 IMessage messageToDelete = new MessageBuilder(this.client).withChannel(channel).withContent(message).build();
                 DeleteMessageRunnable runner = new DeleteMessageRunnable(messageToDelete);
-                scheduler.schedule(runner, deleteTime, TimeUnit.SECONDS);
+                scheduler.schedule(runner, deleteTime, TimeUnit.MINUTES);
             }catch (Exception e) {
                 e.printStackTrace();
             }
