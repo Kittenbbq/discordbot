@@ -26,7 +26,6 @@ public class TopicCommandHandler extends AbstractBuiltinCommandHandler {
 
     @Override
     void handle(MessageReceivedEvent event, String command) {
-        parseMessage(event.getMessage());
 
         if(getContent() != null && getContent().length() > 0) {
 

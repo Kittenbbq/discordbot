@@ -63,10 +63,16 @@ public abstract class AbstractBuiltinCommandHandler {
             this.content = arr[1];
             this.params = arr[1].split(" ");
         }
-
     }
 
     abstract void handle(MessageReceivedEvent event, String command);
+
+    protected void superHandle(MessageReceivedEvent event, String command) {
+        parseMessage(event.getMessage());
+        handle(event, command);
+
+    }
+
 
     protected void sendMessage(String message) {
         try {

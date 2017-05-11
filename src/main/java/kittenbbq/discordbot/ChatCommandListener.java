@@ -35,7 +35,7 @@ public class ChatCommandListener implements IListener<MessageReceivedEvent>{
             String[] args = split.length >= 2 ? Arrays.copyOfRange(split, 1, split.length) : new String[0];
 
             if (builtinCommands.commandExists(command)) {
-                builtinCommands.getCommand(command).handle(event, command);
+                builtinCommands.getCommand(command).superHandle(event, command);
             }
         }
     }

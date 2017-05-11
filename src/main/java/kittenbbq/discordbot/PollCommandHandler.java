@@ -32,7 +32,6 @@ public class PollCommandHandler extends AbstractBuiltinCommandHandler{
 
     @Override
     void handle(MessageReceivedEvent event, String command) {
-        parseMessage(event.getMessage());
 
         //!poll whocaptain who is the captain | matti jussi kussi pussi
         if(getCommand() == null || getCommand().isEmpty()) return;
