@@ -73,10 +73,6 @@ public abstract class AbstractCommandHandler {
     protected String[] getCommandArgs(){
         return getCommandContent().split(" ");
     }
-    
-    protected void sendMessage(String message, IChannel channel){
-        sendMessage(message, channel, config.getCmdDeleteTime());
-    }
 
     protected void Reply(IMessage message, String content, IChannel channel) {
         String replyTarget = message.getAuthor().toString();
@@ -91,6 +87,14 @@ public abstract class AbstractCommandHandler {
             }
         });
 
+    }
+    
+    protected void sendMessage(String message){
+        sendMessage(message, event.getMessage().getChannel(), config.getCmdDeleteTime());
+    }
+    
+    protected void sendMessage(String message, IChannel channel){
+        sendMessage(message, channel, config.getCmdDeleteTime());
     }
 
     protected void sendMessage(String message, IChannel channel, int deleteTime){
