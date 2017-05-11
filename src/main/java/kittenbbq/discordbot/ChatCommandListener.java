@@ -1,10 +1,6 @@
 package kittenbbq.discordbot;
 
-import kittenbbq.discordbot.commands.AbstractCommandHandler;
-import kittenbbq.discordbot.commands.DatabaseCommand;
-import kittenbbq.discordbot.commands.TimerCommand;
-import kittenbbq.discordbot.commands.ChangeTopicCommand;
-import kittenbbq.discordbot.commands.InviteMemberCommand;
+import kittenbbq.discordbot.commands.*;
 import java.util.HashMap;
 import sx.blah.discord.api.events.IListener;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
@@ -21,15 +17,21 @@ public class ChatCommandListener implements IListener<MessageReceivedEvent>{
     public ChatCommandListener(BotBase bot){
         commands = new HashMap<>();
         dao = new BotDAO(bot.getConfig());
-        AbstractCommandHandler tmp = new DatabaseCommand(bot, dao);
+        AbstractCommandHandler dbcommand = new DatabaseCommand(bot, dao);
+        AbstractCommandHandler tmcommand = new TenmanCommand(bot);
         
         commands.put("topic", new ChangeTopicCommand(bot));
-        commands.put("add", tmp);
-        commands.put("remove", tmp);
+        commands.put("add", dbcommand);
+        commands.put("remove", dbcommand);
         commands.put("invite", new InviteMemberCommand(bot));
         commands.put("timer", new TimerCommand(bot));
+        commands.put("addplayers", tmcommand);
+        commands.put("addchannelplayers", tmcommand);
+        commands.put("removeplayers", tmcommand);
+        commands.put("reset", tmcommand);
+        commands.put("listplayers", tmcommand);
 
-        defaultHandler = tmp;
+        defaultHandler = dbcommand;
         
         this.prefix = bot.getConfig().getPrefix();
     }
