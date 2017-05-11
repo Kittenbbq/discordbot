@@ -19,6 +19,7 @@ public abstract class AbstractCommandHandler {
     protected final IDiscordClient client;
     protected final BotConfig config;
     protected final ScheduledThreadPoolExecutor scheduler;
+    protected MessageReceivedEvent event;
 
     public AbstractCommandHandler(BotBase bot){
         client = bot.getClient();
@@ -45,7 +46,12 @@ public abstract class AbstractCommandHandler {
         }
     };
 
-    public abstract void handleCommand(String command, MessageReceivedEvent event);
+    public void executeCommand(String command, MessageReceivedEvent event){
+        this.event = event;
+        handleCommand(command);
+    }
+    
+    protected abstract void handleCommand(String command);
     
     
     protected boolean inRoles(List<IRole> roles, String roleToCheck){
