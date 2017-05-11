@@ -5,6 +5,7 @@ import sx.blah.discord.handle.obj.IUser;
 
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class MessagesDAO {
@@ -14,7 +15,7 @@ public class MessagesDAO {
         msg.setMessageID(String.valueOf(e.getMessage().getLongID()));
         msg.setAuthorID(String.valueOf(author.getLongID()));
         msg.setAuthorName(author.getName());
-        msg.setSent(new Date());
+        msg.setSent(Timestamp.valueOf(LocalDateTime.now()));
         msg.setGuildID(String.valueOf(e.getGuild().getLongID()));
         msg.setGuildName(e.getGuild().getName());
         msg.setChannelID(String.valueOf(e.getChannel().getLongID()));

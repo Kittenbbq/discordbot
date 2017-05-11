@@ -1,9 +1,14 @@
 package kittenbbq.discordbot;
 import java.util.Arrays;
 import java.util.List;
+
+import analytics.Application;
+import org.springframework.boot.SpringApplication;
 import sx.blah.discord.api.IDiscordClient;
+import sx.blah.discord.api.events.EventSubscriber;
 import sx.blah.discord.api.events.IListener;
 import sx.blah.discord.handle.impl.events.MessageReceivedEvent;
+import sx.blah.discord.handle.impl.events.ReadyEvent;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.handle.obj.IRole;
@@ -19,7 +24,7 @@ public class ChatCommandListener implements IListener<MessageReceivedEvent>{
         this.client = client;
         dao = new CommandsDAO(config);
     }
-    
+
     @Override
     public void handle(MessageReceivedEvent event) {
         Db db = new Db(this.config);

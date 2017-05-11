@@ -54,7 +54,7 @@ public class MessageFetcher {
 
         int errors = 0;
 
-        List<Message> messages = new ArrayList();
+        List<MessageDTO> messages = new ArrayList<>();
         for (IChannel c : channels) {
             MessageHistory channelMessages = c.getMessageHistoryFrom(LocalDateTime.now());
 
@@ -63,12 +63,12 @@ public class MessageFetcher {
             for (IMessage msg : channelMessages) {
                 try {
                     System.out.println(msg.getTimestamp().format(f) + " " + msg.getGuild().getName() + " / " + msg.getChannel().getName() + " " + msg.getAuthor().getName() + ": " + msg.getContent());
-                    Message tmpMsg = new Message();
+                    MessageDTO tmpMsg = new MessageDTO();
                     IUser author = msg.getAuthor();
                     tmpMsg.setMessageID(String.valueOf(msg.getLongID()));
                     tmpMsg.setAuthorID(String.valueOf(author.getLongID()));
                     tmpMsg.setAuthorName(author.getName());
-                    tmpMsg.setSent(msg.getTimestamp());
+                    tmpMsg.setSent(Timestamp.valueOf(msg.getTimestamp()));
                     tmpMsg.setGuildID(String.valueOf(msg.getGuild().getLongID()));
                     tmpMsg.setGuildName(msg.getGuild().getName());
                     tmpMsg.setChannelID(String.valueOf(msg.getChannel().getLongID()));
@@ -84,7 +84,7 @@ public class MessageFetcher {
         System.out.println("Finished, total errors: " + errors);
     }
 
-    public static void saveMessage(Db db, Message msg) {
+    public static void saveMessage(Db db, MessageDTO msg) {
         PreparedStatement statement = null;
         try {
             statement = db.getConn().prepareStatement(
@@ -93,7 +93,7 @@ public class MessageFetcher {
             statement.setString(1, msg.getMessageID());
             statement.setString(2, msg.getAuthorID());
             statement.setString(3, msg.getAuthorName());
-            statement.setTimestamp(4, Timestamp.valueOf(msg.getSent()));
+            statement.setTimestamp(4, msg.getSent());
             statement.setString(5, msg.getGuildID());
             statement.setString(6, msg.getGuildName());
             statement.setString(7, msg.getChannelID());

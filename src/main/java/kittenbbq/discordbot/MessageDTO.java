@@ -1,15 +1,12 @@
 package kittenbbq.discordbot;
 
-import sx.blah.discord.handle.obj.IUser;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.sql.Timestamp;
 
 public class MessageDTO {
     private String messageID;
     private String authorID;
     private String authorName;
-    private Date sent;
+    private Timestamp sent;
     private String guildID;
     private String guildName;
     private String channelID;
@@ -40,11 +37,11 @@ public class MessageDTO {
         this.authorName = authorName;
     }
 
-    public Date getSent() {
+    public Timestamp getSent() {
         return sent;
     }
 
-    public void setSent(Date sent) {
+    public void setSent(Timestamp sent) {
         this.sent = sent;
     }
 
