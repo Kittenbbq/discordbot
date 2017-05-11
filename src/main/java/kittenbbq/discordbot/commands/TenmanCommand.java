@@ -29,8 +29,8 @@ public class TenmanCommand extends AbstractCommandHandler{
             case "removeplayers":
                 removePlayers(args);
                 break;
-            case "suffleteams":
-                suffleTeams();
+            case "shuffleteams":
+                shuffleTeams();
                 break;
             case "listplayers":
                 listPlayers();
@@ -60,7 +60,7 @@ public class TenmanCommand extends AbstractCommandHandler{
         
     }
     
-    private void suffleTeams(){
+    private void shuffleTeams(){
         
     }
     
