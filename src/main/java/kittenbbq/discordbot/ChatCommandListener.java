@@ -20,7 +20,7 @@ public class ChatCommandListener implements IListener<MessageReceivedEvent>{
         this.prefix = bot.getConfig().getPrefix();
     }
     
-    public void registerCommand(AbstractCommandHandler command){
+    public final void registerCommand(AbstractCommandHandler command){
         String[] cmdlist = command.getCommandList();
         for(String s : cmdlist){
             commands.put(s, command);
