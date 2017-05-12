@@ -13,16 +13,10 @@ import sx.blah.discord.handle.obj.IUser;
 public class DatabaseCommand extends AbstractCommandHandler{
     
     private final BotDAO dao;
-    private String command;
 
     public DatabaseCommand(BotBase bot, BotDAO dao) {
         super(bot);
         this.dao = dao;
-    }
-    
-    @Override
-    public String[] getCommandList() {
-        return new String[]{"add", "remove"};
     }
 
     @Override
@@ -36,9 +30,14 @@ public class DatabaseCommand extends AbstractCommandHandler{
                 return "![commandName]";
         }
     }
+    
+    @Override
+    public String[] getCommandList() {
+        return new String[]{"add", "remove"};
+    }
 
+    @Override
     protected void handleCommand(String command) {
-        this.command = command;
         IMessage message = event.getMessage();
         IUser user = message.getAuthor();
         List<IRole> userroles = user.getRolesForGuild(message.getGuild());
