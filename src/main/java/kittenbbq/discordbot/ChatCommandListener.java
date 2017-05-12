@@ -1,4 +1,6 @@
 package kittenbbq.discordbot;
+
+import kittenbbq.discordbot.commands.*;
 import java.util.HashMap;
 import sx.blah.discord.api.events.IListener;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
@@ -9,24 +11,20 @@ public class ChatCommandListener implements IListener<MessageReceivedEvent>{
     
     private final String prefix;
     private final AbstractCommandHandler defaultHandler;
-    private final BotDAO dao;
     private HashMap<String, AbstractCommandHandler> commands;
     
-    public ChatCommandListener(BotBase bot){
+    public ChatCommandListener(BotBase bot, AbstractCommandHandler defaultcommand){
         commands = new HashMap<>();
-        dao = new BotDAO(bot.getConfig());
-        AbstractCommandHandler tmp = new DatabaseCommand(bot, dao);
-        
-        commands.put("topic", new ChangeTopicCommand(bot));
-        commands.put("add", tmp);
-        commands.put("remove", tmp);
-        commands.put("invite", new InviteMemberCommand(bot));
-        commands.put("timer", new TimerCommand(bot));
-        commands.put("steam", new SteamStatusCommand(bot));
-
-        defaultHandler = tmp;
-        
+        defaultHandler = defaultcommand;
+        registerCommand(defaultcommand);
         this.prefix = bot.getConfig().getPrefix();
+    }
+    
+    public final void registerCommand(AbstractCommandHandler command){
+        String[] cmdlist = command.getCommandList();
+        for(String s : cmdlist){
+            commands.put(s, command);
+        }
     }
     
     @Override
@@ -42,9 +40,9 @@ public class ChatCommandListener implements IListener<MessageReceivedEvent>{
             
             AbstractCommandHandler commandHandler = commands.get(command);
             if(commandHandler != null){
-                commandHandler.handleCommand(command, event);
+                commandHandler.executeCommand(command, event);
             }else{
-                defaultHandler.handleCommand(command, event);
+                defaultHandler.executeCommand(command, event);
             }
         }
     }

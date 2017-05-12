@@ -76,20 +76,19 @@ public abstract class AbstractCommandHandler {
         return getCommandContent().split(" ");
     }
 
-    protected void sendMessage(String message, IChannel channel, int deleteTime){
+    protected void Reply(IMessage message, String content, IChannel channel) {
+        String replyTarget = message.getAuthor().toString();
         RequestBuffer.request(() ->{
             try {
-                IMessage messageToDelete = new MessageBuilder(this.client).withChannel(channel).withContent(message).build();
+                String replyContent = replyTarget+", "+content;
+                IMessage messageToDelete = new MessageBuilder(this.client).withChannel(channel).withContent(replyContent).build();
                 DeleteMessageRunnable runner = new DeleteMessageRunnable(messageToDelete);
-<<<<<<< HEAD:src/main/java/kittenbbq/discordbot/AbstractCommandHandler.java
-                scheduler.schedule(runner, deleteTime, TimeUnit.MINUTES);
-=======
                 scheduler.schedule(runner, config.getCmdDeleteTime(), TimeUnit.MINUTES);
->>>>>>> origin/master:src/main/java/kittenbbq/discordbot/commands/AbstractCommandHandler.java
             }catch (Exception e) {
                 e.printStackTrace();
             }
         });
+
     }
     
     protected void sendMessage(String message){
@@ -100,22 +99,15 @@ public abstract class AbstractCommandHandler {
         sendMessage(message, channel, config.getCmdDeleteTime());
     }
 
-    protected void Reply(IMessage message, String content, IChannel channel) {
-        String replyTarget = message.getAuthor().toString();
+    protected void sendMessage(String message, IChannel channel, int deleteTime){
         RequestBuffer.request(() ->{
             try {
-                String replyContent = replyTarget+", "+content;
-                IMessage messageToDelete = new MessageBuilder(this.client).withChannel(channel).withContent(replyContent).build();
+                IMessage messageToDelete = new MessageBuilder(this.client).withChannel(channel).withContent(message).build();
                 DeleteMessageRunnable runner = new DeleteMessageRunnable(messageToDelete);
-<<<<<<< HEAD:src/main/java/kittenbbq/discordbot/AbstractCommandHandler.java
-                scheduler.schedule(runner, config.getCmdDeleteTime(), TimeUnit.MINUTES);
-=======
                 scheduler.schedule(runner, deleteTime, TimeUnit.MINUTES);
->>>>>>> origin/master:src/main/java/kittenbbq/discordbot/commands/AbstractCommandHandler.java
             }catch (Exception e) {
                 e.printStackTrace();
             }
         });
-
     }
 }

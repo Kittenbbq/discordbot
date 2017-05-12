@@ -1,12 +1,13 @@
 package kittenbbq.discordbot;
+
 import sx.blah.discord.api.ClientBuilder;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.util.DiscordException;
-
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 public class BotBase {
+    
     private IDiscordClient client;
     private BotConfig config;
     private ScheduledThreadPoolExecutor botScheduler;
@@ -19,9 +20,6 @@ public class BotBase {
                 Executors.newScheduledThreadPool(5, Executors.defaultThreadFactory());
         this.botScheduler = BotScheduler;
     }
-
-
-
 
     private static IDiscordClient createClient(String token, boolean login) {
         ClientBuilder clientBuilder = new ClientBuilder();

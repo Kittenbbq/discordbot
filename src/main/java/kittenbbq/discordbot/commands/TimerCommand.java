@@ -2,11 +2,7 @@ package kittenbbq.discordbot.commands;
 
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-<<<<<<< HEAD:src/main/java/kittenbbq/discordbot/TimerCommand.java
-import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
-=======
 import kittenbbq.discordbot.BotBase;
->>>>>>> origin/master:src/main/java/kittenbbq/discordbot/commands/TimerCommand.java
 import sx.blah.discord.handle.obj.IMessage;
 
 public class TimerCommand extends AbstractCommandHandler{
@@ -44,7 +40,7 @@ public class TimerCommand extends AbstractCommandHandler{
                     Reply(message, splitMessage, message.getChannel());
 
             }catch(Exception e){
-                e.getStackTrace();
+
             }
         }
     };
