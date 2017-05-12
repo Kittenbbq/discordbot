@@ -13,7 +13,12 @@ public class ChangeTopicCommand extends AbstractCommandHandler{
     public ChangeTopicCommand(BotBase bot) {
         super(bot);
     }
-    
+
+    @Override
+    public String getHelpMessage(String command) {
+        return "!topic [topic]";
+    }
+
     @Override
     public void handleCommand(String command, MessageReceivedEvent event) {
         IMessage message = event.getMessage();

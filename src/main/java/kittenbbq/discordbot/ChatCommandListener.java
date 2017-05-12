@@ -44,10 +44,21 @@ public class ChatCommandListener implements IListener<MessageReceivedEvent>{
         if (split.length >= 1 && split[0].startsWith(prefix)) {
             
             String command = split[0].replaceFirst(prefix, "");
-            
+
+            boolean isHelp = false;
+
+            if(command.equals("help") && split.length == 2) {
+                command = split[1];
+                isHelp = true;
+            }
+
             AbstractCommandHandler commandHandler = commands.get(command);
             if(commandHandler != null){
-                commandHandler.handleCommand(command, event);
+                if(isHelp) {
+                    commandHandler.sendHelpMessage(command, event.getChannel());
+                } else {
+                    commandHandler.handleCommand(command, event);
+                }
             }else{
                 defaultHandler.handleCommand(command, event);
             }

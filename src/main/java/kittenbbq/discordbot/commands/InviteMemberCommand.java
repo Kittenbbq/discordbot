@@ -12,6 +12,11 @@ public class InviteMemberCommand extends AbstractCommandHandler{
     }
 
     @Override
+    public String getHelpMessage(String command) {
+        return "!invite";
+    }
+
+    @Override
     public void handleCommand(String command, MessageReceivedEvent event) {
         IChannel channel = event.getMessage().getChannel();
         IInvite invite = channel.createInvite(300, 1, false, false);

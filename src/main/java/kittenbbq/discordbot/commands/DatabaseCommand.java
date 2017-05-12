@@ -14,6 +14,7 @@ import sx.blah.discord.handle.obj.IUser;
 public class DatabaseCommand extends AbstractCommandHandler{
     
     private final BotDAO dao;
+    private String command;
 
     public DatabaseCommand(BotBase bot, BotDAO dao) {
         super(bot);
@@ -21,7 +22,17 @@ public class DatabaseCommand extends AbstractCommandHandler{
     }
 
     @Override
+    public String getHelpMessage(String command) {
+        switch(command) {
+            case "add":
+
+        }
+        return "!";
+    }
+
+    @Override
     public void handleCommand(String command, MessageReceivedEvent event) {
+        this.command = command;
         IMessage message = event.getMessage();
         IUser user = message.getAuthor();
         List<IRole> userroles = user.getRolesForGuild(message.getGuild());

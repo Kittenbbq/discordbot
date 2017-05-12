@@ -12,6 +12,11 @@ public class TimerCommand extends AbstractCommandHandler{
         super(bot);
     }
 
+    @Override
+    public String getHelpMessage(String command) {
+        return "!timer [timeInMinutes]";
+    }
+
     class BotTimerRunnable implements Runnable {
 
         private IMessage message;
