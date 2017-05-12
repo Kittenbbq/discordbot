@@ -21,7 +21,31 @@ public class TenmanCommand extends AbstractCommandHandler{
         team1 = new ArrayList();
         team2 = new ArrayList();
     }
-    
+
+    @Override
+    public String getHelpMessage(String command) {
+        switch (command) {
+            case "addplayers":
+                return "!addplayers [playersDividedWithSpaces]";
+            case "addchannelplayers":
+                return "!addchannelplayers";
+            case "removeplayers":
+                return "!removeplayers [playersDividedWithSpaces]";
+            case "shuffleteams":
+                return "!shuffleteams";
+            case "listplayers":
+                return "!listplayers";
+            case "start":
+                return "!start";
+            case "stop":
+                return "!stop";
+            case "reset":
+                return "!reset";
+            default:
+                return "!addplayers|!addchannelplayers|!removeplayers|!shuffleteams|!listplayers|!start|!stop|!reset";
+        }
+    }
+
     @Override
     public String[] getCommandList() {
         return new String[]{"addplayers", "addchannelplayers", "removeplayers", "shuffleteams", "listplayers", "start", "stop", "reset"};

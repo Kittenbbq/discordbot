@@ -27,6 +27,8 @@ public abstract class AbstractCommandHandler {
         scheduler = bot.getBotScheduler();
     }
 
+    public abstract String getHelpMessage(String command);
+
     class DeleteMessageRunnable implements Runnable {
 
         private IMessage message;
@@ -59,6 +61,8 @@ public abstract class AbstractCommandHandler {
     protected boolean inRoles(List<IRole> roles, String roleToCheck){
         return roles.stream().anyMatch((role) -> (role.toString().equals(roleToCheck)));
     }
+
+
     
     protected String getCommandContent(IMessage message){
         String[] tmp = message.getContent().split(" ", 2);
@@ -84,19 +88,9 @@ public abstract class AbstractCommandHandler {
         return getCommandContent().trim().replaceAll("\\s+", " ").split(" ");
     }
 
-    protected void Reply(IMessage message, String content, IChannel channel) {
-        String replyTarget = message.getAuthor().toString();
-        RequestBuffer.request(() ->{
-            try {
-                String replyContent = replyTarget+", "+content;
-                IMessage messageToDelete = new MessageBuilder(this.client).withChannel(channel).withContent(replyContent).build();
-                DeleteMessageRunnable runner = new DeleteMessageRunnable(messageToDelete);
-                scheduler.schedule(runner, config.getCmdDeleteTime(), TimeUnit.MINUTES);
-            }catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-
+    protected void Reply(IMessage message, String content) {
+        String replyContent = message.getAuthor().toString() + ", " + content;
+        sendMessage(replyContent);
     }
     
     protected void sendMessage(String message){
@@ -117,5 +111,9 @@ public abstract class AbstractCommandHandler {
                 e.printStackTrace();
             }
         });
+    }
+
+    public void sendHelpMessage(String command) {
+        sendMessage(getHelpMessage(command));
     }
 }

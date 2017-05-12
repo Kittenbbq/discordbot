@@ -15,6 +15,7 @@ public class Main {
         cmdlistener.registerCommand(new ChangeTopicCommand(bot));
         cmdlistener.registerCommand(new InviteMemberCommand(bot));
         cmdlistener.registerCommand(new TimerCommand(bot));
+        cmdlistener.registerCommand(new SteamStatusCommand(bot));
         
         dispatcher.registerListener(cmdlistener);
         bot.getClient().login();

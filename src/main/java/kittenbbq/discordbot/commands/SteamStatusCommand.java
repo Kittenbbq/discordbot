@@ -1,14 +1,12 @@
 package kittenbbq.discordbot.commands;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import kittenbbq.discordbot.BotBase;
+import org.json.JSONObject;
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.util.EmbedBuilder;
 import sx.blah.discord.util.RequestBuffer;
-import com.google.gson.JsonParser;
 import javax.net.ssl.HttpsURLConnection;
-import java.io.InputStream;
+import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 
@@ -17,6 +15,11 @@ public class SteamStatusCommand extends AbstractCommandHandler {
 
     public SteamStatusCommand(BotBase bot) {
         super(bot);
+    }
+
+    @Override
+    public String getHelpMessage(String command) {
+        return "!steamstatus";
     }
 
     @Override
@@ -29,37 +32,52 @@ public class SteamStatusCommand extends AbstractCommandHandler {
 
         IMessage message = event.getMessage();
 
-            try {String sURL = "https://steamgaug.es/api/v2";
+        try {
 
-                URL url = new URL(sURL);
-                HttpsURLConnection request = (HttpsURLConnection) url.openConnection();
-                request.connect();
+            String sURL = "https://steamgaug.es/api/v2";
 
-                JsonParser jp = new JsonParser();
-                JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
-                JsonObject rootobj = root.getAsJsonObject();
+            URL url = new URL(sURL);
+            HttpsURLConnection request = (HttpsURLConnection) url.openConnection();
+            request.connect();
+
+            if(request.getResponseCode() == HttpsURLConnection.HTTP_OK) {
+                BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream()));
+                StringBuilder sb = new StringBuilder();
+                String line;
+
+                while((line = br.readLine()) != null) {
+                    sb.append(line);
+                    sb.append('\r');
+                }
+
+                br.close();
+                String jsonResponse = sb.toString();
+
+                JSONObject rootObj = new JSONObject(jsonResponse);
 
                 EmbedBuilder builder = new EmbedBuilder();
 
-                if (Integer.parseInt(rootobj.getAsJsonObject("ISteamClient").getAsJsonPrimitive("online").toString()) == 1) {
+                if (rootObj.getJSONObject("ISteamClient").getInt("online") == 1) {
                     builder.appendField("Steam Status:", "Steam is ONLINE", true);
-                    builder.withColor(0, 255, 0);
+                    builder.withColor(30, 170, 120);
                 }
                 else {
                     builder.appendField("Steam Status:", "Steam is OFFLINE", true);
-                    builder.withColor(255, 0, 0);
+                    builder.withColor(170, 60, 60);
                 }
-
 
                 RequestBuffer.request(() -> event.getChannel().sendMessage(builder.build()));
 
-            }
-            catch(Exception e) {
-
-                e.getStackTrace();
-                Reply(message, "an error occurred, "+e,message.getChannel());
-
+            } else {
+                sendMessage("Could not connect to Steam API");
             }
 
         }
+        catch(Exception e) {
+            e.printStackTrace();
+            Reply(message, "an error occurred, "+e);
+
+        }
+
     }
+}

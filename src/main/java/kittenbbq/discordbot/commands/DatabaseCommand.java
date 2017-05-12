@@ -13,6 +13,7 @@ import sx.blah.discord.handle.obj.IUser;
 public class DatabaseCommand extends AbstractCommandHandler{
     
     private final BotDAO dao;
+    private String command;
 
     public DatabaseCommand(BotBase bot, BotDAO dao) {
         super(bot);
@@ -25,13 +26,26 @@ public class DatabaseCommand extends AbstractCommandHandler{
     }
 
     @Override
+    public String getHelpMessage(String command) {
+        switch(command) {
+            case "add":
+                return "!add [commandName] [commandResponse]";
+            case "remove":
+                return "!remove [commandName]";
+            default:
+                return "![commandName]";
+        }
+    }
+
     protected void handleCommand(String command) {
+        this.command = command;
         IMessage message = event.getMessage();
         IUser user = message.getAuthor();
         List<IRole> userroles = user.getRolesForGuild(message.getGuild());
         IChannel channel = message.getChannel();
-        String[] split = message.getContent().split(" ");
-        String[] args = split.length >= 2 ? Arrays.copyOfRange(split, 1, split.length) : new String[0];
+        //String[] split = message.getContent().split(" ");
+        //String[] args = split.length >= 2 ? Arrays.copyOfRange(split, 1, split.length) : new String[0];
+        String[] args = getCommandArgs();
         
         switch(command){
             case "add":
@@ -43,6 +57,8 @@ public class DatabaseCommand extends AbstractCommandHandler{
                         command_add.setUsername(user.getName());
                         dao.addCommand(command_add);
                     }
+                } else {
+                    sendMessage(getHelpMessage(command));
                 }
                 break;
             case "remove":
@@ -52,7 +68,10 @@ public class DatabaseCommand extends AbstractCommandHandler{
                         command_rmv.setCommand(args[0]);
                         dao.removeCommand(command_rmv);
                     }
+                } else {
+                    sendMessage(getHelpMessage(command));
                 }
+
                 break;
             default:
                 CommandDTO command_get = new CommandDTO();
