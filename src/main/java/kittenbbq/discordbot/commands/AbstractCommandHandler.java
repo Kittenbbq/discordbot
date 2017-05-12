@@ -19,6 +19,7 @@ public abstract class AbstractCommandHandler {
     protected final IDiscordClient client;
     protected final BotConfig config;
     protected final ScheduledThreadPoolExecutor scheduler;
+    protected MessageReceivedEvent event;
 
     public AbstractCommandHandler(BotBase bot){
         client = bot.getClient();
@@ -47,7 +48,14 @@ public abstract class AbstractCommandHandler {
         }
     };
 
-    public abstract void handleCommand(String command, MessageReceivedEvent event);
+    public abstract String[] getCommandList();
+    
+    public void executeCommand(String command, MessageReceivedEvent event){
+        this.event = event;
+        handleCommand(command);
+    }
+    
+    protected abstract void handleCommand(String command);
     
     
     protected boolean inRoles(List<IRole> roles, String roleToCheck){
@@ -60,12 +68,16 @@ public abstract class AbstractCommandHandler {
         return message.getContent().split(" ", 2)[1];
     }
     
+    protected String getCommandContent(){
+        return event.getMessage().getContent().split(" ", 2)[1];
+    }
+    
     protected String[] getCommandArgs(IMessage message){
         return getCommandContent(message).split(" ");
     }
     
-    protected void sendMessage(String message, IChannel channel){
-        sendMessage(message, channel, config.getCmdDeleteTime());
+    protected String[] getCommandArgs(){
+        return getCommandContent().split(" ");
     }
 
     protected void Reply(IMessage message, String content, IChannel channel) {
@@ -75,12 +87,20 @@ public abstract class AbstractCommandHandler {
                 String replyContent = replyTarget+", "+content;
                 IMessage messageToDelete = new MessageBuilder(this.client).withChannel(channel).withContent(replyContent).build();
                 DeleteMessageRunnable runner = new DeleteMessageRunnable(messageToDelete);
-                scheduler.schedule(runner, config.getCmdDeleteTime(), TimeUnit.SECONDS);
+                scheduler.schedule(runner, config.getCmdDeleteTime(), TimeUnit.MINUTES);
             }catch (Exception e) {
                 e.printStackTrace();
             }
         });
 
+    }
+    
+    protected void sendMessage(String message){
+        sendMessage(message, event.getMessage().getChannel(), config.getCmdDeleteTime());
+    }
+    
+    protected void sendMessage(String message, IChannel channel){
+        sendMessage(message, channel, config.getCmdDeleteTime());
     }
 
     protected void sendMessage(String message, IChannel channel, int deleteTime){
@@ -88,14 +108,14 @@ public abstract class AbstractCommandHandler {
             try {
                 IMessage messageToDelete = new MessageBuilder(this.client).withChannel(channel).withContent(message).build();
                 DeleteMessageRunnable runner = new DeleteMessageRunnable(messageToDelete);
-                scheduler.schedule(runner, deleteTime, TimeUnit.SECONDS);
+                scheduler.schedule(runner, deleteTime, TimeUnit.MINUTES);
             }catch (Exception e) {
                 e.printStackTrace();
             }
         });
     }
 
-    public void sendHelpMessage(String command, IChannel channel) {
-        sendMessage(getHelpMessage(command), channel);
+    public void sendHelpMessage(String command) {
+        sendMessage(getHelpMessage(command));
     }
 }

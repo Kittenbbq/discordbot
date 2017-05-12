@@ -3,13 +3,17 @@ package kittenbbq.discordbot.commands;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import kittenbbq.discordbot.BotBase;
-import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 import sx.blah.discord.handle.obj.IMessage;
 
 public class TimerCommand extends AbstractCommandHandler{
 
     public TimerCommand(BotBase bot) {
         super(bot);
+    }
+    
+    @Override
+    public String[] getCommandList() {
+        return new String[]{"timer"};
     }
 
     @Override
@@ -47,7 +51,7 @@ public class TimerCommand extends AbstractCommandHandler{
     };
 
     @Override
-    public void handleCommand(String command, MessageReceivedEvent event) {
+    protected void handleCommand(String command) {
         IMessage message = event.getMessage();
         if (message.getContent().split(" ").length > 1) {
             try {

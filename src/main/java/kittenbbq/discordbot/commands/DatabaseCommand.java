@@ -5,7 +5,6 @@ import java.util.List;
 import kittenbbq.discordbot.BotBase;
 import kittenbbq.discordbot.BotDAO;
 import kittenbbq.discordbot.CommandDTO;
-import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.handle.obj.IRole;
@@ -20,18 +19,21 @@ public class DatabaseCommand extends AbstractCommandHandler{
         super(bot);
         this.dao = dao;
     }
+    
+    @Override
+    public String[] getCommandList() {
+        return new String[]{"add", "remove"};
+    }
 
     @Override
     public String getHelpMessage(String command) {
         switch(command) {
             case "add":
-
         }
         return "!";
     }
 
-    @Override
-    public void handleCommand(String command, MessageReceivedEvent event) {
+    protected void handleCommand(String command) {
         this.command = command;
         IMessage message = event.getMessage();
         IUser user = message.getAuthor();
