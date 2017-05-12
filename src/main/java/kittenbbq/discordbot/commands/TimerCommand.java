@@ -10,6 +10,11 @@ public class TimerCommand extends AbstractCommandHandler{
     public TimerCommand(BotBase bot) {
         super(bot);
     }
+    
+    @Override
+    public String[] getCommandList() {
+        return new String[]{"timer"};
+    }
 
     class BotTimerRunnable implements Runnable {
 

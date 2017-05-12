@@ -18,6 +18,11 @@ public class DatabaseCommand extends AbstractCommandHandler{
         super(bot);
         this.dao = dao;
     }
+    
+    @Override
+    public String[] getCommandList() {
+        return new String[]{"add", "remove"};
+    }
 
     @Override
     protected void handleCommand(String command) {

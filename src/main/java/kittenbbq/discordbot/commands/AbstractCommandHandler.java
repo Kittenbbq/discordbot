@@ -46,6 +46,8 @@ public abstract class AbstractCommandHandler {
         }
     };
 
+    public abstract String[] getCommandList();
+    
     public void executeCommand(String command, MessageReceivedEvent event){
         this.event = event;
         handleCommand(command);

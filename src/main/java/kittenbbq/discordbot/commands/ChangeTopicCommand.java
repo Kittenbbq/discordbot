@@ -14,6 +14,11 @@ public class ChangeTopicCommand extends AbstractCommandHandler{
     }
     
     @Override
+    public String[] getCommandList() {
+        return new String[]{"topic"};
+    }
+    
+    @Override
     protected void handleCommand(String command) {
         IMessage message = event.getMessage();
         IUser user = message.getAuthor();

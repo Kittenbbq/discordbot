@@ -21,7 +21,12 @@ public class TenmanCommand extends AbstractCommandHandler{
         team1 = new ArrayList();
         team2 = new ArrayList();
     }
-
+    
+    @Override
+    public String[] getCommandList() {
+        return new String[]{"addplayers", "addchannelplayers", "removeplayers", "shuffleteams", "listplayers", "start", "stop", "reset"};
+    }
+    
     @Override
     protected void handleCommand(String command) {
         String[] args;

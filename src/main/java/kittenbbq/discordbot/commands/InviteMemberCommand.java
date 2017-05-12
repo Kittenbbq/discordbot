@@ -9,6 +9,11 @@ public class InviteMemberCommand extends AbstractCommandHandler{
     public InviteMemberCommand(BotBase bot) {
         super(bot);
     }
+    
+    @Override
+    public String[] getCommandList() {
+        return new String[]{"invite"};
+    }
 
     @Override
     protected void handleCommand(String command) {
