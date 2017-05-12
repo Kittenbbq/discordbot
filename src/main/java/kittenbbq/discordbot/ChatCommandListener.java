@@ -22,6 +22,7 @@ public class ChatCommandListener implements IListener<MessageReceivedEvent>{
         commands.put("remove", tmp);
         commands.put("invite", new InviteMemberCommand(bot));
         commands.put("timer", new TimerCommand(bot));
+        commands.put("steam", new SteamStatusCommand(bot));
 
         defaultHandler = tmp;
         

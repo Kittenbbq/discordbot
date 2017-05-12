@@ -64,6 +64,18 @@ abstract class AbstractCommandHandler {
         sendMessage(message, channel, config.getCmdDeleteTime());
     }
 
+    protected void sendMessage(String message, IChannel channel, int deleteTime){
+        RequestBuffer.request(() ->{
+            try {
+                IMessage messageToDelete = new MessageBuilder(this.client).withChannel(channel).withContent(message).build();
+                DeleteMessageRunnable runner = new DeleteMessageRunnable(messageToDelete);
+                scheduler.schedule(runner, deleteTime, TimeUnit.MINUTES);
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
     protected void Reply(IMessage message, String content, IChannel channel) {
         String replyTarget = message.getAuthor().toString();
         RequestBuffer.request(() ->{
@@ -71,23 +83,11 @@ abstract class AbstractCommandHandler {
                 String replyContent = replyTarget+", "+content;
                 IMessage messageToDelete = new MessageBuilder(this.client).withChannel(channel).withContent(replyContent).build();
                 DeleteMessageRunnable runner = new DeleteMessageRunnable(messageToDelete);
-                scheduler.schedule(runner, config.getCmdDeleteTime(), TimeUnit.SECONDS);
+                scheduler.schedule(runner, config.getCmdDeleteTime(), TimeUnit.MINUTES);
             }catch (Exception e) {
                 e.printStackTrace();
             }
         });
 
-    }
-
-    protected void sendMessage(String message, IChannel channel, int deleteTime){
-        RequestBuffer.request(() ->{
-            try {
-                IMessage messageToDelete = new MessageBuilder(this.client).withChannel(channel).withContent(message).build();
-                DeleteMessageRunnable runner = new DeleteMessageRunnable(messageToDelete);
-                scheduler.schedule(runner, deleteTime, TimeUnit.SECONDS);
-            }catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
     }
 }
