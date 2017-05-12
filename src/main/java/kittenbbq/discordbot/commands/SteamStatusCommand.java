@@ -1,8 +1,8 @@
-package kittenbbq.discordbot;
+package kittenbbq.discordbot.commands;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
+import kittenbbq.discordbot.BotBase;
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.util.EmbedBuilder;
 import sx.blah.discord.util.RequestBuffer;
@@ -13,15 +13,19 @@ import java.io.InputStreamReader;
 import java.net.URL;
 
 
-public class SteamStatusCommand extends AbstractCommandHandler{
+public class SteamStatusCommand extends AbstractCommandHandler {
 
     public SteamStatusCommand(BotBase bot) {
         super(bot);
     }
 
+    @Override
+    public String[] getCommandList() {
+        return new String[]{"steam"};
+    }
 
     @Override
-    public void handleCommand(String command, MessageReceivedEvent event) {
+    public void handleCommand(String command) {
 
         IMessage message = event.getMessage();
 
