@@ -1,11 +1,9 @@
 package kittenbbq.discordbot.commands;
 
+import java.util.EnumSet;
 import java.util.List;
 import kittenbbq.discordbot.BotBase;
-import sx.blah.discord.handle.obj.IChannel;
-import sx.blah.discord.handle.obj.IMessage;
-import sx.blah.discord.handle.obj.IRole;
-import sx.blah.discord.handle.obj.IUser;
+import sx.blah.discord.handle.obj.*;
 
 public class ChangeTopicCommand extends AbstractCommandHandler{
 
@@ -27,10 +25,12 @@ public class ChangeTopicCommand extends AbstractCommandHandler{
     protected void handleCommand(String command) {
         IMessage message = event.getMessage();
         IUser user = message.getAuthor();
-        List<IRole> userroles = user.getRolesForGuild(message.getGuild());
-        IChannel channel = message.getChannel();
-        if(inRoles(userroles, "Admin")){
-            channel.changeTopic(getCommandContent(message));
+
+        EnumSet<Permissions> userPermissions = user.getPermissionsForGuild(message.getGuild());
+
+        if(userPermissions.contains(Permissions.ADMINISTRATOR)) {
+            IChannel channel = message.getChannel();
+            channel.changeTopic(getCommandContent());
         }
     }
 }

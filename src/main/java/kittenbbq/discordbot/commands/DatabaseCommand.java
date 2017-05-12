@@ -29,8 +29,12 @@ public class DatabaseCommand extends AbstractCommandHandler{
     public String getHelpMessage(String command) {
         switch(command) {
             case "add":
+                return "!add [commandName] [commandResponse]";
+            case "remove":
+                return "!remove [commandName]";
+            default:
+                return "![commandName]";
         }
-        return "!";
     }
 
     protected void handleCommand(String command) {
@@ -39,8 +43,9 @@ public class DatabaseCommand extends AbstractCommandHandler{
         IUser user = message.getAuthor();
         List<IRole> userroles = user.getRolesForGuild(message.getGuild());
         IChannel channel = message.getChannel();
-        String[] split = message.getContent().split(" ");
-        String[] args = split.length >= 2 ? Arrays.copyOfRange(split, 1, split.length) : new String[0];
+        //String[] split = message.getContent().split(" ");
+        //String[] args = split.length >= 2 ? Arrays.copyOfRange(split, 1, split.length) : new String[0];
+        String[] args = getCommandArgs();
         
         switch(command){
             case "add":

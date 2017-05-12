@@ -80,19 +80,9 @@ public abstract class AbstractCommandHandler {
         return getCommandContent().split(" ");
     }
 
-    protected void Reply(IMessage message, String content, IChannel channel) {
-        String replyTarget = message.getAuthor().toString();
-        RequestBuffer.request(() ->{
-            try {
-                String replyContent = replyTarget+", "+content;
-                IMessage messageToDelete = new MessageBuilder(this.client).withChannel(channel).withContent(replyContent).build();
-                DeleteMessageRunnable runner = new DeleteMessageRunnable(messageToDelete);
-                scheduler.schedule(runner, config.getCmdDeleteTime(), TimeUnit.MINUTES);
-            }catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-
+    protected void Reply(IMessage message, String content) {
+        String replyContent = message.getAuthor().toString() + ", " + content;
+        sendMessage(replyContent);
     }
     
     protected void sendMessage(String message){

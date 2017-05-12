@@ -18,7 +18,7 @@ public class TimerCommand extends AbstractCommandHandler{
 
     @Override
     public String getHelpMessage(String command) {
-        return "!timer [timeInMinutes]";
+        return "!timer [timeInMinutes] (timerMessage)";
     }
 
     class BotTimerRunnable implements Runnable {
@@ -39,10 +39,10 @@ public class TimerCommand extends AbstractCommandHandler{
                 }
 
                 //use generic message if no specific timermessage was given
-                if (splitMessage == "") 
-                    Reply(message, "time is up", message.getChannel());
+                if (splitMessage.isEmpty())
+                    Reply(message, "time is up");
                 else 
-                    Reply(message, splitMessage, message.getChannel());
+                    Reply(message, splitMessage);
 
             }catch(Exception e){
 
@@ -57,16 +57,15 @@ public class TimerCommand extends AbstractCommandHandler{
             try {
                 Integer time = Integer.parseInt(message.getContent().split(" ")[1]);
                 BotTimerRunnable runner = new BotTimerRunnable(event.getMessage());
-                ScheduledFuture<?> delayFuture = scheduler.schedule(runner, time, TimeUnit.MINUTES);
+                scheduler.schedule(runner, time, TimeUnit.MINUTES);
                 sendMessage("Timer is running",event.getChannel());
             }
             catch(Exception e) {
-                Reply(message, "time not valid, error: "+e,message.getChannel());
+                Reply(message, "Time not valid, error: "+e);
             }
-
         }
         else {
-            Reply(message, "!timer usage: !timer time (timermessage)",message.getChannel());
+            Reply(message, getHelpMessage(command));
         }
     }
 }
