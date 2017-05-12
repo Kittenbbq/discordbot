@@ -57,6 +57,8 @@ public class DatabaseCommand extends AbstractCommandHandler{
                         command_add.setUsername(user.getName());
                         dao.addCommand(command_add);
                     }
+                } else {
+                    sendMessage(getHelpMessage(command));
                 }
                 break;
             case "remove":
@@ -66,7 +68,10 @@ public class DatabaseCommand extends AbstractCommandHandler{
                         command_rmv.setCommand(args[0]);
                         dao.removeCommand(command_rmv);
                     }
+                } else {
+                    sendMessage(getHelpMessage(command));
                 }
+
                 break;
             default:
                 CommandDTO command_get = new CommandDTO();
