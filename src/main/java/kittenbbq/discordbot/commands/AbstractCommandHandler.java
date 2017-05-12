@@ -61,19 +61,27 @@ public abstract class AbstractCommandHandler {
     }
     
     protected String getCommandContent(IMessage message){
-        return message.getContent().split(" ", 2)[1];
+        String[] tmp = message.getContent().split(" ", 2);
+        if(tmp.length > 1){
+            return tmp[1];
+        }
+        return "";
     }
     
     protected String getCommandContent(){
-        return event.getMessage().getContent().split(" ", 2)[1];
+        String[] tmp = event.getMessage().getContent().split(" ", 2);
+        if(tmp.length > 1){
+            return tmp[1];
+        }
+        return "";
     }
     
     protected String[] getCommandArgs(IMessage message){
-        return getCommandContent(message).split(" ");
+        return getCommandContent(message).trim().replaceAll("\\s+", " ").split(" ");
     }
     
     protected String[] getCommandArgs(){
-        return getCommandContent().split(" ");
+        return getCommandContent().trim().replaceAll("\\s+", " ").split(" ");
     }
 
     protected void Reply(IMessage message, String content, IChannel channel) {
