@@ -49,7 +49,7 @@ public class ChatCommandListener implements IListener<MessageReceivedEvent>{
             if(commandHandler != null){
 
                 if(isHelp) {
-                    commandHandler.sendHelpMessage(command);
+                    commandHandler.sendHelpMessage(command, event);
                 } else {
                     commandHandler.executeCommand(command, event);
                 }

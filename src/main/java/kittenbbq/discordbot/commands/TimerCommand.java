@@ -1,6 +1,5 @@
 package kittenbbq.discordbot.commands;
 
-import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import kittenbbq.discordbot.BotBase;
 import sx.blah.discord.handle.obj.IMessage;

@@ -27,8 +27,6 @@ public abstract class AbstractCommandHandler {
         scheduler = bot.getBotScheduler();
     }
 
-    public abstract String getHelpMessage(String command);
-
     class DeleteMessageRunnable implements Runnable {
 
         private IMessage message;
@@ -48,6 +46,8 @@ public abstract class AbstractCommandHandler {
         }
     };
 
+    public abstract String getHelpMessage(String command);
+
     public abstract String[] getCommandList();
     
     public void executeCommand(String command, MessageReceivedEvent event){
@@ -61,8 +61,6 @@ public abstract class AbstractCommandHandler {
     protected boolean inRoles(List<IRole> roles, String roleToCheck){
         return roles.stream().anyMatch((role) -> (role.toString().equals(roleToCheck)));
     }
-
-
     
     protected String getCommandContent(IMessage message){
         String[] tmp = message.getContent().split(" ", 2);
@@ -113,7 +111,8 @@ public abstract class AbstractCommandHandler {
         });
     }
 
-    public void sendHelpMessage(String command) {
+    public void sendHelpMessage(String command, MessageReceivedEvent event) {
+        this.event = event;
         sendMessage(getHelpMessage(command));
     }
 }
