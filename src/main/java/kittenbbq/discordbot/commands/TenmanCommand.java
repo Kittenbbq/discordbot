@@ -105,6 +105,8 @@ public class TenmanCommand extends AbstractCommandHandler{
     private void shuffleTeams(){
         if(players.size() == 10){
             Collections.shuffle(players);
+            team1.clear();
+            team2.clear();
             team1.addAll(players.subList(0, 4));
             team2.addAll(players.subList(5, 9));
             sendMessage("team1: "+team1.toString());
@@ -143,8 +145,6 @@ public class TenmanCommand extends AbstractCommandHandler{
     }
     
     private void listPlayers(){
-        for(IUser user : players){
-            sendMessage(user.getName());
-        }
+        sendMessage("Players: "+players.toString()+" Playercount: "+players.size());
     }
 }
