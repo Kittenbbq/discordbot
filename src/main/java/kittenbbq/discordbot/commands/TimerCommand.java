@@ -1,5 +1,6 @@
 package kittenbbq.discordbot.commands;
 
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 import kittenbbq.discordbot.BotBase;
 import sx.blah.discord.handle.obj.IMessage;
@@ -39,9 +40,9 @@ public class TimerCommand extends AbstractCommandHandler{
 
                 //use generic message if no specific timermessage was given
                 if (splitMessage.isEmpty())
-                    Reply(message, "time is up");
+                    bot.reply(message, "time is up");
                 else 
-                    Reply(message, splitMessage);
+                    bot.reply(message, splitMessage);
 
             }catch(Exception e){
 
@@ -56,15 +57,16 @@ public class TimerCommand extends AbstractCommandHandler{
             try {
                 Integer time = Integer.parseInt(message.getContent().split(" ")[1]);
                 BotTimerRunnable runner = new BotTimerRunnable(event.getMessage());
-                scheduler.schedule(runner, time, TimeUnit.MINUTES);
-                sendMessage("Timer is running",event.getChannel());
+                bot.getBotScheduler().schedule(runner, time, TimeUnit.MINUTES);
+                sendMessage(String.format(Locale.ENGLISH, "I will remind you in %d minutes", time));
             }
             catch(Exception e) {
-                Reply(message, "Time not valid, error: "+e);
+                //bot.reply(message, "Time not valid, error: "+e);
+                sendMessage("Time not valid");
             }
         }
         else {
-            Reply(message, getHelpMessage(command));
+            bot.reply(message, getHelpMessage(command));
         }
     }
 }

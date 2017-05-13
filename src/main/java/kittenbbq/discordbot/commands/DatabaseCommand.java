@@ -41,7 +41,7 @@ public class DatabaseCommand extends AbstractCommandHandler{
         IMessage message = event.getMessage();
         IUser user = message.getAuthor();
         List<IRole> userroles = user.getRolesForGuild(message.getGuild());
-        IChannel channel = message.getChannel();
+        //IChannel channel = message.getChannel();
         //String[] split = message.getContent().split(" ");
         //String[] args = split.length >= 2 ? Arrays.copyOfRange(split, 1, split.length) : new String[0];
         String[] args = getCommandArgs();
@@ -49,7 +49,7 @@ public class DatabaseCommand extends AbstractCommandHandler{
         switch(command){
             case "add":
                 if(args.length > 1){
-                    if(inRoles(userroles, "ObeseDude")){
+                    if(bot.inRoles(userroles, "ObeseDude")){
                         CommandDTO command_add = new CommandDTO();
                         command_add.setCommand(args[0]);
                         command_add.setResponse(getCommandContent(message).split(" ", 2)[1]);
@@ -62,7 +62,7 @@ public class DatabaseCommand extends AbstractCommandHandler{
                 break;
             case "remove":
                 if(args.length == 1){
-                    if(inRoles(userroles, "ObeseDude")){
+                    if(bot.inRoles(userroles, "ObeseDude")){
                         CommandDTO command_rmv = new CommandDTO();
                         command_rmv.setCommand(args[0]);
                         dao.removeCommand(command_rmv);
@@ -77,7 +77,7 @@ public class DatabaseCommand extends AbstractCommandHandler{
                 command_get.setCommand(command);
                 CommandDTO response = dao.getCommandResponse(command_get);
                 if(response != null){
-                    sendMessage(response.getResponse(), channel);
+                    sendMessage(response.getResponse());
                 }
                 break;
         }

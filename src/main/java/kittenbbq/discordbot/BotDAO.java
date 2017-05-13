@@ -27,6 +27,7 @@ public class BotDAO {
     }
     
     public CommandDTO getCommandResponse(CommandDTO command){
+        //WTF KITTEN IS THIS FUCKING VALI?!? EXPLAIN YOURSELF.
         CommandDTO vali = null;
         ResultSet results = null;
         PreparedStatement statement = null;
@@ -37,9 +38,9 @@ public class BotDAO {
             results = statement.executeQuery();
             while(results.next()){
                 String response = results.getString("response");
-                CommandDTO uusi = new CommandDTO();
-                uusi.setResponse(response);
-                vali = uusi;
+                CommandDTO newCommand = new CommandDTO();
+                newCommand.setResponse(response);
+                vali = newCommand;
             }
         }catch(Exception e){
             System.out.println(e);
