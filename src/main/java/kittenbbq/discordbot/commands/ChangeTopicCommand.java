@@ -1,7 +1,6 @@
 package kittenbbq.discordbot.commands;
 
 import java.util.EnumSet;
-import java.util.List;
 import kittenbbq.discordbot.BotBase;
 import sx.blah.discord.handle.obj.*;
 

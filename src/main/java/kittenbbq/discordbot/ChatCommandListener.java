@@ -47,7 +47,6 @@ public class ChatCommandListener implements IListener<MessageReceivedEvent>{
 
             AbstractCommandHandler commandHandler = commands.get(command);
             if(commandHandler != null){
-
                 if(isHelp) {
                     commandHandler.sendHelpMessage(command, event);
                 } else {
