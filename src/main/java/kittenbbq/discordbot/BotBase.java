@@ -89,6 +89,14 @@ public class BotBase {
         sendMessage(message, channel, config.getCmdDeleteTime());
     }
 
+    public void sendMessage(String message, long channelID){
+        IChannel chn = client.getChannelByID(channelID);
+        if (chn == null) {
+            return;
+        }
+        sendMessage(message, chn, config.getCmdDeleteTime());
+    }
+
     public void sendMessage(String message, IChannel channel, int deleteTime){
         RequestBuffer.request(() ->{
             try {
