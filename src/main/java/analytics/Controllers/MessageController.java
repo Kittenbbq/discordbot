@@ -256,7 +256,7 @@ public class MessageController {
 
         System.out.println(message + " + " + channelID);
         try {
-            new MessageBuilder(this.client).withChannel(219436014412759050L).withContent(message).send();
+            new MessageBuilder(this.client).withChannel(channelID).withContent(message).send();
             result.setSuccess(true);
         } catch(Exception e) {
             result.setError(e.getMessage());
