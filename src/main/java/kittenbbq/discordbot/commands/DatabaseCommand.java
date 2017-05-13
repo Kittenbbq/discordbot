@@ -25,7 +25,7 @@ public class DatabaseCommand extends AbstractCommandHandler{
             case "remove":
                 return "`!remove [commandName]` removes and existing response from the bot.";
             default:
-                return "ei kait tätä pitäis ikinä tulla?";
+                return "`"+command+"` not found. `!"+command+"` might be added as a custom response.";
         }
     }
     
