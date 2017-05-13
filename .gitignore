@@ -12,3 +12,6 @@ nbactions.xml
 # IntelliJ IDEA
 /.idea
 *.iml
+
+# node_modules
+src/main/resources/static/node_modules

@@ -26,10 +26,10 @@ public class MessageFetcher {
     }
 
     public static void main(String[] args) {
-        BotConfig config = new BotConfig();
+        /*BotConfig config = new BotConfig();
         IDiscordClient client = BotBase.createClient(config.getBotToken(), true);
         EventDispatcher dispatcher = client.getDispatcher();
-        dispatcher.registerListener(new MessageFetcher(client));
+        dispatcher.registerListener(new MessageFetcher(client));*/
     }
 
     @EventSubscriber

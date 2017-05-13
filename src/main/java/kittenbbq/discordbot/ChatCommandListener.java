@@ -29,8 +29,6 @@ public class ChatCommandListener implements IListener<MessageReceivedEvent>{
 
     @Override
     public void handle(MessageReceivedEvent event) {
-        Db db = new Db(this.config);
-        MessagesDAO.addMessage(event, db);
         IMessage message = event.getMessage();
         IUser user = message.getAuthor();
         if (user.isBot()) return;
