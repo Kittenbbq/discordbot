@@ -18,7 +18,7 @@ import java.util.List;
 public class MessageController {
     public MessageController() {
         BotConfig config = new BotConfig();
-        this.client = BotBase.createClient(config.getBotToken(), true);
+        //this.client = BotBase.createClient(config.getBotToken(), true);
     }
     IDiscordClient client;
     private Db db = new Db(new BotConfig());
@@ -242,6 +242,36 @@ public class MessageController {
 
 
     /**
+     * GET /api/messages/withUrl
+     * Gets messages
+     */
+    @RequestMapping("/api/messages/withUrl")
+    public List<String> getMessagesWithUrl(
+            @RequestParam(value = "fromDate", defaultValue = "2010-01-01") String fromDate,
+            @RequestParam(value = "toDate", defaultValue = "2030-01-01") String toDate
+    ) {
+        List<String> messages = new ArrayList<>();
+        ResultSet results;
+        PreparedStatement statement;
+
+        try {
+            statement = db.getConn().prepareStatement(
+                    String.format("CALL messagesWithUrl('%s','%s')", fromDate, toDate)
+            );
+            results = statement.executeQuery();
+            while (results.next()) {
+                messages.add(results.getString("content"));
+            }
+
+            // TODO: PARSE RESULTS
+        } catch(Exception e) {
+            System.out.println("Database query failed: : " + e.getMessage());
+        }
+        return messages;
+    }
+
+
+    /**
      * POST /api/sendMessage
      * Sends a message with discordClient to specified channel.
      * Request body must contain message and channelID.
@@ -265,4 +295,6 @@ public class MessageController {
         }
         return result;
     }
+
+
 }

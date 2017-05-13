@@ -113,3 +113,21 @@ BEGIN
 	WHERE date(sent) >= fromDate AND date(sent) <= toDate
 	GROUP BY HOUR(sent);
 END
+
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `messagesWithUrl`(
+	IN `fromDate` VARCHAR(50),
+	IN `toDate` VARCHAR(50)
+)
+LANGUAGE SQL
+NOT DETERMINISTIC
+CONTAINS SQL
+SQL SECURITY DEFINER
+COMMENT ''
+BEGIN
+SELECT content FROM messages
+WHERE
+	 (date(sent) >= fromDate AND date(sent) <= toDate)
+	 AND
+	 (content LIKE "%http://%" OR content LIKE "%https://%");
+END
