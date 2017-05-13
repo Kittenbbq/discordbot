@@ -1,12 +1,15 @@
 package kittenbbq.discordbot;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-public class CommandsDAO {
+public class BotDAO {
+    
     private Connection mycon;
-    public CommandsDAO(BotConfig config){
+    
+    public BotDAO(BotConfig config){
         try{
             Class.forName("com.mysql.jdbc.Driver");
             mycon = DriverManager.getConnection("jdbc:mysql://"+config.getDBhost()+":"+config.getDBport()+"/"+config.getDatabase(), config.getDBuser(), config.getDBpass());
@@ -15,12 +18,14 @@ public class CommandsDAO {
             e.printStackTrace();
         }
     }
+    
     protected void finalize(){
         try{
             if(mycon != null)
                 mycon.close();
         }catch(Exception e){}
     }
+    
     public CommandDTO getCommandResponse(CommandDTO command){
         CommandDTO vali = null;
         ResultSet results = null;
@@ -50,7 +55,6 @@ public class CommandsDAO {
         }
         return vali;
     }
-    
     
     public void addCommand(CommandDTO newCommand){
         PreparedStatement statement = null;

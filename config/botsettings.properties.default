@@ -5,3 +5,4 @@ db_host=localhost
 db_port=3306
 database_name=discordbot
 command_prefix=!
+default_command_delete_time=5

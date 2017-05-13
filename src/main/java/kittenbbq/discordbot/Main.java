@@ -1,13 +1,23 @@
 package kittenbbq.discordbot;
-import analytics.Application;
-import sx.blah.discord.api.IDiscordClient;
+
+import kittenbbq.discordbot.commands.*;
 import sx.blah.discord.api.events.EventDispatcher;
 
 public class Main {
+    
     public static void main(String[] args) {
-        BotConfig config = new BotConfig();
-        IDiscordClient client = BotBase.createClient(config.getBotToken(), true);
-        EventDispatcher dispatcher = client.getDispatcher();
-        dispatcher.registerListener(new ChatCommandListener(client, config));
+        BotBase bot = new BotBase();
+        EventDispatcher dispatcher = bot.getClient().getDispatcher();
+        BotDAO dao= new BotDAO(bot.getConfig());
+        
+        ChatCommandListener cmdlistener = new ChatCommandListener(bot, new DatabaseCommand(bot, dao));
+        cmdlistener.registerCommand(new TenmanCommand(bot));
+        cmdlistener.registerCommand(new ChangeTopicCommand(bot));
+        cmdlistener.registerCommand(new InviteMemberCommand(bot));
+        cmdlistener.registerCommand(new TimerCommand(bot));
+        cmdlistener.registerCommand(new SteamStatusCommand(bot));
+        
+        dispatcher.registerListener(cmdlistener);
+        bot.getClient().login();
     }
 }
