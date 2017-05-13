@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Discordbot statistics </title>
+        <title>ObeseFinns Discord statistics</title>
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/style.css">
 
@@ -13,7 +13,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-3">
-                    <div id="message-info">
+                    <div id="message-info" class="chart">
+						<h4>General information</h4>
 						<p id="totalMessageCount">
 							Total message count:
 						</p>
@@ -24,6 +25,18 @@
 							Last message sent:
 						</p>
 					</div>
+					<div id="topMessages" class="chart">
+						<h4>Top messages sent</h4>
+					</div>
+                </div>
+                <div class="col-md-9">
+                    <div id="messageCountByDate" class="chart"></div>
+					<div id="messageCountByDayHour" class="chart"></div>
+                </div>
+            </div>
+			<div class="row">
+                <div class="col-md-3">
+
                 </div>
                 <div class="col-md-9">
                     <div class="chart"></div>
@@ -33,6 +46,7 @@
 
         <script src="js/jquery-3.2.1.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
+		<script src="js/highcharts.js"></script>
 		<script src="js/charts.js"></script>
     </body>
 </html>

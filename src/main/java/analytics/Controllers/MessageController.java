@@ -17,10 +17,10 @@ import java.util.List;
 @RestController
 public class MessageController {
     public MessageController() {
-        BotConfig config = new BotConfig();
-        //this.client = BotBase.createClient(config.getBotToken(), true);
+        this.bot = new BotBase();
+        bot.getClient().login();
     }
-    IDiscordClient client;
+    private BotBase bot;
     private Db db = new Db(new BotConfig());
 
     @RequestMapping("/test")
@@ -28,36 +28,6 @@ public class MessageController {
         return ":D";
     }
 
-    // FOR TESTING REMOVE ME
-    /*@RequestMapping("/api/messages")
-    public List<MessageDTO> messages() {
-        ResultSet results;
-        PreparedStatement statement;
-        List<MessageDTO> messages = new ArrayList<>();
-
-        try {
-            statement = db.getConn().prepareStatement("SELECT * FROM messages");
-            results = statement.executeQuery();
-            while(results.next()) {
-                MessageDTO msg = new MessageDTO();
-                msg.setMessageID(results.getString("ID"));
-                msg.setAuthorID(results.getString("authorID"));
-                msg.setAuthorName(results.getString("authorName"));
-                msg.setSent(results.getTimestamp("sent"));
-                msg.setGuildID(results.getString("guildID"));
-                msg.setGuildName(results.getString("guildName"));
-                msg.setChannelID(results.getString("channelID"));
-                msg.setChannelName(results.getString("channelName"));
-                msg.setContent(results.getString("content"));
-                messages.add(msg);
-            }
-        } catch(Exception e) {
-             ;
-            System.out.println("Database query failed: : " + e.getMessage());
-        }
-
-        return messages;
-    }*/
 
     /**
      * GET /api/messages/info
@@ -286,7 +256,7 @@ public class MessageController {
 
         System.out.println(message + " + " + channelID);
         try {
-            new MessageBuilder(this.client).withChannel(channelID).withContent(message).send();
+            bot.sendMessage(message, channelID);
             result.setSuccess(true);
         } catch(Exception e) {
             result.setError(e.getMessage());
