@@ -21,11 +21,11 @@ public class DatabaseCommand extends AbstractCommandHandler{
     public String getHelpMessage(String command) {
         switch(command) {
             case "add":
-                return "!add [commandName] [commandResponse]";
+                return "`!add [commandName] [commandResponse]` adds a new command/response for the bot.";
             case "remove":
-                return "!remove [commandName]";
+                return "`!remove [commandName]` removes and existing response from the bot.";
             default:
-                return "![commandName]";
+                return "ei kait tätä pitäis ikinä tulla?";
         }
     }
     

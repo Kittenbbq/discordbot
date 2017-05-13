@@ -18,7 +18,7 @@ public class SteamStatusCommand extends AbstractCommandHandler {
 
     @Override
     public String getHelpMessage(String command) {
-        return "!steam";
+        return "`!steam` gets steamstatus infromation.";
     }
 
     @Override

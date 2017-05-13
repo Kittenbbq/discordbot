@@ -26,21 +26,21 @@ public class TenmanCommand extends AbstractCommandHandler{
     public String getHelpMessage(String command) {
         switch (command) {
             case "addplayers":
-                return "!addplayers [playersDividedWithSpaces]";
+                return "`!addplayers [player1 player2 player3 ...]` adds the given users to the playerlist.";
             case "addchannelplayers":
-                return "!addchannelplayers";
+                return "`!addchannelplayers` adds everyone from your current channel to the playerlist.";
             case "removeplayers":
-                return "!removeplayers [playersDividedWithSpaces]";
+                return "`!removeplayers [player1 player2 player3 ...]` removes the given users from the playerlist.";
             case "shuffleteams":
-                return "!shuffleteams";
+                return "`!shuffleteams` creates two randomed teams from the playerlist.";
             case "listplayers":
-                return "!listplayers";
+                return "`!listplayer` lists the users from the playerlist.";
             case "start":
-                return "!start";
+                return "`!start` moves the created teams to their designated voicechannels.";
             case "stop":
-                return "!stop";
+                return "`!stop` moves everyone back to the staring voicechannel.";
             case "reset":
-                return "!reset";
+                return "`!reset` clears the playerlist and teams.";
             default:
                 return "!addplayers|!addchannelplayers|!removeplayers|!shuffleteams|!listplayers|!start|!stop|!reset";
         }

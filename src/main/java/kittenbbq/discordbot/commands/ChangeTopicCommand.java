@@ -12,7 +12,7 @@ public class ChangeTopicCommand extends AbstractCommandHandler{
 
     @Override
     public String getHelpMessage(String command) {
-        return "!topic [topic]";
+        return "`!topic [topic]` changes the topic channels topic.";
     }
 
     @Override

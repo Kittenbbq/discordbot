@@ -13,7 +13,7 @@ public class TimerCommand extends AbstractCommandHandler{
 
     @Override
     public String getHelpMessage(String command) {
-        return "!timer [timeInMinutes] (timerMessage)";
+        return "`!timer [timeInMinutes] [timerMessage]` starts a timer that will alert you when it expires.";
     }
     
     @Override
