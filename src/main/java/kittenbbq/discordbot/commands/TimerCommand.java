@@ -58,7 +58,7 @@ public class TimerCommand extends AbstractCommandHandler{
                 Integer time = Integer.parseInt(message.getContent().split(" ")[1]);
                 BotTimerRunnable runner = new BotTimerRunnable(event.getMessage());
                 bot.getBotScheduler().schedule(runner, time, TimeUnit.MINUTES);
-                sendMessage(String.format(Locale.ENGLISH, "I will remind you in %d minutes", time));
+                sendMessage(String.format(Locale.ENGLISH, "I will remind you in %d minute(s)", time));
             }
             catch(Exception e) {
                 //bot.reply(message, "Time not valid, error: "+e);
