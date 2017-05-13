@@ -7,7 +7,9 @@ import kittenbbq.discordbot.BotBase;
 import kittenbbq.discordbot.BotConfig;
 import sx.blah.discord.Discord4J;
 import sx.blah.discord.api.IDiscordClient;
+import sx.blah.discord.api.internal.json.objects.EmbedObject;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
+import sx.blah.discord.handle.impl.obj.Embed;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.handle.obj.IRole;
@@ -16,35 +18,18 @@ import sx.blah.discord.util.RequestBuffer;
 
 public abstract class AbstractCommandHandler {
     
-    protected final IDiscordClient client;
+    //protected final IDiscordClient client;
+    protected final BotBase bot;
     protected final BotConfig config;
-    protected final ScheduledThreadPoolExecutor scheduler;
+    //protected final ScheduledThreadPoolExecutor scheduler;
     protected MessageReceivedEvent event;
 
     public AbstractCommandHandler(BotBase bot){
-        client = bot.getClient();
+        this.bot = bot;
         config = bot.getConfig();
-        scheduler = bot.getBotScheduler();
     }
 
-    class DeleteMessageRunnable implements Runnable {
 
-        private IMessage message;
-
-        public DeleteMessageRunnable(IMessage _message) {
-            this.message = _message;
-        }
-
-        public void run() {
-            try{
-                Discord4J.LOGGER.debug("removing message");
-                message.delete();
-
-            }catch(Exception e){
-
-            }
-        }
-    };
 
     public abstract String getHelpMessage(String command);
 
@@ -56,11 +41,20 @@ public abstract class AbstractCommandHandler {
     }
     
     protected abstract void handleCommand(String command);
-    
-    
-    protected boolean inRoles(List<IRole> roles, String roleToCheck){
-        return roles.stream().anyMatch((role) -> (role.toString().equals(roleToCheck)));
+
+    public void sendHelpMessage(String command, MessageReceivedEvent event) {
+        this.event = event;
+        bot.sendMessage(getHelpMessage(command), event.getChannel());
     }
+
+    protected void sendMessage(String message) {
+        bot.sendMessage(message, event.getChannel());
+    }
+
+    protected void sendMessage(EmbedObject embedObject) {
+        bot.sendMessage(embedObject, event.getChannel());
+    }
+
     
     protected String getCommandContent(IMessage message){
         String[] tmp = message.getContent().split(" ", 2);
@@ -86,33 +80,5 @@ public abstract class AbstractCommandHandler {
         return getCommandContent().trim().replaceAll("\\s+", " ").split(" ");
     }
 
-    protected void Reply(IMessage message, String content) {
-        String replyContent = message.getAuthor().toString() + ", " + content;
-        sendMessage(replyContent);
-    }
-    
-    protected void sendMessage(String message){
-        sendMessage(message, event.getMessage().getChannel(), config.getCmdDeleteTime());
-    }
-    
-    protected void sendMessage(String message, IChannel channel){
-        sendMessage(message, channel, config.getCmdDeleteTime());
-    }
 
-    protected void sendMessage(String message, IChannel channel, int deleteTime){
-        RequestBuffer.request(() ->{
-            try {
-                IMessage messageToDelete = new MessageBuilder(this.client).withChannel(channel).withContent(message).build();
-                DeleteMessageRunnable runner = new DeleteMessageRunnable(messageToDelete);
-                scheduler.schedule(runner, deleteTime, TimeUnit.MINUTES);
-            }catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-    }
-
-    public void sendHelpMessage(String command, MessageReceivedEvent event) {
-        this.event = event;
-        sendMessage(getHelpMessage(command));
-    }
 }

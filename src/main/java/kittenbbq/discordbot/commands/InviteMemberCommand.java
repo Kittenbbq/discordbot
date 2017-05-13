@@ -24,6 +24,6 @@ public class InviteMemberCommand extends AbstractCommandHandler{
     protected void handleCommand(String command) {
         IChannel channel = event.getMessage().getChannel();
         IInvite invite = channel.createInvite(300, 1, false, false);
-        sendMessage("https://discord.gg/"+invite.getCode(), channel);
+        sendMessage("https://discord.gg/"+invite.getCode());
     }
 }

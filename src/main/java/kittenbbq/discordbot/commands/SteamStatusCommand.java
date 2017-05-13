@@ -19,7 +19,7 @@ public class SteamStatusCommand extends AbstractCommandHandler {
 
     @Override
     public String getHelpMessage(String command) {
-        return "!steamstatus";
+        return "!steam";
     }
 
     @Override
@@ -66,7 +66,7 @@ public class SteamStatusCommand extends AbstractCommandHandler {
                     builder.withColor(170, 60, 60);
                 }
 
-                RequestBuffer.request(() -> event.getChannel().sendMessage(builder.build()));
+                sendMessage(builder.build());
 
             } else {
                 sendMessage("Could not connect to Steam API");
@@ -75,7 +75,7 @@ public class SteamStatusCommand extends AbstractCommandHandler {
         }
         catch(Exception e) {
             e.printStackTrace();
-            Reply(message, "an error occurred, "+e);
+            bot.reply(message, "an error occurred, "+e);
 
         }
 
