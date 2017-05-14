@@ -93,12 +93,16 @@ public class BotBase {
         RequestBuffer.request(() ->{
             try {
                 IMessage messageToDelete = new MessageBuilder(this.client).withChannel(channel).withContent(message).build();
-                DeleteMessageRunnable runner = new DeleteMessageRunnable(messageToDelete);
-                botScheduler.schedule(runner, deleteTime, TimeUnit.MINUTES);
+                deleteMessage(messageToDelete, deleteTime);
             }catch (Exception e) {
                 e.printStackTrace();
             }
         });
+    }
+
+    public void deleteMessage(IMessage message, int deleteTime) {
+        DeleteMessageRunnable runner = new DeleteMessageRunnable(message);
+        botScheduler.schedule(runner, deleteTime, TimeUnit.MINUTES);
     }
 
     public boolean inRoles(List<IRole> roles, String roleToCheck){

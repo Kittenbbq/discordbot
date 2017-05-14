@@ -34,6 +34,10 @@ public abstract class AbstractCommandHandler {
     public abstract String getHelpMessage(String command);
 
     public abstract String[] getCommandList();
+
+    protected int getCommandMessageDeletionTime() {
+        return bot.getConfig().getCmdDeleteTime();
+    }
     
     public void executeCommand(String command, MessageReceivedEvent event){
         this.event = event;
