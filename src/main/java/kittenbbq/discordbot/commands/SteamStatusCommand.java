@@ -1,5 +1,8 @@
 package kittenbbq.discordbot.commands;
 
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.Unirest;
 import kittenbbq.discordbot.BotBase;
 import org.json.JSONObject;
 import sx.blah.discord.handle.obj.IMessage;
@@ -29,34 +32,15 @@ public class SteamStatusCommand extends AbstractCommandHandler {
     @Override
     public void handleCommand(String command) {
 
-        IMessage message = event.getMessage();
-
         try {
-
             String sURL = "https://steamgaug.es/api/v2";
+            HttpResponse<JsonNode> jsonResponse = Unirest.get(sURL).asJson();
 
-            URL url = new URL(sURL);
-            HttpsURLConnection request = (HttpsURLConnection) url.openConnection();
-            request.connect();
-
-            if(request.getResponseCode() == HttpsURLConnection.HTTP_OK) {
-                BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream()));
-                StringBuilder sb = new StringBuilder();
-                String line;
-
-                while((line = br.readLine()) != null) {
-                    sb.append(line);
-                    sb.append('\r');
-                }
-
-                br.close();
-                String jsonResponse = sb.toString();
-
-                JSONObject rootObj = new JSONObject(jsonResponse);
-
+            if(jsonResponse.getStatus() == HttpsURLConnection.HTTP_OK) {
+                JSONObject steamClient = jsonResponse.getBody().getObject().getJSONObject("ISteamClient");
                 EmbedBuilder builder = new EmbedBuilder();
 
-                if (rootObj.getJSONObject("ISteamClient").getInt("online") == 1) {
+                if (steamClient.getInt("online") == 1) {
                     builder.appendField("Steam Status:", "Steam is ONLINE", true);
                     builder.withColor(30, 170, 120);
                 }
@@ -66,14 +50,11 @@ public class SteamStatusCommand extends AbstractCommandHandler {
                 }
 
                 sendMessage(builder.build());
-
-            } else {
-                sendMessage("Could not connect to Steam API");
             }
-
         }
         catch(Exception e) {
             e.printStackTrace();
+            IMessage message = event.getMessage();
             bot.reply(message, "an error occurred, "+e);
         }
     }
