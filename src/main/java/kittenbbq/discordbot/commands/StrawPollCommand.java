@@ -5,10 +5,14 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import kittenbbq.discordbot.BotBase;
 import org.apache.http.impl.client.LaxRedirectStrategy;
+import org.json.JSONObject;
 
 import javax.net.ssl.HttpsURLConnection;
+import java.util.Locale;
 
 public class StrawPollCommand extends AbstractCommandHandler {
+    private String latestPollUrl;
+
     public StrawPollCommand(BotBase bot) {
         super(bot);
     }
@@ -17,17 +21,17 @@ public class StrawPollCommand extends AbstractCommandHandler {
     public String getHelpMessage(String command) {
         switch(command) {
             case "spoll":
-                return "!spoll [title] | [spaceDividedOptions]";
+                return "!spoll [title] | [commaDividedOptions]";
             case "spollresults":
                 return "!spollresults";
             default:
-                return "!spoll [title] | [spaceDividedOptions] to create new poll\n!spollresults to query result from the latest poll";
+                return "!spoll [title] | [commaDividedOptions] to create new poll\n!spollresults to query result from the latest poll";
         }
     }
 
     @Override
     protected int getCommandDeleteTime() {
-        return 0;
+        return 1;
     }
 
     @Override
@@ -46,36 +50,41 @@ public class StrawPollCommand extends AbstractCommandHandler {
         switch(command) {
             case "spoll":
                 String url = "https://strawpoll.me/api/v2/polls";
+                String pollBaseUrl = "https://strawpoll.me/";
                 try {
 
                     String[] sections = getCommandContent().trim().split("\\|");
 
                     if(sections.length == 2) {
                         String title = sections[0].trim();
-                        String[] options = sections[1].trim().split("[, ]");
+                        String[] options = sections[1].trim().split("[,]");
 
                         for(int i = 0; i < options.length; i++) {
                             options[i] = options[i].trim();
                         }
 
+
                         Unirest.setHttpClient(org.apache.http.impl.client.HttpClients.custom()
                                 .setRedirectStrategy(LaxRedirectStrategy.INSTANCE)
                                 .build());
 
+                        JSONObject data = new JSONObject();
+                        data.put("title", title);
+                        data.put("options", options);
+
                         HttpResponse<JsonNode> jsonResponse = Unirest.post(url)
                                 .header("Content-Type", "application/json")
-                                .field("title", title)
-                                .field("options", options)
+                                .body(data)
                                 .asJson();
 
                         if(jsonResponse.getStatus() == HttpsURLConnection.HTTP_OK) {
-                            sendMessage("Poll created");
-                            sendMessage(jsonResponse.getBody().getObject().toString());
-                            sendMessage(url + jsonResponse.getBody().getObject().getInt("id"));
-
+                            String id = Integer.toString(jsonResponse.getBody().getObject().getInt("id"));
+                            if(!id.isEmpty()) {
+                                latestPollUrl = pollBaseUrl + id;
+                                sendMessage(String.format(Locale.ENGLISH,"Poll \"%s\" created\n%s", title, latestPollUrl));
+                            }
                         } else {
-                            sendMessage("" + jsonResponse.getStatus() + ": " + jsonResponse.getStatusText());
-                            sendMessage(jsonResponse.getBody().toString());
+                            sendMessage("Something went wrong when creating the poll :/");
                         }
 
                     } else {
@@ -88,7 +97,8 @@ public class StrawPollCommand extends AbstractCommandHandler {
                     sendMessage("Something went terribly wrong :(");
                 }
                 break;
-            case "!spollresults":
+            case "spollresults":
+                sendMessage(latestPollUrl);
                 break;
         }
 

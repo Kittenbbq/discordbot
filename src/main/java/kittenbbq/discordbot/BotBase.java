@@ -67,8 +67,7 @@ public class BotBase {
         RequestBuffer.request(() -> {
             try {
                 IMessage message = channel.sendMessage(embedObject);
-                DeleteMessageRunnable runner = new DeleteMessageRunnable(message);
-                botScheduler.schedule(runner, deleteTime, TimeUnit.MINUTES);
+                deleteMessage(message, deleteTime);
             } catch(Exception e) {
                 e.printStackTrace();
             }
