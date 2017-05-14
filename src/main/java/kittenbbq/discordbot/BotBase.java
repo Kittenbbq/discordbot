@@ -22,11 +22,11 @@ public class BotBase {
     
     public BotBase(){
         config = new BotConfig();
-        this.client = BotBase.createClient(config.getBotToken(), false);
+        client = BotBase.createClient(config.getBotToken(), false);
 
         ScheduledThreadPoolExecutor BotScheduler = (ScheduledThreadPoolExecutor)
                 Executors.newScheduledThreadPool(5, Executors.defaultThreadFactory());
-        this.botScheduler = BotScheduler;
+        botScheduler = BotScheduler;
     }
 
     private static IDiscordClient createClient(String token, boolean login) {

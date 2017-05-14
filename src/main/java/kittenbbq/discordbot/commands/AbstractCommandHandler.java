@@ -14,8 +14,6 @@ public abstract class AbstractCommandHandler {
         this.bot = bot;
     }
 
-
-
     public abstract String getHelpMessage(String command);
 
     public abstract String[] getCommandList();
@@ -39,7 +37,6 @@ public abstract class AbstractCommandHandler {
     protected void sendMessage(EmbedObject embedObject) {
         bot.sendMessage(embedObject, event.getChannel());
     }
-
     
     protected String getCommandContent(IMessage message){
         String[] tmp = message.getContent().split(" ", 2);

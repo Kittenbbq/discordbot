@@ -17,7 +17,7 @@ public class ChatCommandListener implements IListener<MessageReceivedEvent>{
         commands = new HashMap<>();
         defaultHandler = defaultcommand;
         registerCommand(defaultcommand);
-        this.prefix = bot.getConfig().getPrefix();
+        prefix = bot.getConfig().getPrefix();
     }
     
     public final void registerCommand(AbstractCommandHandler command){
