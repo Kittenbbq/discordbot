@@ -174,7 +174,9 @@ public class TenmanCommand extends AbstractCommandHandler{
     
     private void endMatch(){
         for(IUser user : players){
-            user.moveToVoiceChannel(originalChannel);
+            if(user.getVoiceStatesLong().get(event.getGuild().getLongID()).getChannel() != null){
+                user.moveToVoiceChannel(originalChannel);
+            }
         }
     }
     
