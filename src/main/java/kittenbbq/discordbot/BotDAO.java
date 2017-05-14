@@ -15,7 +15,7 @@ public class BotDAO {
             mycon = DriverManager.getConnection("jdbc:mysql://"+config.getDBhost()+":"+config.getDBport()+"/"+config.getDatabase(), config.getDBuser(), config.getDBpass());
         }catch(Exception e){
             System.out.println("Creating database connection failed");
-            e.printStackTrace();
+           // e.printStackTrace();
         }
     }
     

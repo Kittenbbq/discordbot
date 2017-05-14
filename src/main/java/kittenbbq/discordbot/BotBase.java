@@ -22,11 +22,11 @@ public class BotBase {
     
     public BotBase(){
         config = new BotConfig();
-        this.client = BotBase.createClient(config.getBotToken(), false);
+        client = BotBase.createClient(config.getBotToken(), false);
 
         ScheduledThreadPoolExecutor BotScheduler = (ScheduledThreadPoolExecutor)
                 Executors.newScheduledThreadPool(5, Executors.defaultThreadFactory());
-        this.botScheduler = BotScheduler;
+        botScheduler = BotScheduler;
     }
 
     private static IDiscordClient createClient(String token, boolean login) {
@@ -60,15 +60,14 @@ public class BotBase {
     }
 
     public void sendMessage(EmbedObject embedObject, IChannel channel) {
-        sendMessage(embedObject, channel, config.getCmdDeleteTime());
+        sendMessage(embedObject, channel, config.getResponseDeleteTime());
     }
 
     public void sendMessage(EmbedObject embedObject, IChannel channel, int deleteTime) {
         RequestBuffer.request(() -> {
             try {
                 IMessage message = channel.sendMessage(embedObject);
-                DeleteMessageRunnable runner = new DeleteMessageRunnable(message);
-                botScheduler.schedule(runner, deleteTime, TimeUnit.MINUTES);
+                deleteMessage(message, deleteTime);
             } catch(Exception e) {
                 e.printStackTrace();
             }
@@ -76,23 +75,27 @@ public class BotBase {
     }
 
     public void sendMessage(String message, IChannel channel){
-        sendMessage(message, channel, config.getCmdDeleteTime());
+        sendMessage(message, channel, config.getResponseDeleteTime());
     }
 
     public void sendMessage(String message, IChannel channel, int deleteTime){
         RequestBuffer.request(() ->{
             try {
                 IMessage messageToDelete = new MessageBuilder(this.client).withChannel(channel).withContent(message).build();
-                DeleteMessageRunnable runner = new DeleteMessageRunnable(messageToDelete);
-                botScheduler.schedule(runner, deleteTime, TimeUnit.MINUTES);
+                deleteMessage(messageToDelete, deleteTime);
             }catch (Exception e) {
                 e.printStackTrace();
             }
         });
     }
 
+    public void deleteMessage(IMessage message, int deleteTime) {
+        DeleteMessageRunnable runner = new DeleteMessageRunnable(message);
+        botScheduler.schedule(runner, deleteTime, TimeUnit.MINUTES);
+    }
+
     public boolean inRoles(List<IRole> roles, String roleToCheck){
-        return roles.stream().anyMatch((role) -> (role.toString().equals(roleToCheck)));
+        return roles.stream().anyMatch((role) -> (role.getName().equals(roleToCheck)));
     }
 
     class DeleteMessageRunnable implements Runnable {

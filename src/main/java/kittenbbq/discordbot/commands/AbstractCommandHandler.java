@@ -14,14 +14,21 @@ public abstract class AbstractCommandHandler {
         this.bot = bot;
     }
 
-
-
     public abstract String getHelpMessage(String command);
 
     public abstract String[] getCommandList();
+
+    protected int getCommandDeleteTime() {
+        return bot.getConfig().getCommandDeleteTime();
+    }
+
+    protected int getResponseDeleteTime() {
+        return bot.getConfig().getResponseDeleteTime();
+    }
     
     public void executeCommand(String command, MessageReceivedEvent event){
         this.event = event;
+        bot.deleteMessage(event.getMessage(), getCommandDeleteTime());
         handleCommand(command);
     }
     
@@ -33,13 +40,12 @@ public abstract class AbstractCommandHandler {
     }
 
     protected void sendMessage(String message) {
-        bot.sendMessage(message, event.getChannel());
+        bot.sendMessage(message, event.getChannel(), getResponseDeleteTime());
     }
 
     protected void sendMessage(EmbedObject embedObject) {
-        bot.sendMessage(embedObject, event.getChannel());
+        bot.sendMessage(embedObject, event.getChannel(), getResponseDeleteTime());
     }
-
     
     protected String getCommandContent(IMessage message){
         String[] tmp = message.getContent().split(" ", 2);

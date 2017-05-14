@@ -136,10 +136,17 @@ public class TenmanCommand extends AbstractCommandHandler{
             Collections.shuffle(players);
             team1.clear();
             team2.clear();
-            team1.addAll(players.subList(0, 4));
-            team2.addAll(players.subList(5, 9));
-            sendMessage("team1: "+team1.toString());
-            sendMessage("team2: "+team2.toString());
+            team1.addAll(players.subList(0, 5));
+            team2.addAll(players.subList(5, 10));
+            String teamString = "\nTeam 1: ";
+            for(IUser user : team1){
+                teamString += user.getName() + " ";
+            }
+            teamString += "\nTeam 2: ";
+            for(IUser user : team2){
+                teamString += user.getName() + " ";
+            }
+            sendMessage(teamString);
         }else{
             sendMessage("10 players needs to be added to shuffle. Current playercount: "+players.size());
         }
@@ -174,6 +181,10 @@ public class TenmanCommand extends AbstractCommandHandler{
     }
     
     private void listPlayers(){
-        sendMessage("Players: "+players.toString()+" Playercount: "+players.size());
+        String playerString = "";
+        for(IUser user : players){
+            playerString += user.getName() + " ";
+        }
+        sendMessage("Players: "+playerString+" Playercount: "+players.size());
     }
 }
