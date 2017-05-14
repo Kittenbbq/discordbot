@@ -85,6 +85,18 @@ public class BotBase {
                 deleteMessage(messageToDelete, deleteTime);
             }catch (Exception e) {
                 e.printStackTrace();
+                throw(e);
+            }
+        });
+    }
+
+    public void deleteMessage(IMessage message) {
+        RequestBuffer.request(() ->{
+            try {
+                message.delete();
+            }catch (Exception e) {
+                e.printStackTrace();
+                throw(e);
             }
         });
     }
@@ -107,11 +119,14 @@ public class BotBase {
         }
 
         public void run() {
-            try{
-                message.delete();
-            }catch(Exception e){
-
-            }
+            RequestBuffer.request(() ->{
+                try {
+                    message.delete();
+                }catch (Exception e) {
+                    e.printStackTrace();
+                    throw(e);
+                }
+            });
         }
     };
 }
