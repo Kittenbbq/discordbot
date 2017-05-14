@@ -34,11 +34,6 @@ public class ClearCommand extends AbstractCommandHandler {
     }
 
     @Override
-    protected int getCommandDeleteTime() {
-        return 0;
-    }
-
-    @Override
     protected void handleCommand(String command) {
 
         if(getCommandArgs().length != 1) {

@@ -85,7 +85,7 @@ public class BotBase {
                 IMessage messageToDelete = new MessageBuilder(this.client).withChannel(channel).withContent(message).build();
                 deleteMessage(messageToDelete, deleteTime);
             }catch (Exception e) {
-                e.printStackTrace();
+                System.out.println(e);
                 throw(e);
             }
         });
@@ -96,7 +96,7 @@ public class BotBase {
             try {
                 message.delete();
             }catch (Exception e) {
-                e.printStackTrace();
+                System.out.println(e);
                 throw(e);
             }
         });
@@ -124,7 +124,7 @@ public class BotBase {
                 try {
                     message.delete();
                 }catch (Exception e) {
-                    e.printStackTrace();
+                    System.out.println(e);
                     throw(e);
                 }
             });
