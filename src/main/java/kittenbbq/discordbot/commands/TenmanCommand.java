@@ -138,15 +138,15 @@ public class TenmanCommand extends AbstractCommandHandler{
             team2.clear();
             team1.addAll(players.subList(0, 5));
             team2.addAll(players.subList(5, 10));
-            String team1String = "", team2String  = "";
+            String teamString = "Team 1: ";
             for(IUser user : team1){
-                team1String += user.getName() + " ";
+                teamString += user.getName() + " ";
             }
+            teamString = "\nTeam 2: ";
             for(IUser user : team2){
-                team2String += user.getName() + " ";
+                teamString += user.getName() + " ";
             }
-            sendMessage("team1: "+team1String);
-            sendMessage("team2: "+team2String);
+            sendMessage(teamString);
         }else{
             sendMessage("10 players needs to be added to shuffle. Current playercount: "+players.size());
         }
