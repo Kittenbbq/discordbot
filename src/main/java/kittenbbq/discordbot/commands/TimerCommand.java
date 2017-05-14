@@ -13,7 +13,7 @@ public class TimerCommand extends AbstractCommandHandler{
 
     @Override
     public String getHelpMessage(String command) {
-        return "!timer [timeInMinutes] (timerMessage)";
+        return "`!timer [timeInMinutes] [timerMessage]` starts a timer that will alert you when it expires.";
     }
     
     @Override
@@ -21,14 +21,34 @@ public class TimerCommand extends AbstractCommandHandler{
         return new String[]{"timer"};
     }
 
+    @Override
+    protected void handleCommand(String command) {
+        IMessage message = event.getMessage();
+        if (message.getContent().split(" ").length > 1) {
+            try {
+                Integer time = Integer.parseInt(message.getContent().split(" ")[1]);
+                BotTimerRunnable runner = new BotTimerRunnable(event.getMessage());
+                bot.getBotScheduler().schedule(runner, time, TimeUnit.MINUTES);
+                sendMessage(String.format(Locale.ENGLISH, "I will remind you in %d minutes", time));
+            }
+            catch(Exception e) {
+                sendMessage("Time not valid");
+            }
+        }
+        else {
+            bot.reply(message, getHelpMessage(command));
+        }
+    }
+
     class BotTimerRunnable implements Runnable {
 
-        private IMessage message;
+        private final IMessage message;
 
         public BotTimerRunnable(IMessage _message) {
             this.message = _message;
         }
 
+        @Override
         public void run() {
             try{
                 String messageBody[] = message.getContent().split(" ");
@@ -49,24 +69,4 @@ public class TimerCommand extends AbstractCommandHandler{
             }
         }
     };
-
-    @Override
-    protected void handleCommand(String command) {
-        IMessage message = event.getMessage();
-        if (message.getContent().split(" ").length > 1) {
-            try {
-                Integer time = Integer.parseInt(message.getContent().split(" ")[1]);
-                BotTimerRunnable runner = new BotTimerRunnable(event.getMessage());
-                bot.getBotScheduler().schedule(runner, time, TimeUnit.MINUTES);
-                sendMessage(String.format(Locale.ENGLISH, "I will remind you in %d minutes", time));
-            }
-            catch(Exception e) {
-                //bot.reply(message, "Time not valid, error: "+e);
-                sendMessage("Time not valid");
-            }
-        }
-        else {
-            bot.reply(message, getHelpMessage(command));
-        }
-    }
 }

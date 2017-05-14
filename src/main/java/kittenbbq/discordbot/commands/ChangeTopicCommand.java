@@ -1,7 +1,6 @@
 package kittenbbq.discordbot.commands;
 
 import java.util.EnumSet;
-import java.util.List;
 import kittenbbq.discordbot.BotBase;
 import sx.blah.discord.handle.obj.*;
 
@@ -13,7 +12,7 @@ public class ChangeTopicCommand extends AbstractCommandHandler{
 
     @Override
     public String getHelpMessage(String command) {
-        return "!topic [topic]";
+        return "`!topic [topic]` changes the topic channels topic.";
     }
 
     @Override

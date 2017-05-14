@@ -1,18 +1,14 @@
 package kittenbbq.discordbot;
 
-import kittenbbq.discordbot.commands.AbstractCommandHandler;
-import sx.blah.discord.Discord4J;
 import sx.blah.discord.api.ClientBuilder;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.api.internal.json.objects.EmbedObject;
-import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.handle.obj.IRole;
 import sx.blah.discord.util.DiscordException;
 import sx.blah.discord.util.MessageBuilder;
 import sx.blah.discord.util.RequestBuffer;
-
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -20,9 +16,9 @@ import java.util.concurrent.TimeUnit;
 
 public class BotBase {
     
-    private IDiscordClient client;
-    private BotConfig config;
-    private ScheduledThreadPoolExecutor botScheduler;
+    private final IDiscordClient client;
+    private final BotConfig config;
+    private final ScheduledThreadPoolExecutor botScheduler;
     
     public BotBase(){
         config = new BotConfig();
@@ -114,7 +110,6 @@ public class BotBase {
         public void run() {
             try{
                 message.delete();
-
             }catch(Exception e){
 
             }
