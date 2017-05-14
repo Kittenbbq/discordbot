@@ -35,6 +35,7 @@ public class SteamStatusCommand extends AbstractCommandHandler {
             if(jsonResponse.getStatus() == HttpsURLConnection.HTTP_OK) {
 
                 EmbedBuilder builder = new EmbedBuilder();
+                JSONObject rootObj = new JSONObject(jsonResponse);
 
 
                 if (rootObj.getJSONObject("ISteamClient").getInt("online") == 1) {
