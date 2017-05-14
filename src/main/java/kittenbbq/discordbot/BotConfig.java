@@ -13,6 +13,10 @@ public class BotConfig {
     private String db_port;
     private String db_db;
     private String prefix;
+    private int cmd_delete_time;
+    private String github_clientid;
+    private String github_clientsecret;
+    private String github_apirepourl;
     private int command_delete_time;
     private int response_delete_time;
     
@@ -33,7 +37,10 @@ public class BotConfig {
             prefix = props.getProperty("command_prefix", "!");
             command_delete_time = Integer.parseInt(props.getProperty("default_command_delete_time", "5"));
             response_delete_time = Integer.parseInt(props.getProperty("default_response_delete_time", "5"));
-
+            cmd_delete_time = Integer.parseInt(props.getProperty("default_command_delete_time", "5"));
+            github_clientid = props.getProperty("github_clientid", "");
+            github_clientsecret = props.getProperty("github_clientsecret", "");
+            github_apirepourl = props.getProperty("github_apirepourl", "");
 
             reader.close();
         }catch (Exception e) {
@@ -77,4 +84,15 @@ public class BotConfig {
         return response_delete_time;
     }
 
+    public String getGithub_clientsecret() {
+        return github_clientsecret;
+    }
+
+    public String getGithub_clientid() {
+        return github_clientid;
+    }
+
+    public String getGithub_apirepourl() {
+        return github_apirepourl;
+    }
 }
