@@ -63,14 +63,8 @@ public class BotBase {
         sendMessage(replyContent, message.getChannel());
     }
 
-    /*
-    protected void sendMessage(String message){
-        sendMessage(message, event.getMessage().getChannel(), config.getCmdDeleteTime());
-    }
-    */
-
     public void sendMessage(EmbedObject embedObject, IChannel channel) {
-        sendMessage(embedObject, channel, config.getCmdDeleteTime());
+        sendMessage(embedObject, channel, config.getResponseDeleteTime());
     }
 
     public void sendMessage(EmbedObject embedObject, IChannel channel, int deleteTime) {
@@ -86,7 +80,7 @@ public class BotBase {
     }
 
     public void sendMessage(String message, IChannel channel){
-        sendMessage(message, channel, config.getCmdDeleteTime());
+        sendMessage(message, channel, config.getResponseDeleteTime());
     }
 
     public void sendMessage(String message, IChannel channel, int deleteTime){

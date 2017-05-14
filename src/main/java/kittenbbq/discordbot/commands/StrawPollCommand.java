@@ -4,10 +4,7 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import kittenbbq.discordbot.BotBase;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.RedirectStrategy;
 import org.apache.http.impl.client.LaxRedirectStrategy;
-import org.json.JSONObject;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -26,6 +23,16 @@ public class StrawPollCommand extends AbstractCommandHandler {
             default:
                 return "!spoll [title] | [spaceDividedOptions] to create new poll\n!spollresults to query result from the latest poll";
         }
+    }
+
+    @Override
+    protected int getCommandDeleteTime() {
+        return 0;
+    }
+
+    @Override
+    protected int getResponseDeleteTime() {
+        return 5;
     }
 
     @Override
