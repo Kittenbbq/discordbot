@@ -6,7 +6,6 @@ import com.mashape.unirest.http.Unirest;
 import kittenbbq.discordbot.BotBase;
 import org.apache.http.impl.client.LaxRedirectStrategy;
 import org.json.JSONObject;
-
 import javax.net.ssl.HttpsURLConnection;
 import java.util.Locale;
 
