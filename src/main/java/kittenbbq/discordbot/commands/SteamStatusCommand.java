@@ -33,17 +33,36 @@ public class SteamStatusCommand extends AbstractCommandHandler {
             HttpResponse<JsonNode> jsonResponse = Unirest.get(sURL).asJson();
 
             if(jsonResponse.getStatus() == HttpsURLConnection.HTTP_OK) {
-                JSONObject steamClient = jsonResponse.getBody().getObject().getJSONObject("ISteamClient");
-                EmbedBuilder builder = new EmbedBuilder();
 
-                if (steamClient.getInt("online") == 1) {
-                    builder.appendField("Steam Status:", "Steam is ONLINE", true);
+                EmbedBuilder builder = new EmbedBuilder();
+                JSONObject rootObj = new JSONObject(jsonResponse);
+
+                if (rootObj.getJSONObject("ISteamClient").getInt("online") == 1) {
+                    builder.appendField("Steam Status:", "ONLINE", true);
+
                     builder.withColor(30, 170, 120);
                 }
                 else {
-                    builder.appendField("Steam Status:", "Steam is OFFLINE", true);
+                    builder.appendField("Steam Status:", "OFFLINE", true);
                     builder.withColor(170, 60, 60);
                 }
+
+                if (rootObj.getJSONObject("SteamCommunity").getInt("online") == 1) {
+                    builder.appendField("Steam Community Status:", "ONLINE", false);
+                }
+                else {
+                    builder.appendField("Steam Community Status:", "OFFLINE", false);
+                    builder.appendField("Error:", rootObj.getJSONObject("SteamCommunity").getString("error"), false);
+                }
+
+                if (rootObj.getJSONObject("SteamStore").getInt("online") == 1) {
+                    builder.appendField("Steam Store Status:", "ONLINE", false);
+                }
+                else {
+                    builder.appendField("Steam Store Status:", "OFFLINE", false);
+                    builder.appendField("Error:", rootObj.getJSONObject("SteamStore").getString("error"), false);
+                }
+
 
                 sendMessage(builder.build());
             }

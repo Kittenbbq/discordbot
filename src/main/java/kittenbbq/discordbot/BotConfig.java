@@ -85,7 +85,7 @@ public class BotConfig {
     public String getGithub_clientsecret() {
         return github_clientsecret;
     }
-
+    
     public String getGithub_clientid() {
         return github_clientid;
     }

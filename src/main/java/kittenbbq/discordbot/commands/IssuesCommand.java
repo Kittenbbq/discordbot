@@ -119,7 +119,7 @@ public class IssuesCommand extends AbstractCommandHandler {
 
         } catch (Exception e) {
             e.printStackTrace();
-            bot.reply(message, "An error occurred: " + e);
+            sendMessage("An error occurred: " + e);
         }
     }
 }
