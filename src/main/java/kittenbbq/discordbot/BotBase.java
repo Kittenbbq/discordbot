@@ -70,6 +70,7 @@ public class BotBase {
                 deleteMessage(message, deleteTime);
             } catch(Exception e) {
                 e.printStackTrace();
+                throw(e);
             }
         });
     }
