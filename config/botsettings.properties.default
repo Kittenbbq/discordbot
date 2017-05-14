@@ -6,4 +6,10 @@ db_port=3306
 database_name=discordbot
 command_prefix=!
 default_command_delete_time=5
+<<<<<<< HEAD
 default_response_delete_time=5
+=======
+github_clientid=
+github_clientsecret=
+github_apirepourl=https://api.github.com/repos/villupp/discgolfapi
+>>>>>>> origin/villudev
