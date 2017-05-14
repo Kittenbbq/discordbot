@@ -119,8 +119,7 @@ public class IssuesCommand extends AbstractCommandHandler {
 
         } catch (Exception e) {
             e.printStackTrace();
-            Reply(message, "An error occurred: " + e);
-
+            sendMessage("An error occurred: " + e);
         }
     }
 }
