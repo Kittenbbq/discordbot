@@ -6,7 +6,6 @@ import org.json.JSONObject;
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.util.EmbedBuilder;
 import sx.blah.discord.util.RequestBuffer;
-
 import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -14,6 +13,7 @@ import java.net.URL;
 import java.text.MessageFormat;
 
 public class IssuesCommand extends AbstractCommandHandler {
+    
     private final String clientId;
     private final String clientSecret;
     private final String apiRepoBaseUrl;
