@@ -92,7 +92,7 @@ public class BotBase {
     }
 
     public boolean inRoles(List<IRole> roles, String roleToCheck){
-        return roles.stream().anyMatch((role) -> (role.toString().equals(roleToCheck)));
+        return roles.stream().anyMatch((role) -> (role.getName().equals(roleToCheck)));
     }
 
     class DeleteMessageRunnable implements Runnable {
