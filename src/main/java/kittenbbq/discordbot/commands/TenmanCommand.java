@@ -138,7 +138,7 @@ public class TenmanCommand extends AbstractCommandHandler{
             team2.clear();
             team1.addAll(players.subList(0, 5));
             team2.addAll(players.subList(5, 10));
-            String teamString = "\nTeam 1: ";
+            String teamString = ".\nTeam 1: ";
             for(IUser user : team1){
                 teamString += user.getName() + " ";
             }
