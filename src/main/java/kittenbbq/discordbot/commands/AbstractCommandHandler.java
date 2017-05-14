@@ -1,22 +1,17 @@
 package kittenbbq.discordbot.commands;
 
 import kittenbbq.discordbot.BotBase;
-import kittenbbq.discordbot.BotConfig;
 import sx.blah.discord.api.internal.json.objects.EmbedObject;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 import sx.blah.discord.handle.obj.IMessage;
 
 public abstract class AbstractCommandHandler {
     
-    //protected final IDiscordClient client;
     protected final BotBase bot;
-    protected final BotConfig config;
-    //protected final ScheduledThreadPoolExecutor scheduler;
     protected MessageReceivedEvent event;
 
     public AbstractCommandHandler(BotBase bot){
         this.bot = bot;
-        config = bot.getConfig();
     }
 
 
@@ -69,6 +64,4 @@ public abstract class AbstractCommandHandler {
     protected String[] getCommandArgs(){
         return getCommandContent().trim().replaceAll("\\s+", " ").split(" ");
     }
-
-
 }

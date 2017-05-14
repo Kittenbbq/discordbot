@@ -75,8 +75,6 @@ public class SteamStatusCommand extends AbstractCommandHandler {
         catch(Exception e) {
             e.printStackTrace();
             bot.reply(message, "an error occurred, "+e);
-
         }
-
     }
 }

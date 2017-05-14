@@ -11,7 +11,7 @@ public class ChatCommandListener implements IListener<MessageReceivedEvent>{
     
     private final String prefix;
     private final AbstractCommandHandler defaultHandler;
-    private HashMap<String, AbstractCommandHandler> commands;
+    private final HashMap<String, AbstractCommandHandler> commands;
     
     public ChatCommandListener(BotBase bot, AbstractCommandHandler defaultcommand){
         commands = new HashMap<>();

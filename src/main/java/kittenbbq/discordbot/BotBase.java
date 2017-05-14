@@ -9,7 +9,6 @@ import sx.blah.discord.handle.obj.IRole;
 import sx.blah.discord.util.DiscordException;
 import sx.blah.discord.util.MessageBuilder;
 import sx.blah.discord.util.RequestBuffer;
-
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -17,9 +16,9 @@ import java.util.concurrent.TimeUnit;
 
 public class BotBase {
     
-    private IDiscordClient client;
-    private BotConfig config;
-    private ScheduledThreadPoolExecutor botScheduler;
+    private final IDiscordClient client;
+    private final BotConfig config;
+    private final ScheduledThreadPoolExecutor botScheduler;
     
     public BotBase(){
         config = new BotConfig();
@@ -59,12 +58,6 @@ public class BotBase {
         String replyContent = message.getAuthor().toString() + ", " + content;
         sendMessage(replyContent, message.getChannel());
     }
-
-    /*
-    protected void sendMessage(String message){
-        sendMessage(message, event.getMessage().getChannel(), config.getCmdDeleteTime());
-    }
-    */
 
     public void sendMessage(EmbedObject embedObject, IChannel channel) {
         sendMessage(embedObject, channel, config.getCmdDeleteTime());
@@ -113,7 +106,6 @@ public class BotBase {
         public void run() {
             try{
                 message.delete();
-
             }catch(Exception e){
 
             }

@@ -12,7 +12,7 @@ import sx.blah.discord.handle.obj.IVoiceState;
 
 public class TenmanCommand extends AbstractCommandHandler{
     
-    private ArrayList<IUser> players, team1, team2;
+    private final ArrayList<IUser> players, team1, team2;
     private IVoiceChannel originalChannel;
 
     public TenmanCommand(BotBase bot) {
