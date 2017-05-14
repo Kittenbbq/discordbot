@@ -28,7 +28,7 @@ public class IssuesCommand extends AbstractCommandHandler {
 
     @Override
     public String getHelpMessage(String command) {
-        return "!issues";
+        return "`!issues` gets the open issues from DiscordBot GitHub repository.";
     }
 
     @Override
@@ -40,8 +40,10 @@ public class IssuesCommand extends AbstractCommandHandler {
     protected void handleCommand(String command) {
         IMessage message = event.getMessage();
 
-        if (clientId == "" || clientSecret == "" || apiRepoBaseUrl == "")
+        if (clientId == "" || clientSecret == "" || apiRepoBaseUrl == "") {
             sendMessage("Whoops! I have been configured incorrectly. Check the GitHub configs and try again.");
+            return;
+        }
 
         try {
             int maxIssueCount = 5;
