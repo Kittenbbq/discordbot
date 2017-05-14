@@ -88,23 +88,11 @@ public class BotConfig {
         return github_clientsecret;
     }
 
-    public void setGithub_clientsecret(String github_clientsecret) {
-        this.github_clientsecret = github_clientsecret;
-    }
-
     public String getGithub_clientid() {
         return github_clientid;
     }
 
-    public void setGithub_clientid(String github_clientid) {
-        this.github_clientid = github_clientid;
-    }
-
     public String getGithub_apirepourl() {
         return github_apirepourl;
-    }
-
-    public void setGithub_apirepourl(String github_apirepourl) {
-        this.github_apirepourl = github_apirepourl;
     }
 }
