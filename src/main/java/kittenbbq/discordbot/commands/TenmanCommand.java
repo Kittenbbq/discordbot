@@ -161,10 +161,14 @@ public class TenmanCommand extends AbstractCommandHandler{
         IVoiceChannel team2channel = event.getGuild().getVoiceChannelsByName("team2").get(0);
         
         for(IUser user : team1){
-            user.moveToVoiceChannel(team1channel);
+            if(user.getVoiceStatesLong().get(event.getGuild().getLongID()) != null){
+                user.moveToVoiceChannel(team1channel);
+            }
         }
         for(IUser user : team2){
-            user.moveToVoiceChannel(team2channel);
+            if(user.getVoiceStatesLong().get(event.getGuild().getLongID()) != null){
+                user.moveToVoiceChannel(team1channel);
+            }
         }
     }
     
