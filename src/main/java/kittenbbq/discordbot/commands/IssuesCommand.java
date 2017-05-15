@@ -6,7 +6,6 @@ import org.json.JSONObject;
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.util.EmbedBuilder;
 import sx.blah.discord.util.RequestBuffer;
-
 import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -14,6 +13,7 @@ import java.net.URL;
 import java.text.MessageFormat;
 
 public class IssuesCommand extends AbstractCommandHandler {
+    
     private final String clientId;
     private final String clientSecret;
     private final String apiRepoBaseUrl;
@@ -28,7 +28,7 @@ public class IssuesCommand extends AbstractCommandHandler {
 
     @Override
     public String getHelpMessage(String command) {
-        return "!issues";
+        return "`!issues` gets the open issues from DiscordBot GitHub repository.";
     }
 
     @Override
@@ -40,8 +40,10 @@ public class IssuesCommand extends AbstractCommandHandler {
     protected void handleCommand(String command) {
         IMessage message = event.getMessage();
 
-        if (clientId == "" || clientSecret == "" || apiRepoBaseUrl == "")
+        if (clientId == "" || clientSecret == "" || apiRepoBaseUrl == "") {
             sendMessage("Whoops! I have been configured incorrectly. Check the GitHub configs and try again.");
+            return;
+        }
 
         try {
             int maxIssueCount = 5;

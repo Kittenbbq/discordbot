@@ -138,7 +138,7 @@ public class TenmanCommand extends AbstractCommandHandler{
             team2.clear();
             team1.addAll(players.subList(0, 5));
             team2.addAll(players.subList(5, 10));
-            String teamString = "\nTeam 1: ";
+            String teamString = ".\nTeam 1: ";
             for(IUser user : team1){
                 teamString += user.getName() + " ";
             }
@@ -161,20 +161,22 @@ public class TenmanCommand extends AbstractCommandHandler{
         IVoiceChannel team2channel = event.getGuild().getVoiceChannelsByName("team2").get(0);
         
         for(IUser user : team1){
-            if(user.getVoiceStatesLong().get(event.getGuild().getLongID()) != null){
+            if(user.getVoiceStatesLong().get(event.getGuild().getLongID()).getChannel() != null){
                 user.moveToVoiceChannel(team1channel);
             }
         }
         for(IUser user : team2){
-            if(user.getVoiceStatesLong().get(event.getGuild().getLongID()) != null){
-                user.moveToVoiceChannel(team1channel);
+            if(user.getVoiceStatesLong().get(event.getGuild().getLongID()).getChannel() != null){
+                user.moveToVoiceChannel(team2channel);
             }
         }
     }
     
     private void endMatch(){
         for(IUser user : players){
-            user.moveToVoiceChannel(originalChannel);
+            if(user.getVoiceStatesLong().get(event.getGuild().getLongID()).getChannel() != null){
+                user.moveToVoiceChannel(originalChannel);
+            }
         }
     }
     

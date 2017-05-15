@@ -10,6 +10,7 @@ import javax.net.ssl.HttpsURLConnection;
 import java.util.Locale;
 
 public class StrawPollCommand extends AbstractCommandHandler {
+    
     private String latestPollUrl;
 
     public StrawPollCommand(BotBase bot) {
@@ -45,7 +46,6 @@ public class StrawPollCommand extends AbstractCommandHandler {
 
     @Override
     protected void handleCommand(String command) {
-
         switch(command) {
             case "spoll":
                 String url = "https://strawpoll.me/api/v2/polls";
@@ -100,7 +100,5 @@ public class StrawPollCommand extends AbstractCommandHandler {
                 sendMessage(latestPollUrl);
                 break;
         }
-
-
     }
 }

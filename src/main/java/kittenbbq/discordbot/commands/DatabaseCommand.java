@@ -77,5 +77,4 @@ public class DatabaseCommand extends AbstractCommandHandler{
                 break;
         }
     }
-    
 }
