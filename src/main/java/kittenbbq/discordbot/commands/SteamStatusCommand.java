@@ -81,6 +81,13 @@ public class SteamStatusCommand extends AbstractCommandHandler {
                     builder.appendField("Error:", rootObj.getJSONObject("SteamStore").getString("error"), false);
                 }
 
+                if (rootObj.getJSONObject("IEconItems").getJSONObject("440").getInt("online") == 1) {
+                    builder.appendField("Steam Inventory Status:", "ONLINE", false);
+                }
+                else {
+                    builder.appendField("Steam Inventory Status:", "OFFLINE", false);
+                    builder.appendField("Error:", rootObj.getJSONObject("IEconItems").getJSONObject("440").getString("error"), false);
+                }
 
                 sendMessage(builder.build());
 
