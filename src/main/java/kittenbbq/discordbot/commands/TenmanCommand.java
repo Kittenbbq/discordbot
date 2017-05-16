@@ -9,6 +9,7 @@ import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IUser;
 import sx.blah.discord.handle.obj.IVoiceChannel;
 import sx.blah.discord.handle.obj.IVoiceState;
+import sx.blah.discord.util.RequestBuffer;
 
 public class TenmanCommand extends AbstractCommandHandler{
     
@@ -175,7 +176,9 @@ public class TenmanCommand extends AbstractCommandHandler{
     private void endMatch(){
         for(IUser user : players){
             if(user.getVoiceStatesLong().get(event.getGuild().getLongID()).getChannel() != null){
-                user.moveToVoiceChannel(originalChannel);
+                RequestBuffer.request(() -> {
+                    user.moveToVoiceChannel(originalChannel);
+                });
             }
         }
     }

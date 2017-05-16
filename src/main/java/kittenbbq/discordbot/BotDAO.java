@@ -8,11 +8,16 @@ import java.sql.ResultSet;
 public class BotDAO {
     
     private Connection mycon;
+    private String connectionString;
+    private String user, pass;
     
     public BotDAO(BotConfig config){
+        connectionString = "jdbc:mysql://"+config.getDBhost()+":"+config.getDBport()+"/"+config.getDatabase();
+        user = config.getDBuser();
+        pass = config.getDBpass();
         try{
             Class.forName("com.mysql.jdbc.Driver");
-            mycon = DriverManager.getConnection("jdbc:mysql://"+config.getDBhost()+":"+config.getDBport()+"/"+config.getDatabase(), config.getDBuser(), config.getDBpass());
+            mycon = DriverManager.getConnection(connectionString, user, pass);
         }catch(Exception e){
             System.out.println("Creating database connection failed");
            // e.printStackTrace();
@@ -32,6 +37,10 @@ public class BotDAO {
         PreparedStatement statement = null;
         
         try{
+            if(mycon != null && !mycon.isValid(5)){
+                mycon.close();
+                mycon = DriverManager.getConnection(connectionString, user, pass);
+            }
             statement = mycon.prepareStatement("SELECT * FROM commands WHERE command = ?");
             statement.setString(1, command.getCommand());
             results = statement.executeQuery();
@@ -59,6 +68,10 @@ public class BotDAO {
     public void addCommand(CommandDTO newCommand){
         PreparedStatement statement = null;
         try{
+            if(mycon != null && !mycon.isValid(5)){
+                mycon.close();
+                mycon = DriverManager.getConnection(connectionString, user, pass);
+            }
             statement = mycon.prepareStatement("INSERT INTO commands(command, response, user) "
                     + "VALUES (?, ?, ?)");
             statement.setString(1, newCommand.getCommand());
@@ -80,6 +93,10 @@ public class BotDAO {
     public void removeCommand(CommandDTO oldCommand){
         PreparedStatement statement = null;
         try{
+            if(mycon != null && !mycon.isValid(5)){
+                mycon.close();
+                mycon = DriverManager.getConnection(connectionString, user, pass);
+            }
             statement = mycon.prepareStatement("DELETE FROM commands WHERE command=?");
             statement.setString(1, oldCommand.getCommand());
             statement.executeUpdate();
