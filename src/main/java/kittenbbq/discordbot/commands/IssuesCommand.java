@@ -114,7 +114,7 @@ public class IssuesCommand extends AbstractCommandHandler {
                     builder.withColor(70, 200, 70);
                 }
 
-                RequestBuffer.request(() -> event.getChannel().sendMessage(builder.build()));
+                sendMessage(builder.build());
             } else {
                 sendMessage("Whoops! I could not connect to GitHub API.");
             }
