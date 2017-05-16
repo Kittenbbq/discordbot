@@ -31,8 +31,7 @@ public class JSONGetter {
                 }
 
                 br.close();
-                JSONObject compiledBuffer = new JSONObject(sb.toString());
-                return compiledBuffer;
+                return new JSONObject(sb.toString());
             }
         } catch (Exception e) {
 
