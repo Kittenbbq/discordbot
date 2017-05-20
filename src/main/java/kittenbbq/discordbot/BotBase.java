@@ -84,7 +84,7 @@ public class BotBase {
         if (chn == null) {
             return;
         }
-        sendMessage(message, chn, config.getCmdDeleteTime());
+        sendMessage(message, chn, config.getResponseDeleteTime());
     }
 
     public void sendMessage(String message, IChannel channel, int deleteTime){
