@@ -12,7 +12,7 @@ public class InviteMemberCommand extends AbstractCommandHandler{
 
     @Override
     public String getHelpMessage(String command) {
-        return "!invite";
+        return "`!invite` creates a single use intive for the server.";
     }
     
     @Override

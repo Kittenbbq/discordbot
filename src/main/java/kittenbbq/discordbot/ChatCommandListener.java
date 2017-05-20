@@ -11,13 +11,13 @@ public class ChatCommandListener implements IListener<MessageReceivedEvent>{
     
     private final String prefix;
     private final AbstractCommandHandler defaultHandler;
-    private HashMap<String, AbstractCommandHandler> commands;
+    private final HashMap<String, AbstractCommandHandler> commands;
     
     public ChatCommandListener(BotBase bot, AbstractCommandHandler defaultcommand){
         commands = new HashMap<>();
         defaultHandler = defaultcommand;
         registerCommand(defaultcommand);
-        this.prefix = bot.getConfig().getPrefix();
+        prefix = bot.getConfig().getPrefix();
     }
     
     public final void registerCommand(AbstractCommandHandler command){
@@ -47,14 +47,15 @@ public class ChatCommandListener implements IListener<MessageReceivedEvent>{
 
             AbstractCommandHandler commandHandler = commands.get(command);
             if(commandHandler != null){
-
-                if(isHelp) {
+                if(isHelp)
                     commandHandler.sendHelpMessage(command, event);
-                } else {
+                else
                     commandHandler.executeCommand(command, event);
-                }
             }else{
-                defaultHandler.executeCommand(command, event);
+                if(isHelp)
+                    defaultHandler.sendHelpMessage(command, event);
+                else
+                    defaultHandler.executeCommand(command, event);
             }
         }
     }

@@ -1,18 +1,14 @@
 package kittenbbq.discordbot;
 
-import kittenbbq.discordbot.commands.AbstractCommandHandler;
-import sx.blah.discord.Discord4J;
 import sx.blah.discord.api.ClientBuilder;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.api.internal.json.objects.EmbedObject;
-import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.handle.obj.IRole;
 import sx.blah.discord.util.DiscordException;
 import sx.blah.discord.util.MessageBuilder;
 import sx.blah.discord.util.RequestBuffer;
-
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -20,17 +16,17 @@ import java.util.concurrent.TimeUnit;
 
 public class BotBase {
     
-    private IDiscordClient client;
-    private BotConfig config;
-    private ScheduledThreadPoolExecutor botScheduler;
+    private final IDiscordClient client;
+    private final BotConfig config;
+    private final ScheduledThreadPoolExecutor botScheduler;
     
     public BotBase(){
         config = new BotConfig();
-        this.client = BotBase.createClient(config.getBotToken(), false);
+        client = BotBase.createClient(config.getBotToken(), false);
 
         ScheduledThreadPoolExecutor BotScheduler = (ScheduledThreadPoolExecutor)
                 Executors.newScheduledThreadPool(5, Executors.defaultThreadFactory());
-        this.botScheduler = BotScheduler;
+        botScheduler = BotScheduler;
     }
 
     private static IDiscordClient createClient(String token, boolean login) {
@@ -63,30 +59,24 @@ public class BotBase {
         sendMessage(replyContent, message.getChannel());
     }
 
-    /*
-    protected void sendMessage(String message){
-        sendMessage(message, event.getMessage().getChannel(), config.getCmdDeleteTime());
-    }
-    */
-
     public void sendMessage(EmbedObject embedObject, IChannel channel) {
-        sendMessage(embedObject, channel, config.getCmdDeleteTime());
+        sendMessage(embedObject, channel, config.getResponseDeleteTime());
     }
 
     public void sendMessage(EmbedObject embedObject, IChannel channel, int deleteTime) {
         RequestBuffer.request(() -> {
             try {
                 IMessage message = channel.sendMessage(embedObject);
-                DeleteMessageRunnable runner = new DeleteMessageRunnable(message);
-                botScheduler.schedule(runner, deleteTime, TimeUnit.MINUTES);
+                deleteMessage(message, deleteTime);
             } catch(Exception e) {
                 e.printStackTrace();
+                throw(e);
             }
         });
     }
 
     public void sendMessage(String message, IChannel channel){
-        sendMessage(message, channel, config.getCmdDeleteTime());
+        sendMessage(message, channel, config.getResponseDeleteTime());
     }
 
     public void sendMessage(String message, long channelID){
@@ -101,16 +91,32 @@ public class BotBase {
         RequestBuffer.request(() ->{
             try {
                 IMessage messageToDelete = new MessageBuilder(this.client).withChannel(channel).withContent(message).build();
-                DeleteMessageRunnable runner = new DeleteMessageRunnable(messageToDelete);
-                botScheduler.schedule(runner, deleteTime, TimeUnit.MINUTES);
+                deleteMessage(messageToDelete, deleteTime);
             }catch (Exception e) {
                 e.printStackTrace();
+                throw(e);
             }
         });
     }
 
+    public void deleteMessage(IMessage message) {
+        RequestBuffer.request(() ->{
+            try {
+                message.delete();
+            }catch (Exception e) {
+                e.printStackTrace();
+                throw(e);
+            }
+        });
+    }
+
+    public void deleteMessage(IMessage message, int deleteTime) {
+        DeleteMessageRunnable runner = new DeleteMessageRunnable(message);
+        botScheduler.schedule(runner, deleteTime, TimeUnit.MINUTES);
+    }
+
     public boolean inRoles(List<IRole> roles, String roleToCheck){
-        return roles.stream().anyMatch((role) -> (role.toString().equals(roleToCheck)));
+        return roles.stream().anyMatch((role) -> (role.getName().equals(roleToCheck)));
     }
 
     class DeleteMessageRunnable implements Runnable {
@@ -122,12 +128,14 @@ public class BotBase {
         }
 
         public void run() {
-            try{
-                message.delete();
-
-            }catch(Exception e){
-
-            }
+            RequestBuffer.request(() ->{
+                try {
+                    message.delete();
+                }catch (Exception e) {
+                    e.printStackTrace();
+                    throw(e);
+                }
+            });
         }
     };
 }

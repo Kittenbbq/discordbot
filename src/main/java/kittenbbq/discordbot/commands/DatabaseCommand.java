@@ -1,11 +1,9 @@
 package kittenbbq.discordbot.commands;
 
-import java.util.Arrays;
 import java.util.List;
 import kittenbbq.discordbot.BotBase;
 import kittenbbq.discordbot.BotDAO;
 import kittenbbq.discordbot.CommandDTO;
-import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.handle.obj.IRole;
 import sx.blah.discord.handle.obj.IUser;
@@ -23,11 +21,11 @@ public class DatabaseCommand extends AbstractCommandHandler{
     public String getHelpMessage(String command) {
         switch(command) {
             case "add":
-                return "!add [commandName] [commandResponse]";
+                return "`!add [commandName] [commandResponse]` adds a new command/response for the bot.";
             case "remove":
-                return "!remove [commandName]";
+                return "`!remove [commandName]` removes and existing response from the bot.";
             default:
-                return "![commandName]";
+                return "`"+command+"` not found. `!"+command+"` might be added as a custom response.";
         }
     }
     
@@ -41,9 +39,6 @@ public class DatabaseCommand extends AbstractCommandHandler{
         IMessage message = event.getMessage();
         IUser user = message.getAuthor();
         List<IRole> userroles = user.getRolesForGuild(message.getGuild());
-        //IChannel channel = message.getChannel();
-        //String[] split = message.getContent().split(" ");
-        //String[] args = split.length >= 2 ? Arrays.copyOfRange(split, 1, split.length) : new String[0];
         String[] args = getCommandArgs();
         
         switch(command){
@@ -82,5 +77,4 @@ public class DatabaseCommand extends AbstractCommandHandler{
                 break;
         }
     }
-    
 }

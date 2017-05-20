@@ -9,10 +9,11 @@ import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IUser;
 import sx.blah.discord.handle.obj.IVoiceChannel;
 import sx.blah.discord.handle.obj.IVoiceState;
+import sx.blah.discord.util.RequestBuffer;
 
 public class TenmanCommand extends AbstractCommandHandler{
     
-    private ArrayList<IUser> players, team1, team2;
+    private final ArrayList<IUser> players, team1, team2;
     private IVoiceChannel originalChannel;
 
     public TenmanCommand(BotBase bot) {
@@ -26,21 +27,21 @@ public class TenmanCommand extends AbstractCommandHandler{
     public String getHelpMessage(String command) {
         switch (command) {
             case "addplayers":
-                return "!addplayers [playersDividedWithSpaces]";
+                return "`!addplayers [player1 player2 player3 ...]` adds the given users to the playerlist.";
             case "addchannelplayers":
-                return "!addchannelplayers";
+                return "`!addchannelplayers` adds everyone from your current channel to the playerlist.";
             case "removeplayers":
-                return "!removeplayers [playersDividedWithSpaces]";
+                return "`!removeplayers [player1 player2 player3 ...]` removes the given users from the playerlist.";
             case "shuffleteams":
-                return "!shuffleteams";
+                return "`!shuffleteams` creates two randomed teams from the playerlist.";
             case "listplayers":
-                return "!listplayers";
+                return "`!listplayer` lists the users from the playerlist.";
             case "start":
-                return "!start";
+                return "`!start` moves the created teams to their designated voicechannels.";
             case "stop":
-                return "!stop";
+                return "`!stop` moves everyone back to the staring voicechannel.";
             case "reset":
-                return "!reset";
+                return "`!reset` clears the playerlist and teams.";
             default:
                 return "!addplayers|!addchannelplayers|!removeplayers|!shuffleteams|!listplayers|!start|!stop|!reset";
         }
@@ -136,10 +137,17 @@ public class TenmanCommand extends AbstractCommandHandler{
             Collections.shuffle(players);
             team1.clear();
             team2.clear();
-            team1.addAll(players.subList(0, 4));
-            team2.addAll(players.subList(5, 9));
-            sendMessage("team1: "+team1.toString());
-            sendMessage("team2: "+team2.toString());
+            team1.addAll(players.subList(0, 5));
+            team2.addAll(players.subList(5, 10));
+            String teamString = ".\nTeam 1: ";
+            for(IUser user : team1){
+                teamString += user.getName() + " ";
+            }
+            teamString += "\nTeam 2: ";
+            for(IUser user : team2){
+                teamString += user.getName() + " ";
+            }
+            sendMessage(teamString);
         }else{
             sendMessage("10 players needs to be added to shuffle. Current playercount: "+players.size());
         }
@@ -154,16 +162,24 @@ public class TenmanCommand extends AbstractCommandHandler{
         IVoiceChannel team2channel = event.getGuild().getVoiceChannelsByName("team2").get(0);
         
         for(IUser user : team1){
-            user.moveToVoiceChannel(team1channel);
+            if(user.getVoiceStatesLong().get(event.getGuild().getLongID()).getChannel() != null){
+                user.moveToVoiceChannel(team1channel);
+            }
         }
         for(IUser user : team2){
-            user.moveToVoiceChannel(team2channel);
+            if(user.getVoiceStatesLong().get(event.getGuild().getLongID()).getChannel() != null){
+                user.moveToVoiceChannel(team2channel);
+            }
         }
     }
     
     private void endMatch(){
         for(IUser user : players){
-            user.moveToVoiceChannel(originalChannel);
+            if(user.getVoiceStatesLong().get(event.getGuild().getLongID()).getChannel() != null){
+                RequestBuffer.request(() -> {
+                    user.moveToVoiceChannel(originalChannel);
+                });
+            }
         }
     }
     
@@ -174,6 +190,10 @@ public class TenmanCommand extends AbstractCommandHandler{
     }
     
     private void listPlayers(){
-        sendMessage("Players: "+players.toString()+" Playercount: "+players.size());
+        String playerString = "";
+        for(IUser user : players){
+            playerString += user.getName() + " ";
+        }
+        sendMessage("Players: "+playerString+" Playercount: "+players.size());
     }
 }

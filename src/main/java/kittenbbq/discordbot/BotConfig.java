@@ -16,7 +16,11 @@ public class BotConfig {
     private int cmd_delete_time;
     private String apiUsername;
     private String apiPassword;
-
+	private int command_delete_time;
+    private int response_delete_time;
+    private String github_clientid;
+    private String github_clientsecret;
+    private String github_apirepourl;
     
     public BotConfig(){
         File configFile = new File("config/botsettings.properties");
@@ -33,7 +37,11 @@ public class BotConfig {
             db_port = props.getProperty("db_port", "3306");
             db_db = props.getProperty("database_name", "discordbot");
             prefix = props.getProperty("command_prefix", "!");
-            cmd_delete_time = Integer.parseInt(props.getProperty("default_command_delete_time", "5"));
+            command_delete_time = Integer.parseInt(props.getProperty("default_command_delete_time", "5"));
+			response_delete_time = Integer.parseInt(props.getProperty("default_response_delete_time", "5"));
+            github_clientid = props.getProperty("github_clientid", "");
+            github_clientsecret = props.getProperty("github_clientsecret", "");
+            github_apirepourl = props.getProperty("github_apirepourl", "");
             apiUsername = props.getProperty("apiUsername", "user");
             apiPassword = props.getProperty("apiPassword", "password");
             
@@ -71,8 +79,24 @@ public class BotConfig {
         return prefix;
     }
     
-    public int getCmdDeleteTime() {
-        return cmd_delete_time;
+    public int getCommandDeleteTime() {
+        return command_delete_time;
+    }
+    
+    public int getResponseDeleteTime() {
+        return response_delete_time;
+    }
+    
+    public String getGithub_clientsecret() {
+        return github_clientsecret;
+    }
+    
+    public String getGithub_clientid() {
+        return github_clientid;
+    }
+
+    public String getGithub_apirepourl() {
+        return github_apirepourl;
     }
 
     public String getApiUsername() {

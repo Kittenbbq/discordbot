@@ -1,14 +1,10 @@
 package kittenbbq.discordbot.commands;
 
 import kittenbbq.discordbot.BotBase;
+import kittenbbq.discordbot.JSONGetter;
 import org.json.JSONObject;
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.util.EmbedBuilder;
-import sx.blah.discord.util.RequestBuffer;
-import javax.net.ssl.HttpsURLConnection;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URL;
 
 
 public class SteamStatusCommand extends AbstractCommandHandler {
@@ -19,7 +15,7 @@ public class SteamStatusCommand extends AbstractCommandHandler {
 
     @Override
     public String getHelpMessage(String command) {
-        return "!steam";
+        return "`!steam` gets steamstatus information.";
     }
 
     @Override
@@ -34,36 +30,44 @@ public class SteamStatusCommand extends AbstractCommandHandler {
 
         try {
 
-            String sURL = "https://steamgaug.es/api/v2";
+                JSONGetter getStatus = new JSONGetter();
+                JSONObject jsonResponse = getStatus.getJSONObject("https://steamgaug.es/api/v2");
 
-            URL url = new URL(sURL);
-            HttpsURLConnection request = (HttpsURLConnection) url.openConnection();
-            request.connect();
-
-            if(request.getResponseCode() == HttpsURLConnection.HTTP_OK) {
-                BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream()));
-                StringBuilder sb = new StringBuilder();
-                String line;
-
-                while((line = br.readLine()) != null) {
-                    sb.append(line);
-                    sb.append('\r');
-                }
-
-                br.close();
-                String jsonResponse = sb.toString();
-
-                JSONObject rootObj = new JSONObject(jsonResponse);
+                if (jsonResponse != null) {
 
                 EmbedBuilder builder = new EmbedBuilder();
 
-                if (rootObj.getJSONObject("ISteamClient").getInt("online") == 1) {
-                    builder.appendField("Steam Status:", "Steam is ONLINE", true);
+                if (jsonResponse.getJSONObject("ISteamClient").getInt("online") == 1) {
+                    builder.appendField("Steam Status:", "ONLINE", true);
                     builder.withColor(30, 170, 120);
                 }
                 else {
-                    builder.appendField("Steam Status:", "Steam is OFFLINE", true);
+                    builder.appendField("Steam Status:", "OFFLINE", true);
                     builder.withColor(170, 60, 60);
+                }
+
+                if (jsonResponse.getJSONObject("SteamCommunity").getInt("online") == 1) {
+                    builder.appendField("Steam Community Status:", "ONLINE", false);
+                }
+                else {
+                    builder.appendField("Steam Community Status:", "OFFLINE", false);
+                    builder.appendField("Error:", jsonResponse.getJSONObject("SteamCommunity").getString("error"), false);
+                }
+
+                if (jsonResponse.getJSONObject("SteamStore").getInt("online") == 1) {
+                    builder.appendField("Steam Store Status:", "ONLINE", false);
+                }
+                else {
+                    builder.appendField("Steam Store Status:", "OFFLINE", false);
+                    builder.appendField("Error:", jsonResponse.getJSONObject("SteamStore").getString("error"), false);
+                }
+
+                if (jsonResponse.getJSONObject("IEconItems").getJSONObject("440").getInt("online") == 1) {
+                    builder.appendField("Steam Inventory Status:", "ONLINE", false);
+                }
+                else {
+                    builder.appendField("Steam Inventory Status:", "OFFLINE", false);
+                    builder.appendField("Error:", jsonResponse.getJSONObject("IEconItems").getJSONObject("440").getString("error"), false);
                 }
 
                 sendMessage(builder.build());
@@ -76,8 +80,6 @@ public class SteamStatusCommand extends AbstractCommandHandler {
         catch(Exception e) {
             e.printStackTrace();
             bot.reply(message, "an error occurred, "+e);
-
         }
-
     }
 }
