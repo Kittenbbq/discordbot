@@ -1,15 +1,15 @@
-package analytics.Models;
+package api.Models;
 
-public class MessageCount {
-    private String date;
+public class MessageCountByHour {
+    private int hour;
     private int messageCount;
 
-    public String getDate() {
-        return date;
+    public int getHour() {
+        return hour;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setHour(int hour) {
+        this.hour = hour;
     }
 
     public int getMessageCount() {

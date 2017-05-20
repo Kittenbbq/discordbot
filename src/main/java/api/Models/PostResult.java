@@ -1,4 +1,4 @@
-package analytics.Models;
+package api.Models;
 
 public class PostResult {
     private boolean success;

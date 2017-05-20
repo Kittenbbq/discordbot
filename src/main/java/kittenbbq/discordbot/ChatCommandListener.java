@@ -8,13 +8,15 @@ import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.handle.obj.IUser;
 
 public class ChatCommandListener implements IListener<MessageReceivedEvent>{
-    
+
+    private final BotBase bot;
     private final String prefix;
     private final AbstractCommandHandler defaultHandler;
     private final HashMap<String, AbstractCommandHandler> commands;
     
     public ChatCommandListener(BotBase bot, AbstractCommandHandler defaultcommand){
         commands = new HashMap<>();
+        this.bot = bot;
         defaultHandler = defaultcommand;
         registerCommand(defaultcommand);
         prefix = bot.getConfig().getPrefix();
@@ -31,6 +33,10 @@ public class ChatCommandListener implements IListener<MessageReceivedEvent>{
     public void handle(MessageReceivedEvent event) {
         IMessage message = event.getMessage();
         IUser user = message.getAuthor();
+
+        // Add message to database
+        bot.getDao().addMessage(event);
+
         if (user.isBot()) return;
 
         String[] split = message.getContent().split(" ");

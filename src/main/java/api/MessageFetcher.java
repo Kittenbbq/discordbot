@@ -1,7 +1,6 @@
-package analytics;
+package api;
 
 import kittenbbq.discordbot.*;
-import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.api.events.EventDispatcher;
 import sx.blah.discord.api.events.EventSubscriber;
 import sx.blah.discord.handle.impl.events.ReadyEvent;
@@ -19,17 +18,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MessageFetcher {
-    private IDiscordClient client;
+    private BotBase bot;
 
-    public MessageFetcher(IDiscordClient client) {
-        this.client = client;
+    public MessageFetcher(BotBase bot) {
+        this.bot = bot;
     }
 
     public static void main(String[] args) {
-        /*BotConfig config = new BotConfig();
-        IDiscordClient client = BotBase.createClient(config.getBotToken(), true);
-        EventDispatcher dispatcher = client.getDispatcher();
-        dispatcher.registerListener(new MessageFetcher(client));*/
+        BotBase botclient = new BotBase();
+        EventDispatcher dispatcher = botclient.getClient().getDispatcher();
+        dispatcher.registerListener(new MessageFetcher(botclient));
     }
 
     @EventSubscriber
@@ -38,7 +36,7 @@ public class MessageFetcher {
         Db db = new Db(new BotConfig());
 
         // Get guilds
-        List<IGuild> guilds = client.getGuilds();
+        List<IGuild> guilds = bot.getClient().getGuilds();
         System.out.println("Fetching " + guilds.size());
 
         IGuild g = null;

@@ -1,5 +1,6 @@
 package kittenbbq.discordbot;
 
+import api.MessageFetcher;
 import kittenbbq.discordbot.commands.*;
 import sx.blah.discord.api.events.EventDispatcher;
 
@@ -10,7 +11,7 @@ public class Main {
         EventDispatcher dispatcher = bot.getClient().getDispatcher();
         BotDAO dao = new BotDAO(bot.getConfig());
         
-        ChatCommandListener cmdlistener = new ChatCommandListener(bot, new DatabaseCommand(bot, dao));
+        ChatCommandListener cmdlistener = new ChatCommandListener(bot, new DatabaseCommand(bot));
         cmdlistener.registerCommand(new TenmanCommand(bot));
         cmdlistener.registerCommand(new ChangeTopicCommand(bot));
         cmdlistener.registerCommand(new InviteMemberCommand(bot));
@@ -20,6 +21,7 @@ public class Main {
         cmdlistener.registerCommand(new IssuesCommand(bot));
         cmdlistener.registerCommand(new ClearCommand(bot));
 
+        //dispatcher.registerListener(new MessageFetcher(bot));
         dispatcher.registerListener(cmdlistener);
         bot.getClient().login();
     }

@@ -1,4 +1,4 @@
-package analytics.Config;
+package api.Config;
 
 
 import kittenbbq.discordbot.BotConfig;

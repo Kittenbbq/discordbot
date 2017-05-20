@@ -4,10 +4,14 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
+import sx.blah.discord.handle.obj.IUser;
 
 public class BotDAO {
     
-    private Connection mycon;
+    private Connection connection;
     private String connectionString;
     private String user, pass;
     
@@ -17,7 +21,7 @@ public class BotDAO {
         pass = config.getDBpass();
         try{
             Class.forName("com.mysql.jdbc.Driver");
-            mycon = DriverManager.getConnection(connectionString, user, pass);
+            connection = DriverManager.getConnection(connectionString, user, pass);
         }catch(Exception e){
             System.out.println("Creating database connection failed");
            // e.printStackTrace();
@@ -26,8 +30,8 @@ public class BotDAO {
     
     protected void finalize(){
         try{
-            if(mycon != null)
-                mycon.close();
+            if(connection != null)
+                connection.close();
         }catch(Exception e){}
     }
     
@@ -37,11 +41,11 @@ public class BotDAO {
         PreparedStatement statement = null;
         
         try{
-            if(mycon != null && !mycon.isValid(5)){
-                mycon.close();
-                mycon = DriverManager.getConnection(connectionString, user, pass);
+            if(connection != null && !connection.isValid(5)){
+                connection.close();
+                connection = DriverManager.getConnection(connectionString, user, pass);
             }
-            statement = mycon.prepareStatement("SELECT * FROM commands WHERE command = ?");
+            statement = connection.prepareStatement("SELECT * FROM commands WHERE command = ?");
             statement.setString(1, command.getCommand());
             results = statement.executeQuery();
             while(results.next()){
@@ -68,11 +72,11 @@ public class BotDAO {
     public void addCommand(CommandDTO newCommand){
         PreparedStatement statement = null;
         try{
-            if(mycon != null && !mycon.isValid(5)){
-                mycon.close();
-                mycon = DriverManager.getConnection(connectionString, user, pass);
+            if(connection != null && !connection.isValid(5)){
+                connection.close();
+                connection = DriverManager.getConnection(connectionString, user, pass);
             }
-            statement = mycon.prepareStatement("INSERT INTO commands(command, response, user) "
+            statement = connection.prepareStatement("INSERT INTO commands(command, response, user) "
                     + "VALUES (?, ?, ?)");
             statement.setString(1, newCommand.getCommand());
             statement.setString(2, newCommand.getResponse());
@@ -93,11 +97,11 @@ public class BotDAO {
     public void removeCommand(CommandDTO oldCommand){
         PreparedStatement statement = null;
         try{
-            if(mycon != null && !mycon.isValid(5)){
-                mycon.close();
-                mycon = DriverManager.getConnection(connectionString, user, pass);
+            if(connection != null && !connection.isValid(5)){
+                connection.close();
+                connection = DriverManager.getConnection(connectionString, user, pass);
             }
-            statement = mycon.prepareStatement("DELETE FROM commands WHERE command=?");
+            statement = connection.prepareStatement("DELETE FROM commands WHERE command=?");
             statement.setString(1, oldCommand.getCommand());
             statement.executeUpdate();
         }catch(Exception e){
@@ -109,6 +113,51 @@ public class BotDAO {
                 if(statement != null)
                     statement.close();
             }catch(Exception e){}
+        }
+    }
+
+    public void addMessage(MessageReceivedEvent e) {
+        long messageID = e.getMessage().getLongID();
+        IUser author = e.getAuthor();
+        long authorID = author.getLongID();
+        String authorName = author.getName();
+        String sent = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        long guildID = e.getGuild().getLongID();
+        String guildName = e.getGuild().getName();
+        long channelID = e.getChannel().getLongID();
+        String channelName = e.getChannel().getName();
+        String content = e.getMessage().getFormattedContent();
+
+        System.out.println(sent + " " + guildName + " / " + channelName + " " + authorName + ": " + content);
+
+        PreparedStatement statement = null;
+        try{
+            if(connection != null && !connection.isValid(5)){
+                connection.close();
+                connection = DriverManager.getConnection(connectionString, user, pass);
+            }
+            statement = connection.prepareStatement("INSERT INTO messages(ID, authorID, authorName, sent, guildID, guildName, channelID, channelName, content) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            statement.setLong(1, messageID);
+            statement.setLong(2, authorID);
+            statement.setString(3, authorName);
+            statement.setString(4, sent);
+            statement.setLong(5, guildID);
+            statement.setString(6, guildName);
+            statement.setLong(7, channelID);
+            statement.setString(8, channelName);
+            statement.setString(9, content);
+
+            statement.executeUpdate();
+        }catch(Exception ex){
+            System.out.println(ex);
+            System.out.println("Adding command failed");
+        }
+        finally{
+            try{
+                if(statement != null)
+                    statement.close();
+            }catch(Exception exc){}
         }
     }
 }

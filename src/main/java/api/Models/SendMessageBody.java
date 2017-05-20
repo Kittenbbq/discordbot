@@ -1,4 +1,4 @@
-package analytics.Models;
+package api.Models;
 
 public class SendMessageBody {
     private long channelID;

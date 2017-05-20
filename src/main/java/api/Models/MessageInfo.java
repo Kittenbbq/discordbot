@@ -1,6 +1,4 @@
-package analytics.Models;
-
-import java.sql.Timestamp;
+package api.Models;
 
 public class MessageInfo {
     private int messageCount;

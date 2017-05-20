@@ -1,12 +1,10 @@
-package analytics.Controllers;
+package api.Controllers;
 
-import analytics.Models.*;
+import api.Models.*;
 import kittenbbq.discordbot.BotBase;
 import kittenbbq.discordbot.BotConfig;
 import kittenbbq.discordbot.Db;
 import org.springframework.web.bind.annotation.*;
-import sx.blah.discord.api.IDiscordClient;
-import sx.blah.discord.util.MessageBuilder;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

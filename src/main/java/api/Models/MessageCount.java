@@ -1,15 +1,15 @@
-package analytics.Models;
+package api.Models;
 
-public class MessageCountByDay {
-    private String day;
+public class MessageCount {
+    private String date;
     private int messageCount;
 
-    public String getDay() {
-        return day;
+    public String getDate() {
+        return date;
     }
 
-    public void setDay(String day) {
-        this.day = day;
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public int getMessageCount() {

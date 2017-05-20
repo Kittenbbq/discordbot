@@ -9,12 +9,9 @@ import sx.blah.discord.handle.obj.IRole;
 import sx.blah.discord.handle.obj.IUser;
 
 public class DatabaseCommand extends AbstractCommandHandler{
-    
-    private final BotDAO dao;
 
-    public DatabaseCommand(BotBase bot, BotDAO dao) {
+    public DatabaseCommand(BotBase bot) {
         super(bot);
-        this.dao = dao;
     }
 
     @Override
@@ -49,7 +46,7 @@ public class DatabaseCommand extends AbstractCommandHandler{
                         command_add.setCommand(args[0]);
                         command_add.setResponse(getCommandContent(message).split(" ", 2)[1]);
                         command_add.setUsername(user.getName());
-                        dao.addCommand(command_add);
+                        bot.getDao().addCommand(command_add);
                     }
                 } else {
                     sendMessage(getHelpMessage(command));
@@ -60,7 +57,7 @@ public class DatabaseCommand extends AbstractCommandHandler{
                     if(bot.inRoles(userroles, "ObeseDude")){
                         CommandDTO command_rmv = new CommandDTO();
                         command_rmv.setCommand(args[0]);
-                        dao.removeCommand(command_rmv);
+                        bot.getDao().removeCommand(command_rmv);
                     }
                 } else {
                     sendMessage(getHelpMessage(command));
@@ -70,7 +67,7 @@ public class DatabaseCommand extends AbstractCommandHandler{
             default:
                 CommandDTO command_get = new CommandDTO();
                 command_get.setCommand(command);
-                CommandDTO response = dao.getCommandResponse(command_get);
+                CommandDTO response = bot.getDao().getCommandResponse(command_get);
                 if(response != null){
                     sendMessage(response.getResponse());
                 }

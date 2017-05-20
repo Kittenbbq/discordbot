@@ -19,9 +19,11 @@ public class BotBase {
     private final IDiscordClient client;
     private final BotConfig config;
     private final ScheduledThreadPoolExecutor botScheduler;
+    private final BotDAO dao;
     
     public BotBase(){
         config = new BotConfig();
+        this.dao = new BotDAO(config);
         client = BotBase.createClient(config.getBotToken(), false);
 
         ScheduledThreadPoolExecutor BotScheduler = (ScheduledThreadPoolExecutor)
@@ -51,6 +53,8 @@ public class BotBase {
     public BotConfig getConfig() {
         return config;
     }
+
+    public BotDAO getDao() { return dao; }
 
     public ScheduledThreadPoolExecutor getBotScheduler() {return botScheduler;}
 
