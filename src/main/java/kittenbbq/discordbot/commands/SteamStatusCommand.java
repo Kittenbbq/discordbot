@@ -6,7 +6,6 @@ import org.json.JSONObject;
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.util.EmbedBuilder;
 
-
 public class SteamStatusCommand extends AbstractCommandHandler {
 
     public SteamStatusCommand(BotBase bot) {

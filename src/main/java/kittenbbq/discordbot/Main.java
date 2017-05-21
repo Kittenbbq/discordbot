@@ -8,7 +8,6 @@ public class Main {
     public static void main(String[] args) {
         BotBase bot = new BotBase();
         EventDispatcher dispatcher = bot.getClient().getDispatcher();
-        BotDAO dao = new BotDAO(bot.getConfig());
         
         ChatCommandListener cmdlistener = new ChatCommandListener(bot, new DatabaseCommand(bot));
         cmdlistener.registerCommand(new TenmanCommand(bot));

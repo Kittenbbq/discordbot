@@ -1,6 +1,5 @@
 package kittenbbq.discordbot.commands;
 
-
 import kittenbbq.discordbot.BotBase;
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.handle.obj.IUser;
@@ -71,7 +70,6 @@ public class ClearCommand extends AbstractCommandHandler {
             e.printStackTrace();
             sendMessage("WOW! Something went wrong");
         }
-
     }
 
     private MessageHistory getMessageHistory() {
@@ -80,5 +78,4 @@ public class ClearCommand extends AbstractCommandHandler {
 
         return event.getChannel().getMessageHistoryIn(startDate, endDate);
     }
-
 }

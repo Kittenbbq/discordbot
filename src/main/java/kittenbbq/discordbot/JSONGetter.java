@@ -1,12 +1,10 @@
 package kittenbbq.discordbot;
 
 import org.json.JSONObject;
-
 import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
-
 
 public class JSONGetter {
 

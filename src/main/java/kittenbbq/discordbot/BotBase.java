@@ -23,7 +23,7 @@ public class BotBase {
     
     public BotBase(){
         config = new BotConfig();
-        this.dao = new BotDAO(config);
+        dao = new BotDAO(config);
         client = BotBase.createClient(config.getBotToken(), false);
 
         ScheduledThreadPoolExecutor BotScheduler = (ScheduledThreadPoolExecutor)
@@ -54,7 +54,9 @@ public class BotBase {
         return config;
     }
 
-    public BotDAO getDao() { return dao; }
+    public BotDAO getDao() { 
+        return dao;
+    }
 
     public ScheduledThreadPoolExecutor getBotScheduler() {return botScheduler;}
 
