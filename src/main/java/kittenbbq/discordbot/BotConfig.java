@@ -13,10 +13,9 @@ public class BotConfig {
     private String db_port;
     private String db_db;
     private String prefix;
-    private int cmd_delete_time;
     private String apiUsername;
     private String apiPassword;
-	private int command_delete_time;
+    private int command_delete_time;
     private int response_delete_time;
     private String github_clientid;
     private String github_clientsecret;
@@ -38,7 +37,7 @@ public class BotConfig {
             db_db = props.getProperty("database_name", "discordbot");
             prefix = props.getProperty("command_prefix", "!");
             command_delete_time = Integer.parseInt(props.getProperty("default_command_delete_time", "5"));
-			response_delete_time = Integer.parseInt(props.getProperty("default_response_delete_time", "5"));
+            response_delete_time = Integer.parseInt(props.getProperty("default_response_delete_time", "5"));
             github_clientid = props.getProperty("github_clientid", "");
             github_clientsecret = props.getProperty("github_clientsecret", "");
             github_apirepourl = props.getProperty("github_apirepourl", "");
@@ -103,15 +102,7 @@ public class BotConfig {
         return apiUsername;
     }
 
-    public void setApiUsername(String apiUsername) {
-        this.apiUsername = apiUsername;
-    }
-
     public String getApiPassword() {
         return apiPassword;
-    }
-
-    public void setApiPassword(String apiPassword) {
-        this.apiPassword = apiPassword;
     }
 }

@@ -1,6 +1,5 @@
 package kittenbbq.discordbot;
 
-import api.MessageFetcher;
 import kittenbbq.discordbot.commands.*;
 import sx.blah.discord.api.events.EventDispatcher;
 
@@ -21,7 +20,6 @@ public class Main {
         cmdlistener.registerCommand(new IssuesCommand(bot));
         cmdlistener.registerCommand(new ClearCommand(bot));
 
-        //dispatcher.registerListener(new MessageFetcher(bot));
         dispatcher.registerListener(cmdlistener);
         bot.getClient().login();
     }

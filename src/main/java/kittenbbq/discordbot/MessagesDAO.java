@@ -1,6 +1,6 @@
 package kittenbbq.discordbot;
 
-import sx.blah.discord.handle.impl.events.MessageReceivedEvent;
+import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 import sx.blah.discord.handle.obj.IUser;
 
 import java.sql.PreparedStatement;
