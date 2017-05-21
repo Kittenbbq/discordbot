@@ -30,8 +30,8 @@ public abstract class AbstractCommandHandler {
     
     public void executeCommand(String command, MessageReceivedEvent event){
         this.event = event;
-        bot.deleteMessage(event.getMessage(), getCommandDeleteTime());
         handleCommand(command);
+        bot.deleteMessage(event.getMessage(), getCommandDeleteTime());
     }
     
     protected abstract void handleCommand(String command);
@@ -45,8 +45,8 @@ public abstract class AbstractCommandHandler {
         bot.sendMessage(message, event.getChannel(), getResponseDeleteTime());
     }
 
-    protected void sendMessage(EmbedObject embedObject) {
-        bot.sendMessage(embedObject, event.getChannel(), getResponseDeleteTime());
+    protected IMessage sendMessage(EmbedObject embedObject) {
+        return bot.sendMessage(embedObject, event.getChannel(), getResponseDeleteTime());
     }
 
     

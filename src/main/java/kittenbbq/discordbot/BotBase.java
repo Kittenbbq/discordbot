@@ -63,16 +63,21 @@ public class BotBase {
         sendMessage(embedObject, channel, config.getResponseDeleteTime());
     }
 
-    public void sendMessage(EmbedObject embedObject, IChannel channel, int deleteTime) {
+    public IMessage sendMessage(EmbedObject embedObject, IChannel channel, int deleteTime) {
         RequestBuffer.request(() -> {
             try {
                 IMessage message = channel.sendMessage(embedObject);
                 deleteMessage(message, deleteTime);
+                return message;
+
             } catch(Exception e) {
                 e.printStackTrace();
                 throw(e);
             }
         });
+
+        return null;
+
     }
 
     public void sendMessage(String message, IChannel channel){

@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 public class ClearCommand extends AbstractCommandHandler {
 
     int messagesToDelete = 0;
+    int commandDeleteTime = 1;
 
     public ClearCommand(BotBase bot) {
         super(bot);
@@ -34,6 +35,11 @@ public class ClearCommand extends AbstractCommandHandler {
     }
 
     @Override
+    protected int getCommandDeleteTime() {
+        return commandDeleteTime;
+    }
+
+    @Override
     protected void handleCommand(String command) {
 
         if(getCommandArgs().length != 1) {
@@ -44,6 +50,7 @@ public class ClearCommand extends AbstractCommandHandler {
         messagesToDelete = Integer.parseInt(getCommandArgs()[0]) + 1;
 
         boolean clearBotMessages = command.equals("clearbot");
+        commandDeleteTime = clearBotMessages ? 0 : 1;
 
         try {
             IUser user = event.getAuthor();
