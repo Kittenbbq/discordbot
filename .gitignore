@@ -15,3 +15,8 @@ nbactions.xml
 
 # node_modules
 src/main/resources/static/node_modules
+*.MF
+*.log
+*.jar
+classes/artifacts/
+src/main/resources/static/webserver.js
