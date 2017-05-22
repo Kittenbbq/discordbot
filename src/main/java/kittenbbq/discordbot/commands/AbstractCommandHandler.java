@@ -34,19 +34,27 @@ public abstract class AbstractCommandHandler {
     
     protected abstract void handleCommand(String command);
 
-    public void sendHelpMessage(String command, MessageReceivedEvent event) {
+    public IMessage sendHelpMessage(String command, MessageReceivedEvent event) {
         this.event = event;
-        bot.sendMessage(getHelpMessage(command), event.getChannel());
+        return bot.sendMessage(getHelpMessage(command), event.getChannel());
     }
 
-    protected void sendMessage(String message) {
-        bot.sendMessage(message, event.getChannel(), getResponseDeleteTime());
+    protected IMessage sendMessage(String message) {
+        return bot.sendMessage(message, event.getChannel(), getResponseDeleteTime());
     }
 
-    protected void sendMessage(EmbedObject embedObject) {
-        bot.sendMessage(embedObject, event.getChannel(), getResponseDeleteTime());
+    protected IMessage sendMessage(EmbedObject embedObject) {
+        return bot.sendMessage(embedObject, event.getChannel(), getResponseDeleteTime());
     }
-    
+
+    protected IMessage sendMessage(String message, int deleteTime) {
+        return bot.sendMessage(message, event.getChannel(), deleteTime);
+    }
+
+    protected IMessage sendMessage(EmbedObject embedObject, int deleteTime) {
+        return bot.sendMessage(embedObject, event.getChannel(), deleteTime);
+    }
+
     protected String getCommandContent(IMessage message){
         String[] tmp = message.getContent().split(" ", 2);
         if(tmp.length > 1){

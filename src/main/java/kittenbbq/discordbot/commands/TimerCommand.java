@@ -22,6 +22,16 @@ public class TimerCommand extends AbstractCommandHandler{
     }
 
     @Override
+    protected int getCommandDeleteTime() {
+        return 0;
+    }
+
+    @Override
+    protected int getResponseDeleteTime() {
+        return -1;
+    }
+
+    @Override
     protected void handleCommand(String command) {
         IMessage message = event.getMessage();
         if (message.getContent().split(" ").length > 1) {
@@ -29,7 +39,7 @@ public class TimerCommand extends AbstractCommandHandler{
                 Integer time = Integer.parseInt(message.getContent().split(" ")[1]);
                 BotTimerRunnable runner = new BotTimerRunnable(event.getMessage());
                 bot.getBotScheduler().schedule(runner, time, TimeUnit.MINUTES);
-                sendMessage(String.format(Locale.ENGLISH, "I will remind you in %d minutes", time));
+                sendMessage(String.format(Locale.ENGLISH, "%s, I will remind you in %d minutes", message.getAuthor().getName(), time), time);
             }
             catch(Exception e) {
                 sendMessage("Time not valid");
@@ -51,18 +61,14 @@ public class TimerCommand extends AbstractCommandHandler{
         @Override
         public void run() {
             try{
-                String messageBody[] = message.getContent().split(" ");
-                String splitMessage = "";
-
-                for(int i=2; i < messageBody.length; i++) {
-                    splitMessage += messageBody[i]+" ";
-                }
+                String[] split = message.toString().split(" ", 3);
+                String response = split.length == 3 ? split[2] : "";
 
                 //use generic message if no specific timermessage was given
-                if (splitMessage.isEmpty())
+                if (response.isEmpty())
                     bot.reply(message, "time is up");
                 else 
-                    bot.reply(message, splitMessage);
+                    bot.reply(message, response);
 
             }catch(Exception e){
 
