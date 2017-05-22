@@ -27,11 +27,6 @@ public class TimerCommand extends AbstractCommandHandler{
     }
 
     @Override
-    protected int getResponseDeleteTime() {
-        return -1;
-    }
-
-    @Override
     protected void handleCommand(String command) {
         IMessage message = event.getMessage();
         if (message.getContent().split(" ").length > 1) {
