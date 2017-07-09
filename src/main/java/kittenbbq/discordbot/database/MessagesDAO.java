@@ -1,4 +1,4 @@
-package kittenbbq.discordbot;
+package kittenbbq.discordbot.database;
 
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 import sx.blah.discord.handle.obj.IUser;

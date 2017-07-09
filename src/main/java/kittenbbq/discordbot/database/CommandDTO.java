@@ -1,4 +1,4 @@
-package kittenbbq.discordbot;
+package kittenbbq.discordbot.database;
 
 public class CommandDTO {
     

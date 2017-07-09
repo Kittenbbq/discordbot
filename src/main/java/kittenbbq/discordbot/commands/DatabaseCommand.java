@@ -2,8 +2,8 @@ package kittenbbq.discordbot.commands;
 
 import java.util.List;
 import kittenbbq.discordbot.BotBase;
-import kittenbbq.discordbot.BotDAO;
-import kittenbbq.discordbot.CommandDTO;
+import kittenbbq.discordbot.database.BotDAO;
+import kittenbbq.discordbot.database.CommandDTO;
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.handle.obj.IRole;
 import sx.blah.discord.handle.obj.IUser;

@@ -1,6 +1,7 @@
 package kittenbbq.discordbot;
 
 import kittenbbq.discordbot.commands.*;
+import kittenbbq.discordbot.database.BotDAO;
 import sx.blah.discord.api.events.EventDispatcher;
 
 public class Main {
