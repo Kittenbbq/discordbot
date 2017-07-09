@@ -46,6 +46,7 @@ public class DatabaseCommand extends AbstractCommandHandler{
                         command_add.setResponse(getCommandContent(message).split(" ", 2)[1]);
                         command_add.setUsername(user.getName());
                         bot.getDao().addCommand(command_add);
+                        sendMessage("Command "+args[0]+" added to the database.");
                     }
                 } else {
                     sendMessage(getHelpMessage(command));
@@ -57,6 +58,7 @@ public class DatabaseCommand extends AbstractCommandHandler{
                         CommandDTO command_rmv = new CommandDTO();
                         command_rmv.setCommand(args[0]);
                         bot.getDao().removeCommand(command_rmv);
+                        sendMessage("Command "+args[0]+" removed from the database.");
                     }
                 } else {
                     sendMessage(getHelpMessage(command));
