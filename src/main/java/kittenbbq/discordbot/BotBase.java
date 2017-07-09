@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import kittenbbq.discordbot.database.BotDAO;
 
 public class BotBase {
     
@@ -60,49 +61,55 @@ public class BotBase {
 
     public ScheduledThreadPoolExecutor getBotScheduler() {return botScheduler;}
 
-    public void reply(IMessage message, String content) {
+    public IMessage reply(IMessage message, String content) {
         String replyContent = message.getAuthor().toString() + ", " + content;
-        sendMessage(replyContent, message.getChannel());
+        return sendMessage(replyContent, message.getChannel());
     }
 
-    public void sendMessage(EmbedObject embedObject, IChannel channel) {
-        sendMessage(embedObject, channel, config.getResponseDeleteTime());
+    public IMessage sendMessage(EmbedObject embedObject, IChannel channel) {
+        return sendMessage(embedObject, channel, config.getResponseDeleteTime());
     }
 
-    public void sendMessage(EmbedObject embedObject, IChannel channel, int deleteTime) {
+    public IMessage sendMessage(EmbedObject embedObject, IChannel channel, int deleteTime) {
         RequestBuffer.request(() -> {
             try {
                 IMessage message = channel.sendMessage(embedObject);
                 deleteMessage(message, deleteTime);
+                return message;
             } catch(Exception e) {
                 e.printStackTrace();
                 throw(e);
             }
         });
+        return null;
     }
 
-    public void sendMessage(String message, IChannel channel){
-        sendMessage(message, channel, config.getResponseDeleteTime());
+    public IMessage sendMessage(String message, IChannel channel){
+        return sendMessage(message, channel, config.getResponseDeleteTime());
     }
 
-    public void sendMessage(String message, long channelID){
+    public IMessage sendMessage(String message, long channelID){
         IChannel chn = client.getChannelByID(channelID);
         if (chn == null) {
-            return;
+            return null;
         }
-        sendMessage(message, chn, config.getResponseDeleteTime());
+        return sendMessage(message, chn, config.getResponseDeleteTime());
     }
 
-    public void sendMessage(String message, IChannel channel, int deleteTime){
+    public IMessage sendMessage(String message, IChannel channel, int deleteTime){
+
         RequestBuffer.request(() ->{
             try {
                 IMessage messageToDelete = new MessageBuilder(this.client).withChannel(channel).withContent(message).build();
                 deleteMessage(messageToDelete, deleteTime);
+                return messageToDelete;
             }catch (Exception e) {
                 e.printStackTrace();
                 throw(e);
             }
         });
+
+        return null;
     }
 
     public void deleteMessage(IMessage message) {

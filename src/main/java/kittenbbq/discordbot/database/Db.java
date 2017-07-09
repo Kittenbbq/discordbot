@@ -1,7 +1,8 @@
-package kittenbbq.discordbot;
+package kittenbbq.discordbot.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import kittenbbq.discordbot.BotConfig;
 
 public class Db {
     private Connection conn;
