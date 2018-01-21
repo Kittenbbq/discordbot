@@ -154,12 +154,26 @@ public class TenmanCommand extends AbstractCommandHandler{
     }
     
     private void startMatch(){
+        IVoiceChannel team1channel, team2channel;
         IVoiceState voiceState = event.getAuthor().getVoiceStates().get(event.getGuild().getLongID());
         if(voiceState != null){
             originalChannel = voiceState.getChannel();
         }
-        IVoiceChannel team1channel = event.getGuild().getVoiceChannelsByName("team1").get(0);
-        IVoiceChannel team2channel = event.getGuild().getVoiceChannelsByName("team2").get(0);
+
+        List<IVoiceChannel> team1channels = event.getGuild().getVoiceChannelsByName("team1");
+        if(team1channels.isEmpty()){
+            team1channel = event.getGuild().createVoiceChannel("team1");
+        }else{
+            team1channel = team1channels.get(0);
+        }
+
+        List<IVoiceChannel> team2channels = event.getGuild().getVoiceChannelsByName("team2");
+        if(team2channels.isEmpty()){
+            team2channel = event.getGuild().createVoiceChannel("team2");
+        }else{
+            team2channel = team2channels.get(0);
+        }
+
         
         for(IUser user : team1){
             if(user.getVoiceStates().get(event.getGuild().getLongID()).getChannel() != null){
