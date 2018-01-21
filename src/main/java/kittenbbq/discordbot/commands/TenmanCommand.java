@@ -106,7 +106,7 @@ public class TenmanCommand extends AbstractCommandHandler{
     }
     
     private void addPlayersFromChannel(){
-        IVoiceState voiceState = event.getAuthor().getVoiceStatesLong().get(event.getGuild().getLongID());
+        IVoiceState voiceState = event.getAuthor().getVoiceStates().get(event.getGuild().getLongID());
         if(voiceState != null){
             ArrayList<IUser> channelUsers = (ArrayList)voiceState.getChannel().getConnectedUsers();
             players.addAll(channelUsers);
@@ -154,7 +154,7 @@ public class TenmanCommand extends AbstractCommandHandler{
     }
     
     private void startMatch(){
-        IVoiceState voiceState = event.getAuthor().getVoiceStatesLong().get(event.getGuild().getLongID());
+        IVoiceState voiceState = event.getAuthor().getVoiceStates().get(event.getGuild().getLongID());
         if(voiceState != null){
             originalChannel = voiceState.getChannel();
         }
@@ -162,12 +162,12 @@ public class TenmanCommand extends AbstractCommandHandler{
         IVoiceChannel team2channel = event.getGuild().getVoiceChannelsByName("team2").get(0);
         
         for(IUser user : team1){
-            if(user.getVoiceStatesLong().get(event.getGuild().getLongID()).getChannel() != null){
+            if(user.getVoiceStates().get(event.getGuild().getLongID()).getChannel() != null){
                 user.moveToVoiceChannel(team1channel);
             }
         }
         for(IUser user : team2){
-            if(user.getVoiceStatesLong().get(event.getGuild().getLongID()).getChannel() != null){
+            if(user.getVoiceStates().get(event.getGuild().getLongID()).getChannel() != null){
                 user.moveToVoiceChannel(team2channel);
             }
         }
@@ -175,7 +175,7 @@ public class TenmanCommand extends AbstractCommandHandler{
     
     private void endMatch(){
         for(IUser user : players){
-            if(user.getVoiceStatesLong().get(event.getGuild().getLongID()).getChannel() != null){
+            if(user.getVoiceStates().get(event.getGuild().getLongID()).getChannel() != null){
                 RequestBuffer.request(() -> {
                     user.moveToVoiceChannel(originalChannel);
                 });
