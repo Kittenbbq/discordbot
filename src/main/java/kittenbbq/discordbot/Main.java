@@ -18,6 +18,7 @@ public class Main {
         cmdlistener.registerCommand(new StrawPollCommand(bot));
         cmdlistener.registerCommand(new IssuesCommand(bot));
         cmdlistener.registerCommand(new ClearCommand(bot));
+        cmdlistener.registerCommand(new PlayingCommand(bot));
 
         dispatcher.registerListener(cmdlistener);
         bot.getClient().login();

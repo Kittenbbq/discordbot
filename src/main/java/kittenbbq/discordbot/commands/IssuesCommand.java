@@ -39,7 +39,7 @@ public class IssuesCommand extends AbstractCommandHandler {
     protected void handleCommand(String command) {
         IMessage message = event.getMessage();
 
-        if (clientId == "" || clientSecret == "" || apiRepoBaseUrl == "") {
+        if (clientId.equals("") || clientSecret.equals("") || apiRepoBaseUrl.equals("")) {
             sendMessage("Whoops! I have been configured incorrectly. Check the GitHub configs and try again.");
             return;
         }
