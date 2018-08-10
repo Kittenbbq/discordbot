@@ -1,6 +1,8 @@
 package kittenbbq.discordbot.commands;
 
 import kittenbbq.discordbot.BotBase;
+import sx.blah.discord.handle.obj.ActivityType;
+import sx.blah.discord.handle.obj.StatusType;
 
 public class PlayingCommand extends AbstractCommandHandler{
 
@@ -25,6 +27,6 @@ public class PlayingCommand extends AbstractCommandHandler{
 
     @Override
     protected void handleCommand(String command) {
-        bot.getClient().changePlayingText(getCommandContent());
+        bot.getClient().changePresence(StatusType.ONLINE, ActivityType.PLAYING, getCommandContent());
     }
 }

@@ -5,11 +5,9 @@ import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.handle.obj.IUser;
 import sx.blah.discord.util.MessageHistory;
 
-import java.time.LocalDateTime;
+import java.time.*;
 
 public class ClearCommand extends AbstractCommandHandler {
-
-    int messagesToDelete = 0;
 
     public ClearCommand(BotBase bot) {
         super(bot);
@@ -39,6 +37,8 @@ public class ClearCommand extends AbstractCommandHandler {
 
     @Override
     protected void handleCommand(String command) {
+
+        int messagesToDelete;
 
         if(getCommandArgs().length != 1) {
             sendMessage(getHelpMessage(command));
@@ -73,9 +73,10 @@ public class ClearCommand extends AbstractCommandHandler {
     }
 
     private MessageHistory getMessageHistory() {
-        LocalDateTime endDate = LocalDateTime.now();
-        LocalDateTime startDate = endDate.minusDays(1);
+        ZonedDateTime now = LocalDateTime.now().atZone(ZoneId.of("Europe/Paris"));
+        Instant endInstant = now.toInstant();
+        Instant startInstant = now.minusDays(1).toInstant();
 
-        return event.getChannel().getMessageHistoryIn(startDate, endDate);
+        return event.getChannel().getMessageHistoryIn(startInstant, endInstant);
     }
 }
